@@ -1,4 +1,6 @@
 (ns walkmap.core
+  "At this stage, primarily utility functions dealing with stereolithography
+  (STL) files. Not a stable API yet!"
   (:require [clojure.java.io :as io :refer [file output-stream input-stream]]
             [clojure.string :as s]
             [dali.io :as svg]
@@ -9,25 +11,32 @@
            java.io.DataInput))
 
 (def vect
+  "A codec for vectors within a binary STL file."
   (b/ordered-map
     :x :float-le
     :y :float-le
     :z :float-le))
 
 (def facet
+  "A codec for a vector within a binary STL file."
   (b/ordered-map
     :normal vect
     :vertices [vect vect vect]
     :abc :ushort-le))
 
 (def binary-stl
+  "A codec for binary STL files"
   (b/ordered-map
    :header (b/string "ISO-8859-1" :length 80) ;; for the time being we neither know nor care what's in this.
    :count :uint-le
    :facets (b/repeated facet)))
 
 (defn decode-binary-stl
-  "Parse a binary STL file from this `filename`."
+  "Parse a binary STL file from this `filename` and return an STL structure
+  representing its contents.
+
+  **NOTE** that we've no way of verifying that the input file is binary STL
+  data, if it is not this will run but will return garbage."
   [filename]
   (let [in (io/input-stream filename)]
     (b/decode binary-stl in)))
@@ -72,6 +81,9 @@
        "\n"))))
 
 (defn binary-stl-to-ascii
+  "Convert the binary STL file indicated by `in-filename`, and write it to
+  `out-filename`, if specified; otherwise, to a file with the same basename
+  as `in-filename` but the extension `.ascii.stl`."
   ([in-filename]
    (let [[_ ext] (fs/split-ext in-filename)]
      (binary-stl-to-ascii
@@ -88,16 +100,12 @@
   ([in-filename out-filename]
    (write-ascii-stl out-filename (decode-binary-stl in-filename))))
 
-(def stl (decode-binary-stl "resources/small_hill.stl"))
-
-(defn facet-to-svg-poly
+(defn- facet-to-svg-poly
   [facet]
   (vec
     (cons
       :polygon
       (map #(vec (list (:x %) (:y %))) (:vertices facet)))))
-
-(facet-to-svg-poly (first (:facets stl)))
 
 (defn stl-to-svg
   "Convert this in-memory `stl` structure, as read by `decode-binary-stl`, into
@@ -147,5 +155,10 @@
        out-filename)
      s)))
 
-(map facet-to-svg-poly (:facets stl))
-(svg/render-svg (stl-to-svg stl) "frobox.svg")
+;; (def stl (decode-binary-stl "resources/small_hill.stl"))
+
+;; (facet-to-svg-poly (first (:facets stl)))
+
+;; (map facet-to-svg-poly (:facets stl))
+;; (svg/render-svg (stl-to-svg stl) "frobox.svg")
+(binary-stl-file-to-svg "resources/small_hill.stl" "resources/small_hill.svg")
