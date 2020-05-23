@@ -150,9 +150,7 @@
    (stl-to-svg (decode-binary-stl in-filename)))
   ([in-filename out-filename]
    (let [s (binary-stl-file-to-svg in-filename)]
-     (svg/render-svg
-       s
-       out-filename)
+     (svg/render-svg s out-filename)
      s)))
 
 ;; (def stl (decode-binary-stl "resources/small_hill.stl"))
@@ -161,4 +159,4 @@
 
 ;; (map facet-to-svg-poly (:facets stl))
 ;; (svg/render-svg (stl-to-svg stl) "frobox.svg")
-(binary-stl-file-to-svg "resources/small_hill.stl" "resources/small_hill.svg")
+;; (binary-stl-file-to-svg "resources/small_hill.stl" "resources/small_hill.svg")
