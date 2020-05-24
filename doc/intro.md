@@ -16,6 +16,9 @@ Lein dependency:
 
     [walkmap "0.1.0-SNAPSHOT"]
 
+* [API documentation](https://simon-brooke.github.io/walkmap/codox/index.html)
+* [Test coverage](https://simon-brooke.github.io/walkmap/cloverage/index.html)
+
 ### Converting heightmaps to STL
 
 Doesn't work yet, and is not a priority. Use
@@ -69,6 +72,20 @@ areas which should be excluded from the traversable area) with maps derived
 from height maps. These exclusion maps will probably be represented as SVG.
 
 This is not yet implemented.
+
+Culling facets in ocean areas is implemented and works:
+
+    (require '[walkmap.core :refer [cull-ocean-facets *sea-level*]])
+    (cull-ocean-facets stl)
+
+If sea level in your heightmaps is not zero, e.g. is 5, set it thus:
+
+    (def ^:dynamic *sea-level* 5.0)
+    (cull-ocean-facets stl)
+
+It is **strongly recomended** that you set `*sea-level*` to a floating point
+number, not an integer, because numbers are specified in the STL file as
+floating point, and in Clojure, `(= 5 5.0)` returns `false`.
 
 ### Merging road maps and river system maps
 
