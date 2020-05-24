@@ -1,9 +1,7 @@
 # Introduction to walkmap
 
-## Introduction
-
 This library is written in support of work on
-[The Great Game](https://simon-brooke.github.io/the-great-game/codox/), but is
+[The Great Game](https://simon-brooke.github.io/the-great-game/codox/Pathmaking.html), but is
 separate because it may be of some use in other settings.
 
 ## Usage
@@ -18,10 +16,6 @@ Lein dependency:
 
     [walkmap "0.1.0-SNAPSHOT"]
 
-Using:
-
-    (require '[walkmap.core :refer :all])
-
 ### Converting heightmaps to STL
 
 Doesn't work yet, and is not a priority. Use
@@ -29,12 +23,14 @@ Doesn't work yet, and is not a priority. Use
 
 ### Reading binary STL files
 
+    (require '[walkmap.stl :refer [decode-binary-stl]])
     (decode-binary-stl "path/to/input-file.stl")
 
 Works, seems good.
 
 ### Writing ASCII STL files
 
+    (require '[walkmap.stl :refer [write-ascii-stl]])
     (write-ascii-stl "path/to/output-file.ascii.stl" stl-structure)
 
 Works, seems good, agrees with Python implementation except for different
@@ -42,13 +38,11 @@ number of places of decimals printed.
 
 ### Converting STL to SVG
 
-    (stl-to-svg stl-structure)
+    (require '[walkmap.svg :refer [stl->svg]])
+    (stl->svg stl-structure)
 
-Works for smaller test files. I'm not yet confident it works for arbitrary
-sized STL structures. Returns a [Dali](https://github.com/stathissideris/dali)
-structure representing an SVG drawing, which can be printed with
-
-    (dali.io/render-svg structure)
+Works, seems good. Returns a [hiccup](https://github.com/weavejester/hiccup)
+representation of the SVG.
 
 **NOTE THAT** the SVG data does not contain height information, which the
 STL data does contain. Thus gradient information can only be obtained from
@@ -56,13 +50,14 @@ the STL.
 
 ### Converting STL file to SVG or SVG file
 
-    (binary-stl-file-to-svg "path/to/input-file.stl")
+    (require '[walkmap.core :refer [binary-stl-file->svg]])
+    (binary-stl-file->svg "path/to/input-file.stl")
 
-Works for smaller test files. I'm not yet confident it works for arbitrary
-sized STL structures. Returns a [Dali](https://github.com/stathissideris/dali)
-structure representing an SVG drawing, as above.
+Works, seems good. Returns a [hiccup](https://github.com/weavejester/hiccup)
+representation of the SVG.
 
-    (binary-stl-file-to-svg "path/to/input-file.stl" "path-to-output-file.svg")
+    (require '[walkmap.core :refer [binary-stl-file->svg]])
+    (binary-stl-file->svg "path/to/input-file.stl" "path-to-output-file.svg")
 
 As above, but, as a side effect, writes the SVG to the specified output file.
 Works for smaller test files, as above.
@@ -119,4 +114,3 @@ Public License, v. 2.0 are satisfied: GNU General Public License as published by
 the Free Software Foundation, either version 2 of the License, or (at your
 option) any later version, with the GNU Classpath Exception which is available
 at https://www.gnu.org/software/classpath/license.html.
-

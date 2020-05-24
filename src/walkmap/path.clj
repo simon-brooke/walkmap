@@ -1,6 +1,7 @@
 (ns walkmap.path
   "Essentially the specification for things we shall consider to be path."
-  (:require [walkmap.polygon :refer [polygon? vertex?]]))
+  (:require [walkmap.polygon :refer [polygon?]]
+            [walkmap.vertex :refer [vertex?]]))
 
 (defn path?
   "True if `o` satisfies the conditions for a path. A path shall be a map

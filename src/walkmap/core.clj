@@ -39,7 +39,6 @@
    (stl->svg (cull-ocean-facets (decode-binary-stl in-filename))))
   ([in-filename out-filename]
    (let [s (binary-stl-file->svg in-filename)]
-     ;; (svg/render-svg s out-filename)
      (spit out-filename (html s))
      s)))
 

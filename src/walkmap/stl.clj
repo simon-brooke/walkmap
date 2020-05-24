@@ -1,7 +1,7 @@
 (ns walkmap.stl
   "Utility functions dealing with stereolithography (STL) files. Not a stable API yet!"
   (:require [clojure.java.io :as io :refer [file output-stream input-stream]]
-            ;; [clojure.string :as s]
+            [clojure.string :as s]
             [me.raynes.fs :as fs]
             [org.clojars.smee.binary.core :as b]
             [taoensso.timbre :as l :refer [info error spy]]

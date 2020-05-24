@@ -1,10 +1,11 @@
-(ns walkmap.stl
+(ns walkmap.svg
   "Utility functions for writing stereolithography (STL) files (and possibly,
   later, other geometry files of interest to us) as scalable vector graphics
   (SVG)."
   (:require [clojure.string :as s]
             [taoensso.timbre :as l :refer [info error spy]]
-            [walkmap.polygon :refer [polygon? vertex?]]))
+            [walkmap.polygon :refer [polygon?]]
+            [walkmap.vertex :refer [vertex?]]))
 
 (defn- facet->svg-poly
   [facet]
