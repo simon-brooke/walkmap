@@ -6,7 +6,7 @@
 (defn path?
   "True if `o` satisfies the conditions for a path. A path shall be a map
   having the key `:nodes`, whose value shall be a sequence of vertices as
-  defined in `walkmap.polygon`."
+  defined in `walkmap.vertex`."
   [o]
   (let
     [v (:nodes o)]

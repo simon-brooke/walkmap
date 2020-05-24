@@ -14,7 +14,7 @@
 
 (defn stl->svg
   "Convert this in-memory `stl` structure, as read by `decode-binary-stl`, into
-  an in-memory (Dali) SVG structure, and return it."
+  an in-memory hiccup representation of SVG structure, and return it."
   [stl]
   (let [minx (reduce
                min
