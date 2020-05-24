@@ -8,6 +8,7 @@
                  [org.clojure/math.numeric-tower "0.0.4"]
                  [com.taoensso/timbre "4.10.0"]
                  [dali "0.7.4"]
+                 [hiccup "1.0.5"]
                  [me.raynes/fs "1.4.6"]
                  [smee/binary "0.5.5"]]
   :description "A Clojure library designed to assist in computing walkmaps for games."

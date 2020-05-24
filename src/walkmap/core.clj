@@ -3,7 +3,7 @@
   (STL) files. Not a stable API yet!"
   (:require [clojure.java.io :as io :refer [file output-stream input-stream]]
             [clojure.string :as s]
-            [dali.io :as svg]
+            [hiccup.core :refer [html]]
             [me.raynes.fs :as fs]
             [org.clojars.smee.binary.core :as b]
             [taoensso.timbre :as l :refer [info error spy]])
@@ -102,10 +102,8 @@
 
 (defn- facet-to-svg-poly
   [facet]
-  (vec
-    (cons
-      :polygon
-      (map #(vec (list (:x %) (:y %))) (:vertices facet)))))
+  [:polygon
+   {:points (s/join " " (map #(str (:x %) "," (:y %)) (:vertices facet)))}])
 
 (defn stl-to-svg
   "Convert this in-memory `stl` structure, as read by `decode-binary-stl`, into
@@ -131,8 +129,10 @@
                (map
                  #(reduce max (map :y (:vertices %)))
                  (:facets stl)))]
-    [:dali/page
-     {:width (- maxx minx)
+    [:svg
+     {:xmlns "http://www.w3.org/2000/svg"
+      :version "1.2"
+      :width (- maxx minx)
       :height (- maxy miny)
       :viewBox (s/join " " (map str [minx miny maxx maxy]))}
      (vec
@@ -150,7 +150,8 @@
    (stl-to-svg (decode-binary-stl in-filename)))
   ([in-filename out-filename]
    (let [s (binary-stl-file-to-svg in-filename)]
-     (svg/render-svg s out-filename)
+     ;; (svg/render-svg s out-filename)
+     (spit out-filename (html s))
      s)))
 
 ;; (def stl (decode-binary-stl "resources/small_hill.stl"))
