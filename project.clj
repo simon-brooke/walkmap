@@ -18,7 +18,8 @@
   :license {:name "EPL-2.0 OR GPL-2.0-or-later WITH Classpath-exception-2.0"
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :plugins [[lein-cloverage "1.1.1"]
-            [lein-codox "0.10.7"]]
+            [lein-codox "0.10.7"]
+            [lein-gorilla "0.4.0"]]
   :release-tasks [["vcs" "assert-committed"]
                   ["change" "version" "leiningen.release/bump-version" "release"]
                   ["vcs" "commit"]
