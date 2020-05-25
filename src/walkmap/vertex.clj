@@ -1,6 +1,16 @@
 (ns walkmap.vertex
   "Essentially the specification for things we shall consider to be vertices.")
 
+(defn vertex-key
+  "Making sure we get the same key everytime we key a vertex with the same
+  coordinates. `o` must have numeric values for `:x`, `:y`, and optionally
+  `:z`."
+  [o]
+  (cond
+    (and (:x o) (:y o) (:z o)) (keyword (str "vert{" (:x o) "|" (:y o) "|" (:z o) "}"))
+    (and (:x o) (:y o)) (keyword (str "vert{" (:x o) "|" (:y o) "}"))
+    :else (throw (Exception. "Not a vertex."))))
+
 (defn vertex?
   "True if `o` satisfies the conditions for a vertex. That is, essentially,
   that it must rerpresent a two- or three- dimensional vector. A vertex is
@@ -13,9 +23,22 @@
   [o]
   (and
     (map? o)
+    (:id o)
     (number? (:x o))
     (number? (:y o))
-    (or (nil? (:z o)) (number? (:z o)))))
+    (or (nil? (:z o)) (number? (:z o)))
+    (or (nil? (:kind o)) (= (:kind o) :vertex))))
+
+(defn make-vertex
+  "Make a vertex with this `x`, `y` and (if provided) `z` values. Returns a map
+  with those values, plus a unique `:id` value, and `:kind` set to `:vertex`.
+  It's not necessary to use this function to create a vertex, but the `:id`
+  must be present and must be unique."
+  ([x y]
+   (let [v {:x x :y y :kind :vertex}]
+     (assoc v :id (vertex-key v))))
+  ([x y z]
+   (assoc (make-vertex x y) :z z)))
 
 (def ensure3d
   "Given a vertex `o`, if `o` has a `:z` value, just return `o`; otherwise

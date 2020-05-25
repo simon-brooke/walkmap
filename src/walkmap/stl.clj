@@ -5,7 +5,8 @@
             [me.raynes.fs :as fs]
             [org.clojars.smee.binary.core :as b]
             [taoensso.timbre :as l :refer [info error spy]]
-            [walkmap.polygon :refer [polygon?]])
+            [walkmap.polygon :refer [polygon?]]
+            [walkmap.vertex :refer [vertex-key]])
   (:import org.clojars.smee.binary.core.BinaryIO
            java.io.DataInput))
 
@@ -26,6 +27,7 @@
      (every? polygon? (:facets o))
      (if (:header o) (string? (:header o)) true)
      (if (:count o) (integer? (:count o)) true)
+     (or (nil? (:kind o)) (= (:kind o) :stl))
      (if verify-count? (= (:count o) (count (:facets o))) true))))
 
 (def vect
@@ -49,6 +51,26 @@
    :count :uint-le
    :facets (b/repeated facet)))
 
+(defn canonicalise
+  "Objects read in from STL won't have all the keys/values we need them to have."
+  [o]
+  (cond
+    (and (coll? o) (not (map? o))) (map canonicalise o)
+    ;; if it has :facets it's an STL structure, but it doesn't yet conform to `stl?`
+    (:facets o) (assoc o
+               :kind :stl
+               :id (or (:id o) (keyword (gensym "stl")))
+               :facets (canonicalise (:facets o)))
+    ;; if it has :vertices it's a polygon, but it doesn't yet conform to `polygon?`
+    (:vertices o) (assoc o
+                    :id (or (:id o) (keyword (gensym "poly")))
+                    :kind :polygon
+                    :vertices (canonicalise (:vertices o)))
+    ;; if it has a value for :x it's a vertex, but it doesn't yet conform to `vertex?`
+    (:x o) (assoc o :kind :vertex :id (or (:id o) (vertex-key o)))
+    ;; shouldn't happen
+    :else o))
+
 (defn decode-binary-stl
   "Parse a binary STL file from this `filename` and return an STL structure
   representing its contents.
@@ -57,7 +79,7 @@
   data, if it is not this will run but will return garbage."
   [filename]
   (let [in (io/input-stream filename)]
-    (b/decode binary-stl in)))
+    (canonicalise (b/decode binary-stl in))))
 
 (defn- vect->str [prefix v]
   (str prefix " " (:x v) " " (:y v) " " (:z v) "\n"))
