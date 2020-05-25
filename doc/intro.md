@@ -63,7 +63,6 @@ representation of the SVG.
     (binary-stl-file->svg "path/to/input-file.stl" "path-to-output-file.svg")
 
 As above, but, as a side effect, writes the SVG to the specified output file.
-Works for smaller test files, as above.
 
 ### Merging exclusion maps and reserved area maps
 
