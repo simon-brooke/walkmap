@@ -17,9 +17,6 @@
   :dali)
 
 (defn- facet->svg-poly
-  ;; When we use this version of facet->svg-poly with the Dali renderer, it's
-  ;; still (for the isle_of_man map) 10 times slower than hiccup, also using
-  ;; this version (890.863814 msecs vs 86.904891 msecs
   [facet]
   [:polygon
    {:points (s/join " " (map #(str (:x %) "," (:y %)) (:vertices facet)))}])
@@ -32,7 +29,7 @@
       (map #(vec (list (:x %) (:y %))) (:vertices facet)))))
 
 (defn dali-stl->svg
-  "Format this `stl` as SVG for the `hiccup` renderer on a page with these
+  "Format this `stl` as SVG for the `dali` renderer on a page with these
   bounds."
   [stl minx maxx miny maxy]
   [:dali/page
