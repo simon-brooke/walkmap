@@ -28,8 +28,8 @@
           ;; deep-merge doesn't merge sets, only maps; so at this
           ;; stage we need to build a map.
           (assoc vi (:id v) (assoc current (:id o) (:id v))))
-        (throw (Exception. "Not a vertex: " v)))
-      (throw (Exception. (subs (str "No `:id` value: " o) 0 80))))
+        (throw (IllegalArgumentException. "Not a vertex: " v)))
+      (throw (IllegalArgumentException. (subs (str "No `:id` value: " o) 0 80))))
     ;; it shouldn't actually be an error to try to index a vertex, but it
     ;; also isn't useful to do so, so I'd be inclined to ignore it.
     (:vertex-index s)))
@@ -70,7 +70,5 @@
     (coll? o) (reduce u/deep-merge (map #(add-to-superstructure s %) o))
     (nil? o) o
     :else
-    (throw (Exception. (str "Don't know how to index " (or (type o) "nil")))))))
+    (throw (IllegalArgumentException. (str "Don't know how to index " (or (type o) "nil")))))))
 
-(:vertex-index (add-to-superstructure (:facets (s/decode-binary-stl "resources/isle_of_man.stl"))))
-(s/decode-binary-stl "resources/isle_of_man.stl")

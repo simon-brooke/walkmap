@@ -9,7 +9,7 @@
   (cond
     (and (:x o) (:y o) (:z o)) (keyword (str "vert{" (:x o) "|" (:y o) "|" (:z o) "}"))
     (and (:x o) (:y o)) (keyword (str "vert{" (:x o) "|" (:y o) "}"))
-    :else (throw (Exception. "Not a vertex."))))
+    :else (throw (IllegalArgumentException. "Not a vertex."))))
 
 (defn vertex?
   "True if `o` satisfies the conditions for a vertex. That is, essentially,
@@ -40,6 +40,19 @@
   ([x y z]
    (assoc (make-vertex x y) :z z)))
 
+(defn canonicalise-vertex
+  "If `o` is a map with numeric values for `:x`, `:y` and optionally `:z`,
+  upgrade it to something we will recognise as a vertex."
+  [o]
+  (if
+    (and
+      (map? o)
+      (number? (:x o))
+      (number? (:y o))
+      (or (nil? (:z o)) (number? (:z o))))
+    (assoc o :kind :vertex :id (vertex-key o))
+    (throw (IllegalArgumentException. "Not a vertex."))))
+
 (def ensure3d
   "Given a vertex `o`, if `o` has a `:z` value, just return `o`; otherwise
   return a vertex like `o` but having thie `dflt` value as the value of its
@@ -52,7 +65,7 @@
        (ensure3d o 0.0))
       ([o dflt]
        (cond
-         (not (vertex? o)) (throw (Exception. "Not a vertex!"))
+         (not (vertex? o)) (throw (IllegalArgumentException. "Not a vertex!"))
          (:z o) o
          :else (assoc o :z dflt))))))
 
@@ -63,4 +76,4 @@
       (if
         (vertex? o)
         (assoc o :z 0.0)
-        (throw (Exception. "Not a vertex!"))))))
+        (throw (IllegalArgumentException. "Not a vertex!"))))))

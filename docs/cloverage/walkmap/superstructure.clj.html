@@ -95,10 +95,10 @@
                 030&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;vi&nbsp;(:id&nbsp;v)&nbsp;(assoc&nbsp;current&nbsp;(:id&nbsp;o)&nbsp;(:id&nbsp;v))))
                 </span><br/>
 <span class="not-covered" title="0 out of 4 forms covered">
-                031&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(Exception.&nbsp;&quot;Not&nbsp;a&nbsp;vertex:&nbsp;&quot;&nbsp;v)))
+                031&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;&quot;Not&nbsp;a&nbsp;vertex:&nbsp;&quot;&nbsp;v)))
                 </span><br/>
 <span class="not-covered" title="0 out of 10 forms covered">
-                032&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(Exception.&nbsp;(subs&nbsp;(str&nbsp;&quot;No&nbsp;`:id`&nbsp;value:&nbsp;&quot;&nbsp;o)&nbsp;0&nbsp;80))))
+                032&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;(subs&nbsp;(str&nbsp;&quot;No&nbsp;`:id`&nbsp;value:&nbsp;&quot;&nbsp;o)&nbsp;0&nbsp;80))))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
                 033&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;it&nbsp;shouldn&#x27;t&nbsp;actually&nbsp;be&nbsp;an&nbsp;error&nbsp;to&nbsp;try&nbsp;to&nbsp;index&nbsp;a&nbsp;vertex,&nbsp;but&nbsp;it
@@ -221,7 +221,7 @@
                 072&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else
                 </span><br/>
 <span class="not-covered" title="0 out of 13 forms covered">
-                073&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(Exception.&nbsp;(str&nbsp;&quot;Don&#x27;t&nbsp;know&nbsp;how&nbsp;to&nbsp;index&nbsp;&quot;&nbsp;(or&nbsp;(type&nbsp;o)&nbsp;&quot;nil&quot;)))))))
+                073&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;(str&nbsp;&quot;Don&#x27;t&nbsp;know&nbsp;how&nbsp;to&nbsp;index&nbsp;&quot;&nbsp;(or&nbsp;(type&nbsp;o)&nbsp;&quot;nil&quot;)))))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
                 074&nbsp;&nbsp;

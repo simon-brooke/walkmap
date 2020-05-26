@@ -38,7 +38,7 @@
                 011&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and&nbsp;(:x&nbsp;o)&nbsp;(:y&nbsp;o))&nbsp;(keyword&nbsp;(str&nbsp;&quot;vert{&quot;&nbsp;(:x&nbsp;o)&nbsp;&quot;|&quot;&nbsp;(:y&nbsp;o)&nbsp;&quot;}&quot;))
                 </span><br/>
 <span class="not-covered" title="0 out of 3 forms covered">
-                012&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else&nbsp;(throw&nbsp;(Exception.&nbsp;&quot;Not&nbsp;a&nbsp;vertex.&quot;))))
+                012&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;&quot;Not&nbsp;a&nbsp;vertex.&quot;))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
                 013&nbsp;&nbsp;
@@ -131,76 +131,115 @@
                 042&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                043&nbsp;&nbsp;(def&nbsp;ensure3d
+                043&nbsp;&nbsp;(defn&nbsp;canonicalise-vertex
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                044&nbsp;&nbsp;&nbsp;&nbsp;&quot;Given&nbsp;a&nbsp;vertex&nbsp;`o`,&nbsp;if&nbsp;`o`&nbsp;has&nbsp;a&nbsp;`:z`&nbsp;value,&nbsp;just&nbsp;return&nbsp;`o`;&nbsp;otherwise
+                044&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;`o`&nbsp;is&nbsp;a&nbsp;map&nbsp;with&nbsp;numeric&nbsp;values&nbsp;for&nbsp;`:x`,&nbsp;`:y`&nbsp;and&nbsp;optionally&nbsp;`:z`,
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                045&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;a&nbsp;vertex&nbsp;like&nbsp;`o`&nbsp;but&nbsp;having&nbsp;thie&nbsp;`dflt`&nbsp;value&nbsp;as&nbsp;the&nbsp;value&nbsp;of&nbsp;its
+                045&nbsp;&nbsp;&nbsp;&nbsp;upgrade&nbsp;it&nbsp;to&nbsp;something&nbsp;we&nbsp;will&nbsp;recognise&nbsp;as&nbsp;a&nbsp;vertex.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                046&nbsp;&nbsp;&nbsp;&nbsp;`:z`&nbsp;key,&nbsp;or&nbsp;zero&nbsp;as&nbsp;the&nbsp;value&nbsp;of&nbsp;its&nbsp;`:z`&nbsp;key&nbsp;if&nbsp;`dflt`&nbsp;is&nbsp;not&nbsp;specified.
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                047&nbsp;&nbsp;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                048&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;`o`&nbsp;is&nbsp;not&nbsp;a&nbsp;vertex,&nbsp;throws&nbsp;an&nbsp;exception.&quot;
-                </span><br/>
-<span class="covered" title="2 out of 2 forms covered">
-                049&nbsp;&nbsp;&nbsp;&nbsp;(memoize
+                046&nbsp;&nbsp;&nbsp;&nbsp;[o]
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                050&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(fn
+                047&nbsp;&nbsp;&nbsp;&nbsp;(if
+                </span><br/>
+<span class="partial" title="13 out of 17 forms covered">
+                048&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                049&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map?&nbsp;o)
+                </span><br/>
+<span class="covered" title="5 out of 5 forms covered">
+                050&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(number?&nbsp;(:x&nbsp;o))
+                </span><br/>
+<span class="covered" title="5 out of 5 forms covered">
+                051&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(number?&nbsp;(:y&nbsp;o))
+                </span><br/>
+<span class="covered" title="9 out of 9 forms covered">
+                052&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or&nbsp;(nil?&nbsp;(:z&nbsp;o))&nbsp;(number?&nbsp;(:z&nbsp;o))))
+                </span><br/>
+<span class="covered" title="9 out of 9 forms covered">
+                053&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;o&nbsp;:kind&nbsp;:vertex&nbsp;:id&nbsp;(vertex-key&nbsp;o))
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                054&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;&quot;Not&nbsp;a&nbsp;vertex.&quot;))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                055&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                056&nbsp;&nbsp;(def&nbsp;ensure3d
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                051&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;([o]
+                057&nbsp;&nbsp;&nbsp;&nbsp;&quot;Given&nbsp;a&nbsp;vertex&nbsp;`o`,&nbsp;if&nbsp;`o`&nbsp;has&nbsp;a&nbsp;`:z`&nbsp;value,&nbsp;just&nbsp;return&nbsp;`o`;&nbsp;otherwise
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                058&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;a&nbsp;vertex&nbsp;like&nbsp;`o`&nbsp;but&nbsp;having&nbsp;thie&nbsp;`dflt`&nbsp;value&nbsp;as&nbsp;the&nbsp;value&nbsp;of&nbsp;its
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                059&nbsp;&nbsp;&nbsp;&nbsp;`:z`&nbsp;key,&nbsp;or&nbsp;zero&nbsp;as&nbsp;the&nbsp;value&nbsp;of&nbsp;its&nbsp;`:z`&nbsp;key&nbsp;if&nbsp;`dflt`&nbsp;is&nbsp;not&nbsp;specified.
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                060&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                061&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;`o`&nbsp;is&nbsp;not&nbsp;a&nbsp;vertex,&nbsp;throws&nbsp;an&nbsp;exception.&quot;
+                </span><br/>
+<span class="covered" title="2 out of 2 forms covered">
+                062&nbsp;&nbsp;&nbsp;&nbsp;(memoize
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                063&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(fn
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                064&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;([o]
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                052&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ensure3d&nbsp;o&nbsp;0.0))
+                065&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ensure3d&nbsp;o&nbsp;0.0))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                053&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;([o&nbsp;dflt]
+                066&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;([o&nbsp;dflt]
                 </span><br/>
 <span class="partial" title="2 out of 3 forms covered">
-                054&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cond
+                067&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cond
                 </span><br/>
 <span class="partial" title="5 out of 8 forms covered">
-                055&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(not&nbsp;(vertex?&nbsp;o))&nbsp;(throw&nbsp;(Exception.&nbsp;&quot;Not&nbsp;a&nbsp;vertex!&quot;))
+                068&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(not&nbsp;(vertex?&nbsp;o))&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;&quot;Not&nbsp;a&nbsp;vertex!&quot;))
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                056&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:z&nbsp;o)&nbsp;o
+                069&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:z&nbsp;o)&nbsp;o
                 </span><br/>
 <span class="not-covered" title="0 out of 5 forms covered">
-                057&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else&nbsp;(assoc&nbsp;o&nbsp;:z&nbsp;dflt))))))
+                070&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else&nbsp;(assoc&nbsp;o&nbsp;:z&nbsp;dflt))))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                058&nbsp;&nbsp;
+                071&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                059&nbsp;&nbsp;(def&nbsp;ensure2d
+                072&nbsp;&nbsp;(def&nbsp;ensure2d
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                060&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;`o`&nbsp;is&nbsp;a&nbsp;vertex,&nbsp;set&nbsp;its&nbsp;`:z`&nbsp;value&nbsp;to&nbsp;zero;&nbsp;else&nbsp;throw&nbsp;an&nbsp;exception.&quot;
+                073&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;`o`&nbsp;is&nbsp;a&nbsp;vertex,&nbsp;set&nbsp;its&nbsp;`:z`&nbsp;value&nbsp;to&nbsp;zero;&nbsp;else&nbsp;throw&nbsp;an&nbsp;exception.&quot;
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                061&nbsp;&nbsp;&nbsp;&nbsp;(memoize
+                074&nbsp;&nbsp;&nbsp;&nbsp;(memoize
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                062&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(fn&nbsp;[o]
+                075&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(fn&nbsp;[o]
                 </span><br/>
 <span class="not-covered" title="0 out of 1 forms covered">
-                063&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if
+                076&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if
                 </span><br/>
 <span class="not-covered" title="0 out of 3 forms covered">
-                064&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(vertex?&nbsp;o)
+                077&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(vertex?&nbsp;o)
                 </span><br/>
 <span class="not-covered" title="0 out of 5 forms covered">
-                065&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;o&nbsp;:z&nbsp;0.0)
+                078&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;o&nbsp;:z&nbsp;0.0)
                 </span><br/>
 <span class="not-covered" title="0 out of 3 forms covered">
-                066&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(Exception.&nbsp;&quot;Not&nbsp;a&nbsp;vertex!&quot;))))))
+                079&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;&quot;Not&nbsp;a&nbsp;vertex!&quot;))))))
                 </span><br/>
  </body>
 </html>

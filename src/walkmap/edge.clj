@@ -8,7 +8,7 @@
             [walkmap.vertex :refer [ensure3d vertex?]]))
 
 (defn edge?
-  "True if `o` satisfies the conditions for a path. A path shall be a map
+  "True if `o` satisfies the conditions for a edge. An edge shall be a map
   having the keys `:start` and `:end`, such that the values of each of those
   keys shall be a vertex."
   [o]
@@ -19,7 +19,10 @@
 
 (defn path->edges
   "if `o` is a path, a polygon, or a sequence of vertices, return a sequence of
-  edges representing that path, polygon or sequence."
+  edges representing that path, polygon or sequence.
+
+  Throws `IllegalArgumentException` if `o` is not a path, a polygon, or
+  sequence of vertices."
   [o]
   (cond
     (seq? o)
@@ -34,7 +37,10 @@
     (path? o)
     (path->edges (:nodes o))
     (polygon? o)
-    (path->edges (polygon->path o))))
+    (path->edges (polygon->path o))
+    :else
+    (throw (IllegalArgumentException.
+             "Not a path, polygon, or sequence of vertices!"))))
 
 (defn length
   "Return the length of the edge `e`."
