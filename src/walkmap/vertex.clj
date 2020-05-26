@@ -1,5 +1,8 @@
 (ns walkmap.vertex
-  "Essentially the specification for things we shall consider to be vertices.")
+  "Essentially the specification for things we shall consider to be vertices.
+
+  Note that there's no `distance` function here; to find the distance between
+  two vertices, create an edge from them and use `walkmap.edge/length`.")
 
 (defn vertex-key
   "Making sure we get the same key everytime we key a vertex with the same
@@ -29,7 +32,7 @@
     (or (nil? (:z o)) (number? (:z o)))
     (or (nil? (:kind o)) (= (:kind o) :vertex))))
 
-(defn make-vertex
+(defn vertex
   "Make a vertex with this `x`, `y` and (if provided) `z` values. Returns a map
   with those values, plus a unique `:id` value, and `:kind` set to `:vertex`.
   It's not necessary to use this function to create a vertex, but the `:id`
@@ -38,9 +41,9 @@
    (let [v {:x x :y y :kind :vertex}]
      (assoc v :id (vertex-key v))))
   ([x y z]
-   (assoc (make-vertex x y) :z z)))
+   (assoc (vertex x y) :z z)))
 
-(defn canonicalise-vertex
+(defn canonicalise
   "If `o` is a map with numeric values for `:x`, `:y` and optionally `:z`,
   upgrade it to something we will recognise as a vertex."
   [o]
@@ -51,7 +54,7 @@
       (number? (:y o))
       (or (nil? (:z o)) (number? (:z o))))
     (assoc o :kind :vertex :id (vertex-key o))
-    (throw (IllegalArgumentException. "Not a vertex."))))
+    (throw (IllegalArgumentException. "Not a proto-vertex: must have numeric `:x` and `:y`."))))
 
 (def ensure3d
   "Given a vertex `o`, if `o` has a `:z` value, just return `o`; otherwise

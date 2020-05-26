@@ -5,7 +5,7 @@
 (deftest tag-tests
   (testing "Tagging"
     (is (set? (:walkmap.tag/tags (tag {} :foo :bar :ban :froboz)))
-        "The value of `:walkmap.tag/tags should be a set.")
+        "The value of `:walkmap.tag/tags` should be a set.")
     (is (= (count (:walkmap.tag/tags (tag {} :foo :bar :ban :froboz))) 4)
         "All the tags passed should be added.")
     (is (:walkmap.tag/tags (tag {} :foo :bar :ban :froboz) :ban)
@@ -17,12 +17,18 @@
         "`tagged?` should return an explicit `true`, not any other value.")
     (is (tagged? (tag {} :foo :bar :ban :froboz) :bar :froboz)
         "We should be able to test for the presence of more than one tag")
+    (is (false? (tagged? {} :foo))
+        "A missing `:walkmap.tag/tags` should not cause an error.")
     (is (= (tagged? (tag {} :foo :bar :ban :froboz) :bar :cornflakes) false)
         "If any of the queried tags is missing, false should be returned")
     (is (tagged? (tag (tag {} :foo) :bar) :foo :bar)
         "We should be able to add tags to an already tagged object")
     (is (false? (tagged? (tag {} :foo :bar) :cornflakes))
         "`tagged?` should return an explicit `false` if a queried tag is missing.")
+    (is (= (tags (tag {} :foo)) #{:foo})
+        "`tags` should return the tags on the object, if any.")
+    (is (every? nil? (map #(tags %) [1 :one "one" [:one] {:one 1}]))
+        "Things which don't have tags don't have tags, and that's not a problem.")
     (let [object (tag {} :foo :bar :ban :froboz)]
       (is (= (untag object :cornflakes) object)
           "Removing a missing tag should have no effect.")

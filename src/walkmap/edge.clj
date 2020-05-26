@@ -3,9 +3,16 @@
   An edge is a line segment having just a start and an end, with no intervening
   nodes."
   (:require [clojure.math.numeric-tower :as m]
-            [walkmap.path :refer [path? polygon->path]]
             [walkmap.polygon :refer [polygon?]]
             [walkmap.vertex :refer [ensure3d vertex?]]))
+
+(defn edge
+  "Return an edge between vertices `v1` and `v2`."
+  [v1 v2]
+  (if
+    (and (vertex? v1) (vertex? v2))
+    {:kind :edge :id (keyword (gensym "edge")) :start v1 :end v2}
+    (throw (IllegalArgumentException. "Must be vertices."))))
 
 (defn edge?
   "True if `o` satisfies the conditions for a edge. An edge shall be a map
@@ -16,31 +23,6 @@
     (map? o)
     (vertex? (:start o))
     (vertex? (:end o))))
-
-(defn path->edges
-  "if `o` is a path, a polygon, or a sequence of vertices, return a sequence of
-  edges representing that path, polygon or sequence.
-
-  Throws `IllegalArgumentException` if `o` is not a path, a polygon, or
-  sequence of vertices."
-  [o]
-  (cond
-    (seq? o)
-    (when
-      (and
-        (vertex? (first o))
-        (vertex? (first (rest o))))
-      (cons
-        {:start (first o)
-         :end (first (rest o))}
-        (path->edges (rest o))))
-    (path? o)
-    (path->edges (:nodes o))
-    (polygon? o)
-    (path->edges (polygon->path o))
-    :else
-    (throw (IllegalArgumentException.
-             "Not a path, polygon, or sequence of vertices!"))))
 
 (defn length
   "Return the length of the edge `e`."

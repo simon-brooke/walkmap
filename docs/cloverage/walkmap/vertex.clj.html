@@ -8,238 +8,247 @@
                 001&nbsp;&nbsp;(ns&nbsp;walkmap.vertex
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                002&nbsp;&nbsp;&nbsp;&nbsp;&quot;Essentially&nbsp;the&nbsp;specification&nbsp;for&nbsp;things&nbsp;we&nbsp;shall&nbsp;consider&nbsp;to&nbsp;be&nbsp;vertices.&quot;)
+                002&nbsp;&nbsp;&nbsp;&nbsp;&quot;Essentially&nbsp;the&nbsp;specification&nbsp;for&nbsp;things&nbsp;we&nbsp;shall&nbsp;consider&nbsp;to&nbsp;be&nbsp;vertices.
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
                 003&nbsp;&nbsp;
                 </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                004&nbsp;&nbsp;&nbsp;&nbsp;Note&nbsp;that&nbsp;there&#x27;s&nbsp;no&nbsp;`distance`&nbsp;function&nbsp;here;&nbsp;to&nbsp;find&nbsp;the&nbsp;distance&nbsp;between
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                005&nbsp;&nbsp;&nbsp;&nbsp;two&nbsp;vertices,&nbsp;create&nbsp;an&nbsp;edge&nbsp;from&nbsp;them&nbsp;and&nbsp;use&nbsp;`walkmap.edge&#x2F;length`.&quot;)
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                006&nbsp;&nbsp;
+                </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                004&nbsp;&nbsp;(defn&nbsp;vertex-key
+                007&nbsp;&nbsp;(defn&nbsp;vertex-key
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                005&nbsp;&nbsp;&nbsp;&nbsp;&quot;Making&nbsp;sure&nbsp;we&nbsp;get&nbsp;the&nbsp;same&nbsp;key&nbsp;everytime&nbsp;we&nbsp;key&nbsp;a&nbsp;vertex&nbsp;with&nbsp;the&nbsp;same
+                008&nbsp;&nbsp;&nbsp;&nbsp;&quot;Making&nbsp;sure&nbsp;we&nbsp;get&nbsp;the&nbsp;same&nbsp;key&nbsp;everytime&nbsp;we&nbsp;key&nbsp;a&nbsp;vertex&nbsp;with&nbsp;the&nbsp;same
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                006&nbsp;&nbsp;&nbsp;&nbsp;coordinates.&nbsp;`o`&nbsp;must&nbsp;have&nbsp;numeric&nbsp;values&nbsp;for&nbsp;`:x`,&nbsp;`:y`,&nbsp;and&nbsp;optionally
+                009&nbsp;&nbsp;&nbsp;&nbsp;coordinates.&nbsp;`o`&nbsp;must&nbsp;have&nbsp;numeric&nbsp;values&nbsp;for&nbsp;`:x`,&nbsp;`:y`,&nbsp;and&nbsp;optionally
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                007&nbsp;&nbsp;&nbsp;&nbsp;`:z`.&quot;
+                010&nbsp;&nbsp;&nbsp;&nbsp;`:z`.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                008&nbsp;&nbsp;&nbsp;&nbsp;[o]
+                011&nbsp;&nbsp;&nbsp;&nbsp;[o]
                 </span><br/>
 <span class="partial" title="2 out of 3 forms covered">
-                009&nbsp;&nbsp;&nbsp;&nbsp;(cond
+                012&nbsp;&nbsp;&nbsp;&nbsp;(cond
                 </span><br/>
 <span class="partial" title="32 out of 34 forms covered">
-                010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and&nbsp;(:x&nbsp;o)&nbsp;(:y&nbsp;o)&nbsp;(:z&nbsp;o))&nbsp;(keyword&nbsp;(str&nbsp;&quot;vert{&quot;&nbsp;(:x&nbsp;o)&nbsp;&quot;|&quot;&nbsp;(:y&nbsp;o)&nbsp;&quot;|&quot;&nbsp;(:z&nbsp;o)&nbsp;&quot;}&quot;))
+                013&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and&nbsp;(:x&nbsp;o)&nbsp;(:y&nbsp;o)&nbsp;(:z&nbsp;o))&nbsp;(keyword&nbsp;(str&nbsp;&quot;vert{&quot;&nbsp;(:x&nbsp;o)&nbsp;&quot;|&quot;&nbsp;(:y&nbsp;o)&nbsp;&quot;|&quot;&nbsp;(:z&nbsp;o)&nbsp;&quot;}&quot;))
                 </span><br/>
 <span class="partial" title="22 out of 23 forms covered">
-                011&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and&nbsp;(:x&nbsp;o)&nbsp;(:y&nbsp;o))&nbsp;(keyword&nbsp;(str&nbsp;&quot;vert{&quot;&nbsp;(:x&nbsp;o)&nbsp;&quot;|&quot;&nbsp;(:y&nbsp;o)&nbsp;&quot;}&quot;))
+                014&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and&nbsp;(:x&nbsp;o)&nbsp;(:y&nbsp;o))&nbsp;(keyword&nbsp;(str&nbsp;&quot;vert{&quot;&nbsp;(:x&nbsp;o)&nbsp;&quot;|&quot;&nbsp;(:y&nbsp;o)&nbsp;&quot;}&quot;))
                 </span><br/>
 <span class="not-covered" title="0 out of 3 forms covered">
-                012&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;&quot;Not&nbsp;a&nbsp;vertex.&quot;))))
+                015&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;&quot;Not&nbsp;a&nbsp;vertex.&quot;))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                013&nbsp;&nbsp;
+                016&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                014&nbsp;&nbsp;(defn&nbsp;vertex?
+                017&nbsp;&nbsp;(defn&nbsp;vertex?
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                015&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;`o`&nbsp;satisfies&nbsp;the&nbsp;conditions&nbsp;for&nbsp;a&nbsp;vertex.&nbsp;That&nbsp;is,&nbsp;essentially,
+                018&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;`o`&nbsp;satisfies&nbsp;the&nbsp;conditions&nbsp;for&nbsp;a&nbsp;vertex.&nbsp;That&nbsp;is,&nbsp;essentially,
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                016&nbsp;&nbsp;&nbsp;&nbsp;that&nbsp;it&nbsp;must&nbsp;rerpresent&nbsp;a&nbsp;two-&nbsp;or&nbsp;three-&nbsp;dimensional&nbsp;vector.&nbsp;A&nbsp;vertex&nbsp;is
+                019&nbsp;&nbsp;&nbsp;&nbsp;that&nbsp;it&nbsp;must&nbsp;rerpresent&nbsp;a&nbsp;two-&nbsp;or&nbsp;three-&nbsp;dimensional&nbsp;vector.&nbsp;A&nbsp;vertex&nbsp;is
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                017&nbsp;&nbsp;&nbsp;&nbsp;shall&nbsp;be&nbsp;a&nbsp;map&nbsp;having&nbsp;at&nbsp;least&nbsp;the&nbsp;keys&nbsp;`:x`&nbsp;and&nbsp;`:y`,&nbsp;where&nbsp;the&nbsp;value&nbsp;of
+                020&nbsp;&nbsp;&nbsp;&nbsp;shall&nbsp;be&nbsp;a&nbsp;map&nbsp;having&nbsp;at&nbsp;least&nbsp;the&nbsp;keys&nbsp;`:x`&nbsp;and&nbsp;`:y`,&nbsp;where&nbsp;the&nbsp;value&nbsp;of
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                018&nbsp;&nbsp;&nbsp;&nbsp;those&nbsp;keys&nbsp;is&nbsp;a&nbsp;number.&nbsp;If&nbsp;the&nbsp;key&nbsp;`:z`&nbsp;is&nbsp;also&nbsp;present,&nbsp;its&nbsp;value&nbsp;must&nbsp;also
+                021&nbsp;&nbsp;&nbsp;&nbsp;those&nbsp;keys&nbsp;is&nbsp;a&nbsp;number.&nbsp;If&nbsp;the&nbsp;key&nbsp;`:z`&nbsp;is&nbsp;also&nbsp;present,&nbsp;its&nbsp;value&nbsp;must&nbsp;also
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                019&nbsp;&nbsp;&nbsp;&nbsp;be&nbsp;a&nbsp;number.
+                022&nbsp;&nbsp;&nbsp;&nbsp;be&nbsp;a&nbsp;number.
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                020&nbsp;&nbsp;
+                023&nbsp;&nbsp;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                021&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;name&nbsp;&nbsp;`vector?`&nbsp;was&nbsp;not&nbsp;used&nbsp;as&nbsp;that&nbsp;would&nbsp;clash&nbsp;with&nbsp;a&nbsp;function&nbsp;of&nbsp;that
+                024&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;name&nbsp;&nbsp;`vector?`&nbsp;was&nbsp;not&nbsp;used&nbsp;as&nbsp;that&nbsp;would&nbsp;clash&nbsp;with&nbsp;a&nbsp;function&nbsp;of&nbsp;that
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                022&nbsp;&nbsp;&nbsp;&nbsp;name&nbsp;in&nbsp;`clojure.core`&nbsp;whose&nbsp;semantics&nbsp;are&nbsp;entirely&nbsp;different.&quot;
+                025&nbsp;&nbsp;&nbsp;&nbsp;name&nbsp;in&nbsp;`clojure.core`&nbsp;whose&nbsp;semantics&nbsp;are&nbsp;entirely&nbsp;different.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                023&nbsp;&nbsp;&nbsp;&nbsp;[o]
+                026&nbsp;&nbsp;&nbsp;&nbsp;[o]
                 </span><br/>
 <span class="partial" title="23 out of 26 forms covered">
-                024&nbsp;&nbsp;&nbsp;&nbsp;(and
+                027&nbsp;&nbsp;&nbsp;&nbsp;(and
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                025&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map?&nbsp;o)
+                028&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map?&nbsp;o)
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                026&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:id&nbsp;o)
+                029&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:id&nbsp;o)
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                027&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(number?&nbsp;(:x&nbsp;o))
+                030&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(number?&nbsp;(:x&nbsp;o))
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                028&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(number?&nbsp;(:y&nbsp;o))
+                031&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(number?&nbsp;(:y&nbsp;o))
                 </span><br/>
-<span class="partial" title="13 out of 14 forms covered">
-                029&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or&nbsp;(nil?&nbsp;(:z&nbsp;o))&nbsp;(number?&nbsp;(:z&nbsp;o)))
+<span class="covered" title="14 out of 14 forms covered">
+                032&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or&nbsp;(nil?&nbsp;(:z&nbsp;o))&nbsp;(number?&nbsp;(:z&nbsp;o)))
                 </span><br/>
 <span class="covered" title="9 out of 9 forms covered">
-                030&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or&nbsp;(nil?&nbsp;(:kind&nbsp;o))&nbsp;(=&nbsp;(:kind&nbsp;o)&nbsp;:vertex))))
+                033&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or&nbsp;(nil?&nbsp;(:kind&nbsp;o))&nbsp;(=&nbsp;(:kind&nbsp;o)&nbsp;:vertex))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                031&nbsp;&nbsp;
+                034&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                032&nbsp;&nbsp;(defn&nbsp;make-vertex
+                035&nbsp;&nbsp;(defn&nbsp;vertex
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                033&nbsp;&nbsp;&nbsp;&nbsp;&quot;Make&nbsp;a&nbsp;vertex&nbsp;with&nbsp;this&nbsp;`x`,&nbsp;`y`&nbsp;and&nbsp;(if&nbsp;provided)&nbsp;`z`&nbsp;values.&nbsp;Returns&nbsp;a&nbsp;map
+                036&nbsp;&nbsp;&nbsp;&nbsp;&quot;Make&nbsp;a&nbsp;vertex&nbsp;with&nbsp;this&nbsp;`x`,&nbsp;`y`&nbsp;and&nbsp;(if&nbsp;provided)&nbsp;`z`&nbsp;values.&nbsp;Returns&nbsp;a&nbsp;map
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                034&nbsp;&nbsp;&nbsp;&nbsp;with&nbsp;those&nbsp;values,&nbsp;plus&nbsp;a&nbsp;unique&nbsp;`:id`&nbsp;value,&nbsp;and&nbsp;`:kind`&nbsp;set&nbsp;to&nbsp;`:vertex`.
+                037&nbsp;&nbsp;&nbsp;&nbsp;with&nbsp;those&nbsp;values,&nbsp;plus&nbsp;a&nbsp;unique&nbsp;`:id`&nbsp;value,&nbsp;and&nbsp;`:kind`&nbsp;set&nbsp;to&nbsp;`:vertex`.
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                035&nbsp;&nbsp;&nbsp;&nbsp;It&#x27;s&nbsp;not&nbsp;necessary&nbsp;to&nbsp;use&nbsp;this&nbsp;function&nbsp;to&nbsp;create&nbsp;a&nbsp;vertex,&nbsp;but&nbsp;the&nbsp;`:id`
+                038&nbsp;&nbsp;&nbsp;&nbsp;It&#x27;s&nbsp;not&nbsp;necessary&nbsp;to&nbsp;use&nbsp;this&nbsp;function&nbsp;to&nbsp;create&nbsp;a&nbsp;vertex,&nbsp;but&nbsp;the&nbsp;`:id`
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                036&nbsp;&nbsp;&nbsp;&nbsp;must&nbsp;be&nbsp;present&nbsp;and&nbsp;must&nbsp;be&nbsp;unique.&quot;
+                039&nbsp;&nbsp;&nbsp;&nbsp;must&nbsp;be&nbsp;present&nbsp;and&nbsp;must&nbsp;be&nbsp;unique.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                037&nbsp;&nbsp;&nbsp;&nbsp;([x&nbsp;y]
+                040&nbsp;&nbsp;&nbsp;&nbsp;([x&nbsp;y]
                 </span><br/>
 <span class="covered" title="8 out of 8 forms covered">
-                038&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[v&nbsp;{:x&nbsp;x&nbsp;:y&nbsp;y&nbsp;:kind&nbsp;:vertex}]
+                041&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[v&nbsp;{:x&nbsp;x&nbsp;:y&nbsp;y&nbsp;:kind&nbsp;:vertex}]
                 </span><br/>
 <span class="covered" title="7 out of 7 forms covered">
-                039&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;v&nbsp;:id&nbsp;(vertex-key&nbsp;v))))
+                042&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;v&nbsp;:id&nbsp;(vertex-key&nbsp;v))))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                040&nbsp;&nbsp;&nbsp;&nbsp;([x&nbsp;y&nbsp;z]
+                043&nbsp;&nbsp;&nbsp;&nbsp;([x&nbsp;y&nbsp;z]
                 </span><br/>
 <span class="covered" title="8 out of 8 forms covered">
-                041&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;(make-vertex&nbsp;x&nbsp;y)&nbsp;:z&nbsp;z)))
+                044&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;(vertex&nbsp;x&nbsp;y)&nbsp;:z&nbsp;z)))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                042&nbsp;&nbsp;
+                045&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                043&nbsp;&nbsp;(defn&nbsp;canonicalise-vertex
+                046&nbsp;&nbsp;(defn&nbsp;canonicalise
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                044&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;`o`&nbsp;is&nbsp;a&nbsp;map&nbsp;with&nbsp;numeric&nbsp;values&nbsp;for&nbsp;`:x`,&nbsp;`:y`&nbsp;and&nbsp;optionally&nbsp;`:z`,
+                047&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;`o`&nbsp;is&nbsp;a&nbsp;map&nbsp;with&nbsp;numeric&nbsp;values&nbsp;for&nbsp;`:x`,&nbsp;`:y`&nbsp;and&nbsp;optionally&nbsp;`:z`,
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                045&nbsp;&nbsp;&nbsp;&nbsp;upgrade&nbsp;it&nbsp;to&nbsp;something&nbsp;we&nbsp;will&nbsp;recognise&nbsp;as&nbsp;a&nbsp;vertex.&quot;
+                048&nbsp;&nbsp;&nbsp;&nbsp;upgrade&nbsp;it&nbsp;to&nbsp;something&nbsp;we&nbsp;will&nbsp;recognise&nbsp;as&nbsp;a&nbsp;vertex.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                046&nbsp;&nbsp;&nbsp;&nbsp;[o]
+                049&nbsp;&nbsp;&nbsp;&nbsp;[o]
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                047&nbsp;&nbsp;&nbsp;&nbsp;(if
+                050&nbsp;&nbsp;&nbsp;&nbsp;(if
                 </span><br/>
 <span class="partial" title="13 out of 17 forms covered">
-                048&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and
+                051&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                049&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map?&nbsp;o)
+                052&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map?&nbsp;o)
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                050&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(number?&nbsp;(:x&nbsp;o))
+                053&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(number?&nbsp;(:x&nbsp;o))
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                051&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(number?&nbsp;(:y&nbsp;o))
+                054&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(number?&nbsp;(:y&nbsp;o))
                 </span><br/>
 <span class="covered" title="9 out of 9 forms covered">
-                052&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or&nbsp;(nil?&nbsp;(:z&nbsp;o))&nbsp;(number?&nbsp;(:z&nbsp;o))))
+                055&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or&nbsp;(nil?&nbsp;(:z&nbsp;o))&nbsp;(number?&nbsp;(:z&nbsp;o))))
                 </span><br/>
 <span class="covered" title="9 out of 9 forms covered">
-                053&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;o&nbsp;:kind&nbsp;:vertex&nbsp;:id&nbsp;(vertex-key&nbsp;o))
+                056&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;o&nbsp;:kind&nbsp;:vertex&nbsp;:id&nbsp;(vertex-key&nbsp;o))
                 </span><br/>
 <span class="not-covered" title="0 out of 3 forms covered">
-                054&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;&quot;Not&nbsp;a&nbsp;vertex.&quot;))))
+                057&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;&quot;Not&nbsp;a&nbsp;proto-vertex:&nbsp;must&nbsp;have&nbsp;numeric&nbsp;`:x`&nbsp;and&nbsp;`:y`.&quot;))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                055&nbsp;&nbsp;
+                058&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                056&nbsp;&nbsp;(def&nbsp;ensure3d
+                059&nbsp;&nbsp;(def&nbsp;ensure3d
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                057&nbsp;&nbsp;&nbsp;&nbsp;&quot;Given&nbsp;a&nbsp;vertex&nbsp;`o`,&nbsp;if&nbsp;`o`&nbsp;has&nbsp;a&nbsp;`:z`&nbsp;value,&nbsp;just&nbsp;return&nbsp;`o`;&nbsp;otherwise
+                060&nbsp;&nbsp;&nbsp;&nbsp;&quot;Given&nbsp;a&nbsp;vertex&nbsp;`o`,&nbsp;if&nbsp;`o`&nbsp;has&nbsp;a&nbsp;`:z`&nbsp;value,&nbsp;just&nbsp;return&nbsp;`o`;&nbsp;otherwise
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                058&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;a&nbsp;vertex&nbsp;like&nbsp;`o`&nbsp;but&nbsp;having&nbsp;thie&nbsp;`dflt`&nbsp;value&nbsp;as&nbsp;the&nbsp;value&nbsp;of&nbsp;its
+                061&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;a&nbsp;vertex&nbsp;like&nbsp;`o`&nbsp;but&nbsp;having&nbsp;thie&nbsp;`dflt`&nbsp;value&nbsp;as&nbsp;the&nbsp;value&nbsp;of&nbsp;its
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                059&nbsp;&nbsp;&nbsp;&nbsp;`:z`&nbsp;key,&nbsp;or&nbsp;zero&nbsp;as&nbsp;the&nbsp;value&nbsp;of&nbsp;its&nbsp;`:z`&nbsp;key&nbsp;if&nbsp;`dflt`&nbsp;is&nbsp;not&nbsp;specified.
+                062&nbsp;&nbsp;&nbsp;&nbsp;`:z`&nbsp;key,&nbsp;or&nbsp;zero&nbsp;as&nbsp;the&nbsp;value&nbsp;of&nbsp;its&nbsp;`:z`&nbsp;key&nbsp;if&nbsp;`dflt`&nbsp;is&nbsp;not&nbsp;specified.
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                060&nbsp;&nbsp;
+                063&nbsp;&nbsp;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                061&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;`o`&nbsp;is&nbsp;not&nbsp;a&nbsp;vertex,&nbsp;throws&nbsp;an&nbsp;exception.&quot;
+                064&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;`o`&nbsp;is&nbsp;not&nbsp;a&nbsp;vertex,&nbsp;throws&nbsp;an&nbsp;exception.&quot;
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                062&nbsp;&nbsp;&nbsp;&nbsp;(memoize
+                065&nbsp;&nbsp;&nbsp;&nbsp;(memoize
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                063&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(fn
+                066&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(fn
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                064&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;([o]
+                067&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;([o]
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                065&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ensure3d&nbsp;o&nbsp;0.0))
+                068&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ensure3d&nbsp;o&nbsp;0.0))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                066&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;([o&nbsp;dflt]
+                069&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;([o&nbsp;dflt]
                 </span><br/>
 <span class="partial" title="2 out of 3 forms covered">
-                067&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cond
+                070&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cond
                 </span><br/>
 <span class="partial" title="5 out of 8 forms covered">
-                068&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(not&nbsp;(vertex?&nbsp;o))&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;&quot;Not&nbsp;a&nbsp;vertex!&quot;))
+                071&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(not&nbsp;(vertex?&nbsp;o))&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;&quot;Not&nbsp;a&nbsp;vertex!&quot;))
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                069&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:z&nbsp;o)&nbsp;o
+                072&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:z&nbsp;o)&nbsp;o
                 </span><br/>
 <span class="not-covered" title="0 out of 5 forms covered">
-                070&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else&nbsp;(assoc&nbsp;o&nbsp;:z&nbsp;dflt))))))
+                073&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else&nbsp;(assoc&nbsp;o&nbsp;:z&nbsp;dflt))))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                071&nbsp;&nbsp;
+                074&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                072&nbsp;&nbsp;(def&nbsp;ensure2d
+                075&nbsp;&nbsp;(def&nbsp;ensure2d
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                073&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;`o`&nbsp;is&nbsp;a&nbsp;vertex,&nbsp;set&nbsp;its&nbsp;`:z`&nbsp;value&nbsp;to&nbsp;zero;&nbsp;else&nbsp;throw&nbsp;an&nbsp;exception.&quot;
+                076&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;`o`&nbsp;is&nbsp;a&nbsp;vertex,&nbsp;set&nbsp;its&nbsp;`:z`&nbsp;value&nbsp;to&nbsp;zero;&nbsp;else&nbsp;throw&nbsp;an&nbsp;exception.&quot;
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                074&nbsp;&nbsp;&nbsp;&nbsp;(memoize
+                077&nbsp;&nbsp;&nbsp;&nbsp;(memoize
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                075&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(fn&nbsp;[o]
+                078&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(fn&nbsp;[o]
                 </span><br/>
 <span class="not-covered" title="0 out of 1 forms covered">
-                076&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if
+                079&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if
                 </span><br/>
 <span class="not-covered" title="0 out of 3 forms covered">
-                077&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(vertex?&nbsp;o)
+                080&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(vertex?&nbsp;o)
                 </span><br/>
 <span class="not-covered" title="0 out of 5 forms covered">
-                078&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;o&nbsp;:z&nbsp;0.0)
+                081&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;o&nbsp;:z&nbsp;0.0)
                 </span><br/>
 <span class="not-covered" title="0 out of 3 forms covered">
-                079&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;&quot;Not&nbsp;a&nbsp;vertex!&quot;))))))
+                082&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;&quot;Not&nbsp;a&nbsp;vertex!&quot;))))))
                 </span><br/>
  </body>
 </html>

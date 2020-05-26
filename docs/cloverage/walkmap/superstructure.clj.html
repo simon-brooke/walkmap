@@ -70,19 +70,19 @@
 <span class="not-tracked" title="0 out of 0 forms covered">
                 022&nbsp;&nbsp;&nbsp;&nbsp;[s&nbsp;o&nbsp;v]
                 </span><br/>
-<span class="covered" title="6 out of 6 forms covered">
+<span class="not-covered" title="0 out of 6 forms covered">
                 023&nbsp;&nbsp;&nbsp;&nbsp;(if-not&nbsp;(v&#x2F;vertex?&nbsp;o)
                 </span><br/>
-<span class="covered" title="4 out of 4 forms covered">
+<span class="not-covered" title="0 out of 4 forms covered">
                 024&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(:id&nbsp;o)
                 </span><br/>
-<span class="covered" title="4 out of 4 forms covered">
+<span class="not-covered" title="0 out of 4 forms covered">
                 025&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(v&#x2F;vertex?&nbsp;v)
                 </span><br/>
-<span class="partial" title="8 out of 9 forms covered">
+<span class="not-covered" title="0 out of 9 forms covered">
                 026&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[vi&nbsp;(or&nbsp;(:vertex-index&nbsp;s)&nbsp;{})
                 </span><br/>
-<span class="partial" title="9 out of 10 forms covered">
+<span class="not-covered" title="0 out of 10 forms covered">
                 027&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;current&nbsp;(or&nbsp;(vi&nbsp;(:id&nbsp;v))&nbsp;{})]
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
@@ -91,7 +91,7 @@
 <span class="not-tracked" title="0 out of 0 forms covered">
                 029&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;stage&nbsp;we&nbsp;need&nbsp;to&nbsp;build&nbsp;a&nbsp;map.
                 </span><br/>
-<span class="covered" title="15 out of 15 forms covered">
+<span class="not-covered" title="0 out of 15 forms covered">
                 030&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;vi&nbsp;(:id&nbsp;v)&nbsp;(assoc&nbsp;current&nbsp;(:id&nbsp;o)&nbsp;(:id&nbsp;v))))
                 </span><br/>
 <span class="not-covered" title="0 out of 4 forms covered">
@@ -136,28 +136,28 @@
 <span class="not-tracked" title="0 out of 0 forms covered">
                 044&nbsp;&nbsp;&nbsp;&nbsp;[s&nbsp;o]
                 </span><br/>
-<span class="covered" title="3 out of 3 forms covered">
+<span class="not-covered" title="0 out of 3 forms covered">
                 045&nbsp;&nbsp;&nbsp;&nbsp;(assoc
                 </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
+<span class="not-covered" title="0 out of 1 forms covered">
                 046&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
                 047&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:vertex-index
                 </span><br/>
-<span class="covered" title="2 out of 2 forms covered">
+<span class="not-covered" title="0 out of 2 forms covered">
                 048&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(reduce
                 </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
+<span class="not-covered" title="0 out of 1 forms covered">
                 049&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;u&#x2F;deep-merge
                 </span><br/>
-<span class="covered" title="3 out of 3 forms covered">
+<span class="not-covered" title="0 out of 3 forms covered">
                 050&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
                 </span><br/>
-<span class="covered" title="5 out of 5 forms covered">
+<span class="not-covered" title="0 out of 5 forms covered">
                 051&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(index-vertex&nbsp;s&nbsp;o&nbsp;%)
                 </span><br/>
-<span class="covered" title="3 out of 3 forms covered">
+<span class="not-covered" title="0 out of 3 forms covered">
                 052&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(u&#x2F;vertices&nbsp;o)))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
@@ -196,22 +196,22 @@
 <span class="not-tracked" title="0 out of 0 forms covered">
                 064&nbsp;&nbsp;&nbsp;&nbsp;([o]
                 </span><br/>
-<span class="covered" title="4 out of 4 forms covered">
+<span class="not-covered" title="0 out of 4 forms covered">
                 065&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(add-to-superstructure&nbsp;{}&nbsp;o))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
                 066&nbsp;&nbsp;&nbsp;&nbsp;([s&nbsp;o]
                 </span><br/>
-<span class="partial" title="2 out of 4 forms covered">
+<span class="not-covered" title="0 out of 4 forms covered">
                 067&nbsp;&nbsp;&nbsp;&nbsp;(cond
                 </span><br/>
-<span class="partial" title="9 out of 18 forms covered">
+<span class="not-covered" title="0 out of 18 forms covered">
                 068&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map?&nbsp;o)&nbsp;(let&nbsp;[o&#x27;&nbsp;(if&nbsp;(:id&nbsp;o)&nbsp;o&nbsp;(assoc&nbsp;o&nbsp;:id&nbsp;(keyword&nbsp;(gensym&nbsp;&quot;obj&quot;))))]
                 </span><br/>
-<span class="covered" title="10 out of 10 forms covered">
+<span class="not-covered" title="0 out of 10 forms covered">
                 069&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(index-vertices&nbsp;(assoc&nbsp;s&nbsp;(:id&nbsp;o&#x27;)&nbsp;o&#x27;)&nbsp;o&#x27;))
                 </span><br/>
-<span class="covered" title="14 out of 14 forms covered">
+<span class="not-covered" title="0 out of 14 forms covered">
                 070&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(coll?&nbsp;o)&nbsp;(reduce&nbsp;u&#x2F;deep-merge&nbsp;(map&nbsp;#(add-to-superstructure&nbsp;s&nbsp;%)&nbsp;o))
                 </span><br/>
 <span class="not-covered" title="0 out of 4 forms covered">
@@ -225,12 +225,6 @@
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
                 074&nbsp;&nbsp;
-                </span><br/>
-<span class="covered" title="9 out of 9 forms covered">
-                075&nbsp;&nbsp;(:vertex-index&nbsp;(add-to-superstructure&nbsp;(:facets&nbsp;(s&#x2F;decode-binary-stl&nbsp;&quot;resources&#x2F;isle_of_man.stl&quot;))))
-                </span><br/>
-<span class="covered" title="3 out of 3 forms covered">
-                076&nbsp;&nbsp;(s&#x2F;decode-binary-stl&nbsp;&quot;resources&#x2F;isle_of_man.stl&quot;)
                 </span><br/>
  </body>
 </html>

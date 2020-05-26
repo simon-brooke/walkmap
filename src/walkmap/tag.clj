@@ -5,7 +5,11 @@
   (:require [clojure.set :refer [difference union]]))
 
 (defn tagged?
-  "True if this `object` is tagged with each of these `tags`."
+  "True if this `object` is tagged with each of these `tags`. It is an error
+  (and an exception will be thrown) if
+
+  1. `object` is not a map;
+  2. any of `tags` is not a keyword."
   [object & tags]
   (if
     (map? object)
@@ -14,8 +18,7 @@
       (let [ot (::tags object)]
         (and
           (set? ot)
-          (every? ot tags)
-          true))
+          (every? ot tags)))
       (throw (IllegalArgumentException.
                (str "Must be keyword(s): " (map type tags)))))
     (throw (IllegalArgumentException.
@@ -23,7 +26,11 @@
 
 (defn tag
   "Return an object like this `object` but with these `tags` added to its tags,
-  if they are not already present."
+  if they are not already present.It is an error (and an exception will be
+  thrown) if
+
+  1. `object` is not a map;
+  2. any of `tags` is not a keyword."
   [object & tags]
   (if
     (map? object)
@@ -35,9 +42,17 @@
     (throw (IllegalArgumentException.
              (str "Must be a map: " (type object))))))
 
+(defmacro tags
+  "Return the tags of this object, if any."
+  [object]
+  `(::tags ~object))
+
 (defn untag
   "Return an object like this `object` but with these `tags` removed from its
-  tags, if present."
+  tags, if present. It is an error (and an exception will be thrown) if
+
+  1. `object` is not a map;
+  2. any of `tags` is not a keyword."
   [object & tags]
   (if
     (map? object)

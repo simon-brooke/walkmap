@@ -6,7 +6,7 @@
             [org.clojars.smee.binary.core :as b]
             [taoensso.timbre :as l :refer [info error spy]]
             [walkmap.polygon :refer [polygon?]]
-            [walkmap.vertex :refer [canonicalise-vertex]])
+            [walkmap.vertex :as v])
   (:import org.clojars.smee.binary.core.BinaryIO
            java.io.DataInput))
 
@@ -67,7 +67,7 @@
                     :kind :polygon
                     :vertices (canonicalise (:vertices o)))
     ;; if it has a value for :x it's a vertex, but it doesn't yet conform to `vertex?`
-    (:x o) (canonicalise-vertex o)
+    (:x o) (v/canonicalise o)
     ;; shouldn't happen
     :else o))
 

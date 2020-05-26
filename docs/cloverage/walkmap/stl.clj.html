@@ -29,7 +29,7 @@
                 008&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.polygon&nbsp;:refer&nbsp;[polygon?]]
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                009&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.vertex&nbsp;:refer&nbsp;[canonicalise-vertex]])
+                009&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.vertex&nbsp;:as&nbsp;v])
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
                 010&nbsp;&nbsp;&nbsp;&nbsp;(:import&nbsp;org.clojars.smee.binary.core.BinaryIO
@@ -212,7 +212,7 @@
                 069&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;if&nbsp;it&nbsp;has&nbsp;a&nbsp;value&nbsp;for&nbsp;:x&nbsp;it&#x27;s&nbsp;a&nbsp;vertex,&nbsp;but&nbsp;it&nbsp;doesn&#x27;t&nbsp;yet&nbsp;conform&nbsp;to&nbsp;`vertex?`
                 </span><br/>
 <span class="covered" title="6 out of 6 forms covered">
-                070&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:x&nbsp;o)&nbsp;(canonicalise-vertex&nbsp;o)
+                070&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:x&nbsp;o)&nbsp;(v&#x2F;canonicalise&nbsp;o)
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
                 071&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;shouldn&#x27;t&nbsp;happen
@@ -244,10 +244,10 @@
 <span class="not-tracked" title="0 out of 0 forms covered">
                 080&nbsp;&nbsp;&nbsp;&nbsp;[filename]
                 </span><br/>
-<span class="covered" title="4 out of 4 forms covered">
+<span class="not-covered" title="0 out of 4 forms covered">
                 081&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[in&nbsp;(io&#x2F;input-stream&nbsp;filename)]
                 </span><br/>
-<span class="covered" title="6 out of 6 forms covered">
+<span class="not-covered" title="0 out of 6 forms covered">
                 082&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(canonicalise&nbsp;(b&#x2F;decode&nbsp;binary-stl&nbsp;in))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
