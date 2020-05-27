@@ -8,91 +8,235 @@
                 001&nbsp;&nbsp;(ns&nbsp;walkmap.path
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                002&nbsp;&nbsp;&nbsp;&nbsp;&quot;Essentially&nbsp;the&nbsp;specification&nbsp;for&nbsp;things&nbsp;we&nbsp;shall&nbsp;consider&nbsp;to&nbsp;be&nbsp;path.&quot;
+                002&nbsp;&nbsp;&nbsp;&nbsp;&quot;Essentially&nbsp;the&nbsp;specification&nbsp;for&nbsp;things&nbsp;we&nbsp;shall&nbsp;consider&nbsp;to&nbsp;be&nbsp;path.
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                003&nbsp;&nbsp;&nbsp;&nbsp;(:require&nbsp;[walkmap.polygon&nbsp;:refer&nbsp;[polygon?]]
+                003&nbsp;&nbsp;&nbsp;&nbsp;**Note&nbsp;that**&nbsp;for&nbsp;these&nbsp;purposes&nbsp;`path`&nbsp;means&nbsp;any&nbsp;continuous&nbsp;linear
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                004&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.vertex&nbsp;:refer&nbsp;[vertex?]]))
+                004&nbsp;&nbsp;&nbsp;&nbsp;feature,&nbsp;where&nbsp;such&nbsp;features&nbsp;specifically&nbsp;include&nbsp;watercourses.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                005&nbsp;&nbsp;&nbsp;&nbsp;(:require&nbsp;[walkmap.edge&nbsp;:as&nbsp;e]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                006&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.polygon&nbsp;:refer&nbsp;[polygon?]]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.vertex&nbsp;:refer&nbsp;[vertex?]]))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                005&nbsp;&nbsp;
+                008&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                006&nbsp;&nbsp;(defn&nbsp;path?
+                009&nbsp;&nbsp;(defn&nbsp;path?
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                007&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;`o`&nbsp;satisfies&nbsp;the&nbsp;conditions&nbsp;for&nbsp;a&nbsp;path.&nbsp;A&nbsp;path&nbsp;shall&nbsp;be&nbsp;a&nbsp;map
+                010&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;`o`&nbsp;satisfies&nbsp;the&nbsp;conditions&nbsp;for&nbsp;a&nbsp;path.&nbsp;A&nbsp;path&nbsp;shall&nbsp;be&nbsp;a&nbsp;map
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                008&nbsp;&nbsp;&nbsp;&nbsp;having&nbsp;the&nbsp;key&nbsp;`:nodes`,&nbsp;whose&nbsp;value&nbsp;shall&nbsp;be&nbsp;a&nbsp;sequence&nbsp;of&nbsp;vertices&nbsp;as
+                011&nbsp;&nbsp;&nbsp;&nbsp;having&nbsp;the&nbsp;key&nbsp;`:vertices`,&nbsp;whose&nbsp;value&nbsp;shall&nbsp;be&nbsp;a&nbsp;sequence&nbsp;of&nbsp;vertices&nbsp;as
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                009&nbsp;&nbsp;&nbsp;&nbsp;defined&nbsp;in&nbsp;`walkmap.vertex`.&quot;
+                012&nbsp;&nbsp;&nbsp;&nbsp;defined&nbsp;in&nbsp;`walkmap.vertex`.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                010&nbsp;&nbsp;&nbsp;&nbsp;[o]
+                013&nbsp;&nbsp;&nbsp;&nbsp;[o]
                 </span><br/>
 <span class="not-covered" title="0 out of 1 forms covered">
-                011&nbsp;&nbsp;&nbsp;&nbsp;(let
+                014&nbsp;&nbsp;&nbsp;&nbsp;(let
                 </span><br/>
 <span class="not-covered" title="0 out of 3 forms covered">
-                012&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[v&nbsp;(:nodes&nbsp;o)]
+                015&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[v&nbsp;(:vertices&nbsp;o)]
                 </span><br/>
-<span class="not-covered" title="0 out of 9 forms covered">
-                013&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and
+<span class="not-covered" title="0 out of 22 forms covered">
+                016&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and
                 </span><br/>
 <span class="not-covered" title="0 out of 3 forms covered">
-                014&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(seq?&nbsp;v)
+                017&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(seq?&nbsp;v)
                 </span><br/>
 <span class="not-covered" title="0 out of 6 forms covered">
-                015&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&gt;&nbsp;(count&nbsp;v)&nbsp;2)
+                018&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&gt;&nbsp;(count&nbsp;v)&nbsp;2)
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(every?&nbsp;vertex?&nbsp;v)
                 </span><br/>
 <span class="not-covered" title="0 out of 3 forms covered">
-                016&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(every?&nbsp;vertex?&nbsp;v))))
+                020&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:id&nbsp;o)
+                </span><br/>
+<span class="not-covered" title="0 out of 9 forms covered">
+                021&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or&nbsp;(nil?&nbsp;(:kind&nbsp;o))&nbsp;(=&nbsp;(:kind&nbsp;o)&nbsp;:path)))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                017&nbsp;&nbsp;
+                022&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                018&nbsp;&nbsp;(defn&nbsp;polygon-&gt;path
+                023&nbsp;&nbsp;(defn&nbsp;path
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                019&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;`o`&nbsp;is&nbsp;a&nbsp;polygon,&nbsp;return&nbsp;an&nbsp;equivalent&nbsp;path.&nbsp;What&#x27;s&nbsp;different&nbsp;about
+                024&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;path&nbsp;constructed&nbsp;from&nbsp;these&nbsp;`vertices`.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                020&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;path&nbsp;is&nbsp;that&nbsp;in&nbsp;polygons&nbsp;there&nbsp;is&nbsp;an&nbsp;implicit&nbsp;edge&nbsp;between&nbsp;the&nbsp;first
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                021&nbsp;&nbsp;&nbsp;&nbsp;vertex&nbsp;and&nbsp;the&nbsp;last.&nbsp;In&nbsp;paths,&nbsp;there&nbsp;isn&#x27;t,&nbsp;so&nbsp;we&nbsp;need&nbsp;to&nbsp;add&nbsp;that
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                022&nbsp;&nbsp;&nbsp;&nbsp;edge&nbsp;explicitly.
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                023&nbsp;&nbsp;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                024&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;`o`&nbsp;is&nbsp;not&nbsp;a&nbsp;polygon,&nbsp;will&nbsp;throw&nbsp;an&nbsp;exception.&quot;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                025&nbsp;&nbsp;&nbsp;&nbsp;[o]
+                025&nbsp;&nbsp;&nbsp;&nbsp;[&amp;&nbsp;vertices]
                 </span><br/>
 <span class="not-covered" title="0 out of 1 forms covered">
                 026&nbsp;&nbsp;&nbsp;&nbsp;(if
                 </span><br/>
-<span class="not-covered" title="0 out of 3 forms covered">
-                027&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(polygon?&nbsp;o)
+<span class="not-covered" title="0 out of 4 forms covered">
+                027&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(every?&nbsp;vertex?&nbsp;vertices)
                 </span><br/>
-<span class="not-covered" title="0 out of 19 forms covered">
-                028&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;(dissoc&nbsp;o&nbsp;:vertices)&nbsp;:nodes&nbsp;(concat&nbsp;(:vertices&nbsp;o)&nbsp;(list&nbsp;(first&nbsp;(:vertices&nbsp;o)))))
+<span class="not-covered" title="0 out of 11 forms covered">
+                028&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:vertices&nbsp;vertices&nbsp;:id&nbsp;(keyword&nbsp;(gensym&nbsp;&quot;path&quot;))&nbsp;:kind&nbsp;:path}
                 </span><br/>
 <span class="not-covered" title="0 out of 3 forms covered">
-                029&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(Exception.&nbsp;&quot;Not&nbsp;a&nbsp;polygon!&quot;))))
+                029&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;&quot;Each&nbsp;item&nbsp;on&nbsp;path&nbsp;must&nbsp;be&nbsp;a&nbsp;vertex.&quot;))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
                 030&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                031&nbsp;&nbsp;(defn&nbsp;polygon-&gt;path
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                032&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;`o`&nbsp;is&nbsp;a&nbsp;polygon,&nbsp;return&nbsp;an&nbsp;equivalent&nbsp;path.&nbsp;What&#x27;s&nbsp;different&nbsp;about
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                033&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;path&nbsp;is&nbsp;that&nbsp;in&nbsp;polygons&nbsp;there&nbsp;is&nbsp;an&nbsp;implicit&nbsp;edge&nbsp;between&nbsp;the&nbsp;first
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                034&nbsp;&nbsp;&nbsp;&nbsp;vertex&nbsp;and&nbsp;the&nbsp;last.&nbsp;In&nbsp;paths,&nbsp;there&nbsp;isn&#x27;t,&nbsp;so&nbsp;we&nbsp;need&nbsp;to&nbsp;add&nbsp;that
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                035&nbsp;&nbsp;&nbsp;&nbsp;edge&nbsp;explicitly.
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                036&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                037&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;`o`&nbsp;is&nbsp;not&nbsp;a&nbsp;polygon,&nbsp;will&nbsp;throw&nbsp;an&nbsp;exception.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                038&nbsp;&nbsp;&nbsp;&nbsp;[o]
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                039&nbsp;&nbsp;&nbsp;&nbsp;(if
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                040&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(polygon?&nbsp;o)
+                </span><br/>
+<span class="not-covered" title="0 out of 21 forms covered">
+                041&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;(dissoc&nbsp;o&nbsp;:vertices)&nbsp;:kind&nbsp;:path&nbsp;:vertices&nbsp;(concat&nbsp;(:vertices&nbsp;o)&nbsp;(list&nbsp;(first&nbsp;(:vertices&nbsp;o)))))
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                042&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;&quot;Not&nbsp;a&nbsp;polygon!&quot;))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                043&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                044&nbsp;&nbsp;(defn&nbsp;path-&gt;edges
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                045&nbsp;&nbsp;&nbsp;&nbsp;&quot;if&nbsp;`o`&nbsp;is&nbsp;a&nbsp;path,&nbsp;a&nbsp;polygon,&nbsp;or&nbsp;a&nbsp;sequence&nbsp;of&nbsp;vertices,&nbsp;return&nbsp;a&nbsp;sequence&nbsp;of
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                046&nbsp;&nbsp;&nbsp;&nbsp;edges&nbsp;representing&nbsp;that&nbsp;path,&nbsp;polygon&nbsp;or&nbsp;sequence.
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                047&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                048&nbsp;&nbsp;&nbsp;&nbsp;Throws&nbsp;`IllegalArgumentException`&nbsp;if&nbsp;`o`&nbsp;is&nbsp;not&nbsp;a&nbsp;path,&nbsp;a&nbsp;polygon,&nbsp;or
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                049&nbsp;&nbsp;&nbsp;&nbsp;sequence&nbsp;of&nbsp;vertices.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                050&nbsp;&nbsp;&nbsp;&nbsp;[o]
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                051&nbsp;&nbsp;&nbsp;&nbsp;(cond
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                052&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(seq?&nbsp;o)
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                053&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(when
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                054&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                055&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(vertex?&nbsp;(first&nbsp;o))
+                </span><br/>
+<span class="not-covered" title="0 out of 6 forms covered">
+                056&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(vertex?&nbsp;(first&nbsp;(rest&nbsp;o))))
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                057&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cons
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                058&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;TODO:&nbsp;think&nbsp;about:&nbsp;when&nbsp;constructing&nbsp;an&nbsp;edge&nbsp;from&nbsp;a&nbsp;path,&nbsp;should&nbsp;the
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                059&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;constructed&nbsp;edge&nbsp;be&nbsp;tagged&nbsp;with&nbsp;the&nbsp;tags&nbsp;of&nbsp;the&nbsp;path?
+                </span><br/>
+<span class="not-covered" title="0 out of 8 forms covered">
+                060&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(e&#x2F;edge&nbsp;(first&nbsp;o)&nbsp;(rest&nbsp;o))
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                061&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(path-&gt;edges&nbsp;(rest&nbsp;o))))
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                062&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(path?&nbsp;o)
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                063&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(path-&gt;edges&nbsp;(:vertices&nbsp;o))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                064&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                065&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                066&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;Not&nbsp;a&nbsp;path&nbsp;or&nbsp;sequence&nbsp;of&nbsp;vertices!&quot;))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                067&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                068&nbsp;&nbsp;(defn&nbsp;length
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                069&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;the&nbsp;length&nbsp;of&nbsp;this&nbsp;path,&nbsp;in&nbsp;metres.&nbsp;**Note&nbsp;that**
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                070&nbsp;&nbsp;&nbsp;&nbsp;1.&nbsp;This&nbsp;is&nbsp;not&nbsp;the&nbsp;same&nbsp;as&nbsp;the&nbsp;distance&nbsp;from&nbsp;the&nbsp;start&nbsp;to&nbsp;the&nbsp;end&nbsp;of&nbsp;the
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                071&nbsp;&nbsp;&nbsp;&nbsp;path,&nbsp;which,&nbsp;except&nbsp;for&nbsp;absolutely&nbsp;straight&nbsp;paths,&nbsp;will&nbsp;be&nbsp;shorter;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                072&nbsp;&nbsp;&nbsp;&nbsp;2.&nbsp;It&nbsp;is&nbsp;not&nbsp;even&nbsp;quite&nbsp;the&nbsp;same&nbsp;as&nbsp;the&nbsp;length&nbsp;of&nbsp;the&nbsp;path&nbsp;*as&nbsp;rendered*,
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                073&nbsp;&nbsp;&nbsp;&nbsp;since&nbsp;paths&nbsp;will&nbsp;generally&nbsp;be&nbsp;rendered&nbsp;as&nbsp;spline&nbsp;curves.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                074&nbsp;&nbsp;&nbsp;&nbsp;[path]
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                075&nbsp;&nbsp;&nbsp;&nbsp;(if
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                076&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(path?&nbsp;path)
+                </span><br/>
+<span class="not-covered" title="0 out of 9 forms covered">
+                077&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(reduce&nbsp;+&nbsp;(map&nbsp;e&#x2F;length&nbsp;(path-&gt;edges&nbsp;path)))
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                078&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;&quot;Not&nbsp;a&nbsp;path!&quot;))))
                 </span><br/>
  </body>
 </html>

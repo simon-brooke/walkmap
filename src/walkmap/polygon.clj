@@ -10,8 +10,10 @@
   (let
     [v (:vertices o)]
     (and
-      (seq? v)
+      (coll? v)
       (> (count v) 2)
-      (every? vertex? v))))
+      (every? vertex? v)
+      (:id o)
+      (or (nil? (:kind o)) (= (:kind o) :polygon)))))
 
 

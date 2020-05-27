@@ -11,70 +11,49 @@
                 002&nbsp;&nbsp;&nbsp;&nbsp;(:require&nbsp;[clojure.math.combinatorics&nbsp;:as&nbsp;combo]
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                003&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[clojure.math.numeric-tower&nbsp;:as&nbsp;m]
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                004&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.edge&nbsp;:as&nbsp;e]
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                005&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.path&nbsp;:refer&nbsp;[path?&nbsp;polygon-&gt;path]]
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                006&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.polygon&nbsp;:refer&nbsp;[polygon?]]
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.vertex&nbsp;:as&nbsp;v]))
+                003&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[clojure.math.numeric-tower&nbsp;:as&nbsp;m]))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                008&nbsp;&nbsp;
+                004&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                009&nbsp;&nbsp;(defn&nbsp;on?
+                005&nbsp;&nbsp;(defn&nbsp;=ish
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                010&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;the&nbsp;vertex&nbsp;`v`&nbsp;is&nbsp;on&nbsp;the&nbsp;edge&nbsp;`e`.&quot;
+                006&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;numbers&nbsp;`n1`,&nbsp;`n2`&nbsp;are&nbsp;roughly&nbsp;equal;&nbsp;that&nbsp;is&nbsp;to&nbsp;say,&nbsp;equal&nbsp;to
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                011&nbsp;&nbsp;&nbsp;&nbsp;[e&nbsp;v]
+                007&nbsp;&nbsp;&nbsp;&nbsp;within&nbsp;`tolerance`&nbsp;(defaults&nbsp;to&nbsp;one&nbsp;part&nbsp;in&nbsp;a&nbsp;million).&quot;
                 </span><br/>
-<span class="not-covered" title="0 out of 6 forms covered">
-                012&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[p&nbsp;(v&#x2F;ensure3d&nbsp;(:start&nbsp;e))
+<span class="not-tracked" title="0 out of 0 forms covered">
+                008&nbsp;&nbsp;&nbsp;&nbsp;([n1&nbsp;n2]
                 </span><br/>
-<span class="not-covered" title="0 out of 3 forms covered">
-                013&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;q&nbsp;(v&#x2F;ensure3d&nbsp;v)
+<span class="covered" title="11 out of 11 forms covered">
+                009&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(and&nbsp;(number?&nbsp;n1)&nbsp;(number?&nbsp;n2))
                 </span><br/>
-<span class="not-covered" title="0 out of 5 forms covered">
-                014&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r&nbsp;(v&#x2F;ensure3d&nbsp;(:end&nbsp;e))]
+<span class="covered" title="7 out of 7 forms covered">
+                010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[m&nbsp;(m&#x2F;abs&nbsp;(min&nbsp;n1&nbsp;n2))
                 </span><br/>
-<span class="not-covered" title="0 out of 25 forms covered">
-                015&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and
+<span class="covered" title="9 out of 9 forms covered">
+                011&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t&nbsp;(if&nbsp;(zero?&nbsp;m)&nbsp;0.000001&nbsp;(*&nbsp;0.000001&nbsp;m))]
                 </span><br/>
-<span class="not-covered" title="0 out of 5 forms covered">
-                016&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(e&#x2F;collinear?&nbsp;p&nbsp;q&nbsp;r)
+<span class="covered" title="5 out of 5 forms covered">
+                012&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=ish&nbsp;n1&nbsp;n2&nbsp;t))
                 </span><br/>
-<span class="not-covered" title="0 out of 13 forms covered">
-                017&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;=&nbsp;(:x&nbsp;q)&nbsp;(max&nbsp;(:x&nbsp;p)&nbsp;(:x&nbsp;r)))
+<span class="covered" title="4 out of 4 forms covered">
+                013&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;n1&nbsp;n2)))
                 </span><br/>
-<span class="not-covered" title="0 out of 13 forms covered">
-                018&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&gt;=&nbsp;(:x&nbsp;q)&nbsp;(min&nbsp;(:x&nbsp;p)&nbsp;(:x&nbsp;r)))
+<span class="not-tracked" title="0 out of 0 forms covered">
+                014&nbsp;&nbsp;&nbsp;&nbsp;([n1&nbsp;n2&nbsp;tolerance]
                 </span><br/>
-<span class="not-covered" title="0 out of 13 forms covered">
-                019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;=&nbsp;(:y&nbsp;q)&nbsp;(max&nbsp;(:y&nbsp;p)&nbsp;(:y&nbsp;r)))
+<span class="covered" title="11 out of 11 forms covered">
+                015&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(and&nbsp;(number?&nbsp;n1)&nbsp;(number?&nbsp;n2))
                 </span><br/>
-<span class="not-covered" title="0 out of 13 forms covered">
-                020&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&gt;=&nbsp;(:y&nbsp;q)&nbsp;(min&nbsp;(:y&nbsp;p)&nbsp;(:y&nbsp;r)))
+<span class="covered" title="9 out of 9 forms covered">
+                016&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;&nbsp;(m&#x2F;abs&nbsp;(-&nbsp;n1&nbsp;n2))&nbsp;tolerance)
                 </span><br/>
-<span class="not-covered" title="0 out of 13 forms covered">
-                021&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;=&nbsp;(:z&nbsp;q)&nbsp;(max&nbsp;(:z&nbsp;p)&nbsp;(:z&nbsp;r)))
-                </span><br/>
-<span class="not-covered" title="0 out of 12 forms covered">
-                022&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&gt;=&nbsp;(:z&nbsp;q)&nbsp;(min&nbsp;(:z&nbsp;p)&nbsp;(:z&nbsp;r))))))
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                023&nbsp;&nbsp;
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                024&nbsp;&nbsp;
+<span class="covered" title="4 out of 4 forms covered">
+                017&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;n1&nbsp;n2))))
                 </span><br/>
  </body>
 </html>

@@ -8,10 +8,10 @@
                 001&nbsp;&nbsp;(ns&nbsp;walkmap.core
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                002&nbsp;&nbsp;&nbsp;&nbsp;&quot;At&nbsp;this&nbsp;stage,&nbsp;primarily&nbsp;utility&nbsp;functions&nbsp;dealing&nbsp;with&nbsp;stereolithography
+                002&nbsp;&nbsp;&nbsp;&nbsp;&quot;This&nbsp;namespace&nbsp;mostly&nbsp;gets&nbsp;used&nbsp;as&nbsp;a&nbsp;scratchpad&nbsp;for&nbsp;ideas&nbsp;which&nbsp;haven&#x27;t&nbsp;yet
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                003&nbsp;&nbsp;&nbsp;&nbsp;(STL)&nbsp;files.&nbsp;Not&nbsp;a&nbsp;stable&nbsp;API&nbsp;yet!&quot;
+                003&nbsp;&nbsp;&nbsp;&nbsp;solidified.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
                 004&nbsp;&nbsp;&nbsp;&nbsp;(:require&nbsp;[clojure.java.io&nbsp;:as&nbsp;io&nbsp;:refer&nbsp;[file&nbsp;output-stream&nbsp;input-stream]]
@@ -26,115 +26,10 @@
                 007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[me.raynes.fs&nbsp;:as&nbsp;fs]
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                008&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[taoensso.timbre&nbsp;:as&nbsp;l&nbsp;:refer&nbsp;[info&nbsp;error&nbsp;spy]]
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                009&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.stl&nbsp;:refer&nbsp;[decode-binary-stl]]
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.svg&nbsp;:refer&nbsp;[stl-&gt;svg]]))
+                008&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[taoensso.timbre&nbsp;:as&nbsp;l&nbsp;:refer&nbsp;[info&nbsp;error&nbsp;spy]]))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                011&nbsp;&nbsp;
-                </span><br/>
-<span class="covered" title="2 out of 2 forms covered">
-                012&nbsp;&nbsp;(def&nbsp;^:dynamic&nbsp;*sea-level*
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                013&nbsp;&nbsp;&nbsp;&nbsp;&quot;The&nbsp;sea&nbsp;level&nbsp;on&nbsp;heightmaps&nbsp;we&#x27;re&nbsp;currently&nbsp;handling.&nbsp;If&nbsp;characters&nbsp;are&nbsp;to
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                014&nbsp;&nbsp;&nbsp;&nbsp;be&nbsp;able&nbsp;to&nbsp;swin&nbsp;in&nbsp;the&nbsp;sea,&nbsp;we&nbsp;must&nbsp;model&nbsp;the&nbsp;sea&nbsp;bottom,&nbsp;so&nbsp;we&nbsp;need
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                015&nbsp;&nbsp;&nbsp;&nbsp;heightmaps&nbsp;which&nbsp;cover&nbsp;at&nbsp;least&nbsp;the&nbsp;continental&nbsp;shelf.&nbsp;However,&nbsp;the&nbsp;sea
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                016&nbsp;&nbsp;&nbsp;&nbsp;bottom&nbsp;is&nbsp;not&nbsp;walkable&nbsp;territory&nbsp;and&nbsp;can&nbsp;be&nbsp;culled&nbsp;from&nbsp;walkmaps.
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                017&nbsp;&nbsp;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                018&nbsp;&nbsp;&nbsp;&nbsp;**Note**&nbsp;must&nbsp;be&nbsp;a&nbsp;floating&nbsp;point&nbsp;number.&nbsp;`(=&nbsp;0&nbsp;0.0)`&nbsp;returns&nbsp;`false`!&quot;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                019&nbsp;&nbsp;&nbsp;&nbsp;0.0)
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                020&nbsp;&nbsp;
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                021&nbsp;&nbsp;(defn&nbsp;ocean?
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                022&nbsp;&nbsp;&nbsp;&nbsp;&quot;Of&nbsp;a&nbsp;`facet`,&nbsp;is&nbsp;the&nbsp;altitude&nbsp;of&nbsp;every&nbsp;vertice&nbsp;equal&nbsp;to&nbsp;`*sea-level*`?&quot;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                023&nbsp;&nbsp;&nbsp;&nbsp;[facet]
-                </span><br/>
-<span class="not-covered" title="0 out of 3 forms covered">
-                024&nbsp;&nbsp;&nbsp;&nbsp;(every?
-                </span><br/>
-<span class="not-covered" title="0 out of 4 forms covered">
-                025&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(=&nbsp;%&nbsp;*sea-level*)
-                </span><br/>
-<span class="not-covered" title="0 out of 6 forms covered">
-                026&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map&nbsp;:z&nbsp;(:vertices&nbsp;facet))))
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                027&nbsp;&nbsp;
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                028&nbsp;&nbsp;(defn&nbsp;cull-ocean-facets
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                029&nbsp;&nbsp;&nbsp;&nbsp;&quot;Ye&nbsp;cannae&nbsp;walk&nbsp;on&nbsp;water.&nbsp;Remove&nbsp;all&nbsp;facets&nbsp;from&nbsp;this&nbsp;`stl`&nbsp;structure&nbsp;which
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                030&nbsp;&nbsp;&nbsp;&nbsp;are&nbsp;at&nbsp;sea&nbsp;level.&quot;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                031&nbsp;&nbsp;&nbsp;&nbsp;[stl]
-                </span><br/>
-<span class="not-covered" title="0 out of 10 forms covered">
-                032&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;stl&nbsp;:facets&nbsp;(remove&nbsp;ocean?&nbsp;(:facets&nbsp;stl))))
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                033&nbsp;&nbsp;
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                034&nbsp;&nbsp;(defn&nbsp;binary-stl-file-&gt;svg
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                035&nbsp;&nbsp;&nbsp;&nbsp;&quot;Given&nbsp;only&nbsp;an&nbsp;`in-filename`,&nbsp;parse&nbsp;the&nbsp;indicated&nbsp;file,&nbsp;expected&nbsp;to&nbsp;be
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                036&nbsp;&nbsp;&nbsp;&nbsp;binary&nbsp;STL,&nbsp;and&nbsp;return&nbsp;an&nbsp;equivalent&nbsp;SVG&nbsp;structure.&nbsp;Given&nbsp;both&nbsp;`in-filename`
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                037&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;`out-filename`,&nbsp;as&nbsp;side-effect&nbsp;write&nbsp;the&nbsp;SVG&nbsp;to&nbsp;the&nbsp;indicated&nbsp;output&nbsp;file.&quot;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                038&nbsp;&nbsp;&nbsp;&nbsp;([in-filename]
-                </span><br/>
-<span class="not-covered" title="0 out of 7 forms covered">
-                039&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(stl-&gt;svg&nbsp;(cull-ocean-facets&nbsp;(decode-binary-stl&nbsp;in-filename))))
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                040&nbsp;&nbsp;&nbsp;&nbsp;([in-filename&nbsp;out-filename]
-                </span><br/>
-<span class="not-covered" title="0 out of 4 forms covered">
-                041&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[s&nbsp;(binary-stl-file-&gt;svg&nbsp;in-filename)]
-                </span><br/>
-<span class="not-covered" title="0 out of 8 forms covered">
-                042&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(spit&nbsp;out-filename&nbsp;(html&nbsp;s))
-                </span><br/>
-<span class="not-covered" title="0 out of 1 forms covered">
-                043&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s)))
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                044&nbsp;&nbsp;
+                009&nbsp;&nbsp;
                 </span><br/>
  </body>
 </html>

@@ -5,7 +5,10 @@
             [me.raynes.fs :as fs]
             [org.clojars.smee.binary.core :as b]
             [taoensso.timbre :as l :refer [info error spy]]
-            [walkmap.polygon :refer [polygon?]])
+            [walkmap.edge :as e]
+            [walkmap.polygon :refer [polygon?]]
+            [walkmap.tag :refer [tag]]
+            [walkmap.vertex :as v])
   (:import org.clojars.smee.binary.core.BinaryIO
            java.io.DataInput))
 
@@ -26,6 +29,7 @@
      (every? polygon? (:facets o))
      (if (:header o) (string? (:header o)) true)
      (if (:count o) (integer? (:count o)) true)
+     (or (nil? (:kind o)) (= (:kind o) :stl))
      (if verify-count? (= (:count o) (count (:facets o))) true))))
 
 (def vect
@@ -49,15 +53,76 @@
    :count :uint-le
    :facets (b/repeated facet)))
 
+(defn centre
+  "Return a canonicalised `facet` (i.e. a triangular polygon) with an added
+  key `:centre` whose value represents the centre of this facet in 3
+  dimensions. This only works for triangles, so is here not in
+  `walkmap.polygon`. It is an error (although no exception is currently
+  thrown) if the object past is not a triangular polygon."
+  [facet]
+  (let [vs (:vertices facet)
+        v1 (first vs)
+        opposite (e/edge (nth vs 1) (nth vs 2))
+        oc (e/centre opposite)]
+    (assoc
+      facet
+      :centre
+      (v/vertex
+        (+ (:x v1) (* (- (:x oc) (:x v1)) 2/3))
+        (+ (:y v1) (* (- (:y oc) (:y v1)) 2/3))
+        (+ (:z v1) (* (- (:z oc) (:z v1)) 2/3))))))
+
+(defn canonicalise
+  "Objects read in from STL won't have all the keys/values we need them to have.
+  `o` may be a map (representing a facet or a vertex), or a sequence of such maps;
+  if it isn't recognised it is at present just returned unchanged. `map-kind`, if
+  passed, must be a keyword indicating the value represented by the `z` axis
+  (defaults to `:height`). It is an error, and an exception will be thrown, if
+  `map-kind` is not a keyword."
+  ([o] (canonicalise o :height))
+  ([o map-kind]
+   (when-not
+     (keyword? map-kind)
+     (throw (IllegalArgumentException.
+              (subs (str "Must be a keyword: " (or map-kind "nil")) 0 80))))
+   (cond
+     (and (coll? o) (not (map? o))) (map #(canonicalise % map-kind) o)
+     ;; if it has :facets it's an STL structure, but it doesn't yet conform to `stl?`
+     (:facets o) (assoc o
+                   :kind :stl
+                   :id (or (:id o) (keyword (gensym "stl")))
+                   :facets (canonicalise (:facets o) map-kind))
+     ;; if it has :vertices it's a polygon, but it doesn't yet conform to `polygon?`
+     (:vertices o) (centre
+                     (tag
+                       (assoc o
+                         :id (or (:id o) (keyword (gensym "poly")))
+                         :kind :polygon
+                         :vertices (canonicalise (:vertices o) map-kind))
+                       :facet map-kind))
+     ;; if it has a value for :x it's a vertex, but it doesn't yet conform to `vertex?`
+     (:x o) (v/canonicalise o)
+     ;; shouldn't happen
+     :else o)))
+
 (defn decode-binary-stl
   "Parse a binary STL file from this `filename` and return an STL structure
-  representing its contents.
+  representing its contents. `map-kind`, if passed, must be a keyword
+  indicating the value represented by the `z` axis (defaults to `:height`).
+  It is an error, and an exception will be thrown, if `map-kind` is not a
+  keyword.
 
   **NOTE** that we've no way of verifying that the input file is binary STL
   data, if it is not this will run but will return garbage."
-  [filename]
-  (let [in (io/input-stream filename)]
-    (b/decode binary-stl in)))
+  ([filename]
+   (decode-binary-stl filename :height))
+  ([filename map-kind]
+   (when-not
+     (keyword? map-kind)
+     (throw (IllegalArgumentException.
+              (subs (str "Must be a keyword: " (or map-kind "nil")) 0 80))))
+   (let [in (io/input-stream filename)]
+     (canonicalise (b/decode binary-stl in) map-kind))))
 
 (defn- vect->str [prefix v]
   (str prefix " " (:x v) " " (:y v) " " (:z v) "\n"))

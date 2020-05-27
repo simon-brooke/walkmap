@@ -1,0 +1,263 @@
+<html>
+ <head>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" href="../coverage.css"/>  <title> walkmap/superstructure.clj </title>
+ </head>
+ <body>
+<span class="covered" title="1 out of 1 forms covered">
+                001&nbsp;&nbsp;(ns&nbsp;walkmap.superstructure
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                002&nbsp;&nbsp;&nbsp;&nbsp;&quot;single&nbsp;indexing&nbsp;structure&nbsp;for&nbsp;walkmap&nbsp;objects&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                003&nbsp;&nbsp;&nbsp;&nbsp;(:require&nbsp;[walkmap.path&nbsp;:as&nbsp;p]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                004&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.polygon&nbsp;:as&nbsp;q]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                005&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.stl&nbsp;:as&nbsp;s]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                006&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.utils&nbsp;:as&nbsp;u]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.vertex&nbsp;:as&nbsp;v]))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                008&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                009&nbsp;&nbsp;;;&nbsp;TODO:&nbsp;Think&nbsp;about&nbsp;reification&#x2F;dereification.&nbsp;How&nbsp;can&nbsp;we&nbsp;cull&nbsp;a&nbsp;polygon,&nbsp;if
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                010&nbsp;&nbsp;;;&nbsp;some&nbsp;vertices&nbsp;still&nbsp;index&nbsp;it?&nbsp;I&nbsp;*think*&nbsp;that&nbsp;what&#x27;s&nbsp;needed&nbsp;is&nbsp;that&nbsp;when
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                011&nbsp;&nbsp;;;&nbsp;we&nbsp;store&nbsp;something&nbsp;in&nbsp;the&nbsp;superstructure,&nbsp;we&nbsp;replace&nbsp;all&nbsp;its&nbsp;vertices&nbsp;(and
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                012&nbsp;&nbsp;;;&nbsp;other&nbsp;dependent&nbsp;structures,&nbsp;if&nbsp;any&nbsp;with&nbsp;their&nbsp;ids&nbsp;-&nbsp;as&nbsp;well&nbsp;as,&nbsp;obviously,
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                013&nbsp;&nbsp;;;&nbsp;adding&#x2F;merging&nbsp;those&nbsp;vertices&#x2F;dependent&nbsp;structures&nbsp;into&nbsp;the&nbsp;superstructure
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                014&nbsp;&nbsp;;;&nbsp;as&nbsp;first&nbsp;class&nbsp;objects&nbsp;in&nbsp;themselves.&nbsp;That&nbsp;means,&nbsp;for&nbsp;each&nbsp;identified&nbsp;thing,
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                015&nbsp;&nbsp;;;&nbsp;the&nbsp;superstructure&nbsp;only&nbsp;contains&nbsp;one&nbsp;copy&nbsp;of&nbsp;it.
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                016&nbsp;&nbsp;;;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                017&nbsp;&nbsp;;;&nbsp;The&nbsp;question&nbsp;then&nbsp;is,&nbsp;when&nbsp;we&nbsp;want&nbsp;to&nbsp;do&nbsp;things&nbsp;with&nbsp;those&nbsp;objects,&nbsp;do&nbsp;we
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                018&nbsp;&nbsp;;;&nbsp;exteract&nbsp;a&nbsp;copy&nbsp;with&nbsp;its&nbsp;dependent&nbsp;structures&nbsp;fixed&nbsp;back&nbsp;up&nbsp;(reification),
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                019&nbsp;&nbsp;;;&nbsp;or&nbsp;do&nbsp;we&nbsp;indirect&nbsp;through&nbsp;the&nbsp;superstructure&nbsp;every&nbsp;time&nbsp;we&nbsp;want&nbsp;to&nbsp;access
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                020&nbsp;&nbsp;;;&nbsp;them?&nbsp;In&nbsp;a&nbsp;sense,&nbsp;the&nbsp;copy&nbsp;in&nbsp;the&nbsp;superstructure&nbsp;is&nbsp;the&nbsp;&#x27;one&nbsp;true&nbsp;copy&#x27;,
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                021&nbsp;&nbsp;;;&nbsp;but&nbsp;it&nbsp;may&nbsp;become&nbsp;very&nbsp;difficult&nbsp;then&nbsp;to&nbsp;have&nbsp;one&nbsp;true&nbsp;copy&nbsp;of&nbsp;the
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                022&nbsp;&nbsp;;;&nbsp;superstructure&nbsp;-&nbsp;unless&nbsp;we&nbsp;replace&nbsp;the&nbsp;superstructure&nbsp;altogether&nbsp;with&nbsp;a
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                023&nbsp;&nbsp;;;&nbsp;database,&nbsp;which&nbsp;may&nbsp;be&nbsp;the&nbsp;Right&nbsp;Thing&nbsp;To&nbsp;Do.
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                024&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                025&nbsp;&nbsp;(defn&nbsp;index-vertex
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                026&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;superstructure&nbsp;like&nbsp;`s`&nbsp;in&nbsp;which&nbsp;object&nbsp;`o`&nbsp;is&nbsp;indexed&nbsp;by&nbsp;vertex
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                027&nbsp;&nbsp;&nbsp;&nbsp;`v`.&nbsp;It&nbsp;is&nbsp;an&nbsp;error&nbsp;(and&nbsp;an&nbsp;exception&nbsp;may&nbsp;be&nbsp;thrown)&nbsp;if
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                028&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                029&nbsp;&nbsp;&nbsp;&nbsp;1.&nbsp;`s`&nbsp;is&nbsp;not&nbsp;a&nbsp;map;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                030&nbsp;&nbsp;&nbsp;&nbsp;2.&nbsp;`o`&nbsp;is&nbsp;not&nbsp;a&nbsp;map;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                031&nbsp;&nbsp;&nbsp;&nbsp;3.&nbsp;`o`&nbsp;does&nbsp;not&nbsp;have&nbsp;a&nbsp;value&nbsp;for&nbsp;the&nbsp;key&nbsp;`:id`;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                032&nbsp;&nbsp;&nbsp;&nbsp;4.&nbsp;`v`&nbsp;is&nbsp;not&nbsp;a&nbsp;vertex.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                033&nbsp;&nbsp;&nbsp;&nbsp;[s&nbsp;o&nbsp;v]
+                </span><br/>
+<span class="not-covered" title="0 out of 6 forms covered">
+                034&nbsp;&nbsp;&nbsp;&nbsp;(if-not&nbsp;(v&#x2F;vertex?&nbsp;o)
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                035&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(:id&nbsp;o)
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                036&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(v&#x2F;vertex?&nbsp;v)
+                </span><br/>
+<span class="not-covered" title="0 out of 9 forms covered">
+                037&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[vi&nbsp;(or&nbsp;(:vertex-index&nbsp;s)&nbsp;{})
+                </span><br/>
+<span class="not-covered" title="0 out of 10 forms covered">
+                038&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;current&nbsp;(or&nbsp;(vi&nbsp;(:id&nbsp;v))&nbsp;{})]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                039&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;deep-merge&nbsp;doesn&#x27;t&nbsp;merge&nbsp;sets,&nbsp;only&nbsp;maps;&nbsp;so&nbsp;at&nbsp;this
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                040&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;stage&nbsp;we&nbsp;need&nbsp;to&nbsp;build&nbsp;a&nbsp;map.
+                </span><br/>
+<span class="not-covered" title="0 out of 15 forms covered">
+                041&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;vi&nbsp;(:id&nbsp;v)&nbsp;(assoc&nbsp;current&nbsp;(:id&nbsp;o)&nbsp;(:id&nbsp;v))))
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                042&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;&quot;Not&nbsp;a&nbsp;vertex:&nbsp;&quot;&nbsp;v)))
+                </span><br/>
+<span class="not-covered" title="0 out of 10 forms covered">
+                043&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;(subs&nbsp;(str&nbsp;&quot;No&nbsp;`:id`&nbsp;value:&nbsp;&quot;&nbsp;o)&nbsp;0&nbsp;80))))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                044&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;it&nbsp;shouldn&#x27;t&nbsp;actually&nbsp;be&nbsp;an&nbsp;error&nbsp;to&nbsp;try&nbsp;to&nbsp;index&nbsp;a&nbsp;vertex,&nbsp;but&nbsp;it
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                045&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;also&nbsp;isn&#x27;t&nbsp;useful&nbsp;to&nbsp;do&nbsp;so,&nbsp;so&nbsp;I&#x27;d&nbsp;be&nbsp;inclined&nbsp;to&nbsp;ignore&nbsp;it.
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                046&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:vertex-index&nbsp;s)))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                047&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                048&nbsp;&nbsp;(defn&nbsp;index-vertices
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                049&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;superstructure&nbsp;like&nbsp;`s`&nbsp;in&nbsp;which&nbsp;object&nbsp;`o`&nbsp;is&nbsp;indexed&nbsp;by&nbsp;its
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                050&nbsp;&nbsp;&nbsp;&nbsp;vertices.&nbsp;It&nbsp;is&nbsp;an&nbsp;error&nbsp;(and&nbsp;an&nbsp;exception&nbsp;may&nbsp;be&nbsp;thrown)&nbsp;if
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                051&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                052&nbsp;&nbsp;&nbsp;&nbsp;1.&nbsp;`s`&nbsp;is&nbsp;not&nbsp;a&nbsp;map;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                053&nbsp;&nbsp;&nbsp;&nbsp;2.&nbsp;`o`&nbsp;is&nbsp;not&nbsp;a&nbsp;map;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                054&nbsp;&nbsp;&nbsp;&nbsp;3.&nbsp;`o`&nbsp;does&nbsp;not&nbsp;have&nbsp;a&nbsp;value&nbsp;for&nbsp;the&nbsp;key&nbsp;`:id`.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                055&nbsp;&nbsp;&nbsp;&nbsp;[s&nbsp;o]
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                056&nbsp;&nbsp;&nbsp;&nbsp;(assoc
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                057&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                058&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:vertex-index
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                059&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(reduce
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                060&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;u&#x2F;deep-merge
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                061&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                062&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(index-vertex&nbsp;s&nbsp;o&nbsp;%)
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                063&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(u&#x2F;vertices&nbsp;o)))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                064&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                065&nbsp;&nbsp;(defn&nbsp;add-to-superstructure
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                066&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;superstructure&nbsp;like&nbsp;`s`&nbsp;with&nbsp;object&nbsp;`o`&nbsp;added.&nbsp;If&nbsp;`o`&nbsp;is&nbsp;a&nbsp;collection,
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                067&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;a&nbsp;superstructure&nbsp;like&nbsp;`s`&nbsp;with&nbsp;each&nbsp;element&nbsp;of&nbsp;`o`&nbsp;added.&nbsp;If&nbsp;only&nbsp;one
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                068&nbsp;&nbsp;&nbsp;&nbsp;argument&nbsp;is&nbsp;supplied&nbsp;it&nbsp;will&nbsp;be&nbsp;assumed&nbsp;to&nbsp;represent&nbsp;`o`&nbsp;and&nbsp;a&nbsp;new
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                069&nbsp;&nbsp;&nbsp;&nbsp;superstructure&nbsp;will&nbsp;be&nbsp;returned.
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                070&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                071&nbsp;&nbsp;&nbsp;&nbsp;It&nbsp;is&nbsp;an&nbsp;error&nbsp;(and&nbsp;an&nbsp;exception&nbsp;may&nbsp;be&nbsp;thrown)&nbsp;if
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                072&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                073&nbsp;&nbsp;&nbsp;&nbsp;1.&nbsp;`s`&nbsp;is&nbsp;not&nbsp;a&nbsp;map;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                074&nbsp;&nbsp;&nbsp;&nbsp;2.&nbsp;`o`&nbsp;is&nbsp;not&nbsp;a&nbsp;map,&nbsp;or&nbsp;a&nbsp;sequence&nbsp;of&nbsp;maps.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                075&nbsp;&nbsp;&nbsp;&nbsp;([o]
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                076&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(add-to-superstructure&nbsp;{}&nbsp;o))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                077&nbsp;&nbsp;&nbsp;&nbsp;([s&nbsp;o]
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                078&nbsp;&nbsp;&nbsp;&nbsp;(cond
+                </span><br/>
+<span class="not-covered" title="0 out of 18 forms covered">
+                079&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map?&nbsp;o)&nbsp;(let&nbsp;[o&#x27;&nbsp;(if&nbsp;(:id&nbsp;o)&nbsp;o&nbsp;(assoc&nbsp;o&nbsp;:id&nbsp;(keyword&nbsp;(gensym&nbsp;&quot;obj&quot;))))]
+                </span><br/>
+<span class="not-covered" title="0 out of 10 forms covered">
+                080&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(index-vertices&nbsp;(assoc&nbsp;s&nbsp;(:id&nbsp;o&#x27;)&nbsp;o&#x27;)&nbsp;o&#x27;))
+                </span><br/>
+<span class="not-covered" title="0 out of 14 forms covered">
+                081&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(coll?&nbsp;o)&nbsp;(reduce&nbsp;u&#x2F;deep-merge&nbsp;(map&nbsp;#(add-to-superstructure&nbsp;s&nbsp;%)&nbsp;o))
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                082&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(nil?&nbsp;o)&nbsp;o
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                083&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else
+                </span><br/>
+<span class="not-covered" title="0 out of 13 forms covered">
+                084&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;(str&nbsp;&quot;Don&#x27;t&nbsp;know&nbsp;how&nbsp;to&nbsp;index&nbsp;&quot;&nbsp;(or&nbsp;(type&nbsp;o)&nbsp;&quot;nil&quot;)))))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                085&nbsp;&nbsp;
+                </span><br/>
+ </body>
+</html>
