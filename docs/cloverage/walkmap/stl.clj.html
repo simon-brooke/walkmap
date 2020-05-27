@@ -26,427 +26,556 @@
                 007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[taoensso.timbre&nbsp;:as&nbsp;l&nbsp;:refer&nbsp;[info&nbsp;error&nbsp;spy]]
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                008&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.polygon&nbsp;:refer&nbsp;[polygon?]]
+                008&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.edge&nbsp;:as&nbsp;e]
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                009&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.vertex&nbsp;:as&nbsp;v])
+                009&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.polygon&nbsp;:refer&nbsp;[polygon?]]
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                010&nbsp;&nbsp;&nbsp;&nbsp;(:import&nbsp;org.clojars.smee.binary.core.BinaryIO
+                010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.tag&nbsp;:refer&nbsp;[tag]]
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                011&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;java.io.DataInput))
+                011&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.vertex&nbsp;:as&nbsp;v])
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                012&nbsp;&nbsp;&nbsp;&nbsp;(:import&nbsp;org.clojars.smee.binary.core.BinaryIO
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                013&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;java.io.DataInput))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                012&nbsp;&nbsp;
+                014&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                013&nbsp;&nbsp;(defn&nbsp;stl?
+                015&nbsp;&nbsp;(defn&nbsp;stl?
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                014&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;`o`&nbsp;is&nbsp;recogniseable&nbsp;as&nbsp;an&nbsp;STL&nbsp;structure.&nbsp;An&nbsp;STL&nbsp;structure&nbsp;must
+                016&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;`o`&nbsp;is&nbsp;recogniseable&nbsp;as&nbsp;an&nbsp;STL&nbsp;structure.&nbsp;An&nbsp;STL&nbsp;structure&nbsp;must
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                015&nbsp;&nbsp;&nbsp;&nbsp;have&nbsp;a&nbsp;key&nbsp;`:facets`,&nbsp;whose&nbsp;value&nbsp;must&nbsp;be&nbsp;a&nbsp;sequence&nbsp;of&nbsp;polygons;&nbsp;and
+                017&nbsp;&nbsp;&nbsp;&nbsp;have&nbsp;a&nbsp;key&nbsp;`:facets`,&nbsp;whose&nbsp;value&nbsp;must&nbsp;be&nbsp;a&nbsp;sequence&nbsp;of&nbsp;polygons;&nbsp;and
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                016&nbsp;&nbsp;&nbsp;&nbsp;may&nbsp;have&nbsp;a&nbsp;key&nbsp;`:header`&nbsp;whose&nbsp;value&nbsp;should&nbsp;be&nbsp;a&nbsp;string,&nbsp;and&#x2F;or&nbsp;a&nbsp;key
+                018&nbsp;&nbsp;&nbsp;&nbsp;may&nbsp;have&nbsp;a&nbsp;key&nbsp;`:header`&nbsp;whose&nbsp;value&nbsp;should&nbsp;be&nbsp;a&nbsp;string,&nbsp;and&#x2F;or&nbsp;a&nbsp;key
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                017&nbsp;&nbsp;&nbsp;&nbsp;`:count`,&nbsp;whose&nbsp;value&nbsp;should&nbsp;be&nbsp;a&nbsp;positive&nbsp;integer.
+                019&nbsp;&nbsp;&nbsp;&nbsp;`:count`,&nbsp;whose&nbsp;value&nbsp;should&nbsp;be&nbsp;a&nbsp;positive&nbsp;integer.
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                018&nbsp;&nbsp;
+                020&nbsp;&nbsp;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                019&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;`verify-count?`&nbsp;is&nbsp;passed&nbsp;and&nbsp;is&nbsp;not&nbsp;`false`,&nbsp;verify&nbsp;that&nbsp;the&nbsp;value&nbsp;of
+                021&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;`verify-count?`&nbsp;is&nbsp;passed&nbsp;and&nbsp;is&nbsp;not&nbsp;`false`,&nbsp;verify&nbsp;that&nbsp;the&nbsp;value&nbsp;of
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                020&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;`:count`&nbsp;header&nbsp;is&nbsp;equal&nbsp;to&nbsp;the&nbsp;number&nbsp;of&nbsp;facets.&quot;
+                022&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;`:count`&nbsp;header&nbsp;is&nbsp;equal&nbsp;to&nbsp;the&nbsp;number&nbsp;of&nbsp;facets.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                021&nbsp;&nbsp;&nbsp;&nbsp;([o]
+                023&nbsp;&nbsp;&nbsp;&nbsp;([o]
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                022&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(stl?&nbsp;o&nbsp;false))
+                024&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(stl?&nbsp;o&nbsp;false))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                023&nbsp;&nbsp;&nbsp;&nbsp;([o&nbsp;verify-count?]
+                025&nbsp;&nbsp;&nbsp;&nbsp;([o&nbsp;verify-count?]
                 </span><br/>
 <span class="partial" title="20 out of 26 forms covered">
-                024&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and
+                026&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                025&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map?&nbsp;o)
+                027&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map?&nbsp;o)
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                026&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:facets&nbsp;o)
+                028&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:facets&nbsp;o)
                 </span><br/>
 <span class="covered" title="6 out of 6 forms covered">
-                027&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(every?&nbsp;polygon?&nbsp;(:facets&nbsp;o))
+                029&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(every?&nbsp;polygon?&nbsp;(:facets&nbsp;o))
                 </span><br/>
 <span class="partial" title="9 out of 10 forms covered">
-                028&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(:header&nbsp;o)&nbsp;(string?&nbsp;(:header&nbsp;o))&nbsp;true)
+                030&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(:header&nbsp;o)&nbsp;(string?&nbsp;(:header&nbsp;o))&nbsp;true)
                 </span><br/>
 <span class="partial" title="9 out of 10 forms covered">
-                029&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(:count&nbsp;o)&nbsp;(integer?&nbsp;(:count&nbsp;o))&nbsp;true)
+                031&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(:count&nbsp;o)&nbsp;(integer?&nbsp;(:count&nbsp;o))&nbsp;true)
                 </span><br/>
 <span class="partial" title="14 out of 15 forms covered">
-                030&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or&nbsp;(nil?&nbsp;(:kind&nbsp;o))&nbsp;(=&nbsp;(:kind&nbsp;o)&nbsp;:stl))
+                032&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or&nbsp;(nil?&nbsp;(:kind&nbsp;o))&nbsp;(=&nbsp;(:kind&nbsp;o)&nbsp;:stl))
                 </span><br/>
 <span class="partial" title="1 out of 11 forms covered">
-                031&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;verify-count?&nbsp;(=&nbsp;(:count&nbsp;o)&nbsp;(count&nbsp;(:facets&nbsp;o)))&nbsp;true))))
+                033&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;verify-count?&nbsp;(=&nbsp;(:count&nbsp;o)&nbsp;(count&nbsp;(:facets&nbsp;o)))&nbsp;true))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                032&nbsp;&nbsp;
+                034&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                033&nbsp;&nbsp;(def&nbsp;vect
+                035&nbsp;&nbsp;(def&nbsp;vect
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                034&nbsp;&nbsp;&nbsp;&nbsp;&quot;A&nbsp;codec&nbsp;for&nbsp;vectors&nbsp;within&nbsp;a&nbsp;binary&nbsp;STL&nbsp;file.&quot;
+                036&nbsp;&nbsp;&nbsp;&nbsp;&quot;A&nbsp;codec&nbsp;for&nbsp;vectors&nbsp;within&nbsp;a&nbsp;binary&nbsp;STL&nbsp;file.&quot;
                 </span><br/>
 <span class="covered" title="8 out of 8 forms covered">
-                035&nbsp;&nbsp;&nbsp;&nbsp;(b&#x2F;ordered-map
+                037&nbsp;&nbsp;&nbsp;&nbsp;(b&#x2F;ordered-map
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                036&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:x&nbsp;:float-le
+                038&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:x&nbsp;:float-le
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                037&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:y&nbsp;:float-le
+                039&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:y&nbsp;:float-le
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                038&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:z&nbsp;:float-le))
+                040&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:z&nbsp;:float-le))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                039&nbsp;&nbsp;
+                041&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                040&nbsp;&nbsp;(def&nbsp;facet
+                042&nbsp;&nbsp;(def&nbsp;facet
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                041&nbsp;&nbsp;&nbsp;&nbsp;&quot;A&nbsp;codec&nbsp;for&nbsp;a&nbsp;facet&nbsp;(triangle)&nbsp;within&nbsp;a&nbsp;binary&nbsp;STL&nbsp;file.&quot;
+                043&nbsp;&nbsp;&nbsp;&nbsp;&quot;A&nbsp;codec&nbsp;for&nbsp;a&nbsp;facet&nbsp;(triangle)&nbsp;within&nbsp;a&nbsp;binary&nbsp;STL&nbsp;file.&quot;
                 </span><br/>
 <span class="covered" title="6 out of 6 forms covered">
-                042&nbsp;&nbsp;&nbsp;&nbsp;(b&#x2F;ordered-map
+                044&nbsp;&nbsp;&nbsp;&nbsp;(b&#x2F;ordered-map
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                043&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:normal&nbsp;vect
+                045&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:normal&nbsp;vect
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                044&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:vertices&nbsp;[vect&nbsp;vect&nbsp;vect]
+                046&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:vertices&nbsp;[vect&nbsp;vect&nbsp;vect]
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                045&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:abc&nbsp;:ushort-le))
+                047&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:abc&nbsp;:ushort-le))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                046&nbsp;&nbsp;
+                048&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                047&nbsp;&nbsp;(def&nbsp;binary-stl
+                049&nbsp;&nbsp;(def&nbsp;binary-stl
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                048&nbsp;&nbsp;&nbsp;&nbsp;&quot;A&nbsp;codec&nbsp;for&nbsp;binary&nbsp;STL&nbsp;files&quot;
+                050&nbsp;&nbsp;&nbsp;&nbsp;&quot;A&nbsp;codec&nbsp;for&nbsp;binary&nbsp;STL&nbsp;files&quot;
                 </span><br/>
 <span class="covered" title="6 out of 6 forms covered">
-                049&nbsp;&nbsp;&nbsp;&nbsp;(b&#x2F;ordered-map
+                051&nbsp;&nbsp;&nbsp;&nbsp;(b&#x2F;ordered-map
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                050&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:header&nbsp;(b&#x2F;string&nbsp;&quot;ISO-8859-1&quot;&nbsp;:length&nbsp;80)&nbsp;;;&nbsp;for&nbsp;the&nbsp;time&nbsp;being&nbsp;we&nbsp;neither&nbsp;know&nbsp;nor&nbsp;care&nbsp;what&#x27;s&nbsp;in&nbsp;this.
+                052&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:header&nbsp;(b&#x2F;string&nbsp;&quot;ISO-8859-1&quot;&nbsp;:length&nbsp;80)&nbsp;;;&nbsp;for&nbsp;the&nbsp;time&nbsp;being&nbsp;we&nbsp;neither&nbsp;know&nbsp;nor&nbsp;care&nbsp;what&#x27;s&nbsp;in&nbsp;this.
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                051&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:count&nbsp;:uint-le
+                053&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:count&nbsp;:uint-le
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                052&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:facets&nbsp;(b&#x2F;repeated&nbsp;facet)))
+                054&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:facets&nbsp;(b&#x2F;repeated&nbsp;facet)))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                053&nbsp;&nbsp;
+                055&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                054&nbsp;&nbsp;(defn&nbsp;canonicalise
+                056&nbsp;&nbsp;(defn&nbsp;centre
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                055&nbsp;&nbsp;&nbsp;&nbsp;&quot;Objects&nbsp;read&nbsp;in&nbsp;from&nbsp;STL&nbsp;won&#x27;t&nbsp;have&nbsp;all&nbsp;the&nbsp;keys&#x2F;values&nbsp;we&nbsp;need&nbsp;them&nbsp;to&nbsp;have.&quot;
+                057&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;canonicalised&nbsp;`facet`&nbsp;(i.e.&nbsp;a&nbsp;triangular&nbsp;polygon)&nbsp;with&nbsp;an&nbsp;added
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                056&nbsp;&nbsp;&nbsp;&nbsp;[o]
+                058&nbsp;&nbsp;&nbsp;&nbsp;key&nbsp;`:centre`&nbsp;whose&nbsp;value&nbsp;represents&nbsp;the&nbsp;centre&nbsp;of&nbsp;this&nbsp;facet&nbsp;in&nbsp;3
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                059&nbsp;&nbsp;&nbsp;&nbsp;dimensions.&nbsp;This&nbsp;only&nbsp;works&nbsp;for&nbsp;triangles,&nbsp;so&nbsp;is&nbsp;here&nbsp;not&nbsp;in
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                060&nbsp;&nbsp;&nbsp;&nbsp;`walkmap.polygon`.&nbsp;It&nbsp;is&nbsp;an&nbsp;error&nbsp;(although&nbsp;no&nbsp;exception&nbsp;is&nbsp;currently
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                061&nbsp;&nbsp;&nbsp;&nbsp;thrown)&nbsp;if&nbsp;the&nbsp;object&nbsp;past&nbsp;is&nbsp;not&nbsp;a&nbsp;triangular&nbsp;polygon.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                062&nbsp;&nbsp;&nbsp;&nbsp;[facet]
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                063&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[vs&nbsp;(:vertices&nbsp;facet)
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                064&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v1&nbsp;(first&nbsp;vs)
+                </span><br/>
+<span class="covered" title="10 out of 10 forms covered">
+                065&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;opposite&nbsp;(e&#x2F;edge&nbsp;(nth&nbsp;vs&nbsp;1)&nbsp;(nth&nbsp;vs&nbsp;2))
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                066&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oc&nbsp;(e&#x2F;centre&nbsp;opposite)]
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                067&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                068&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;facet
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                069&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:centre
+                </span><br/>
+<span class="covered" title="2 out of 2 forms covered">
+                070&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(v&#x2F;vertex
+                </span><br/>
+<span class="covered" title="16 out of 16 forms covered">
+                071&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+&nbsp;(:x&nbsp;v1)&nbsp;(*&nbsp;(-&nbsp;(:x&nbsp;oc)&nbsp;(:x&nbsp;v1))&nbsp;2&#x2F;3))
+                </span><br/>
+<span class="covered" title="16 out of 16 forms covered">
+                072&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+&nbsp;(:y&nbsp;v1)&nbsp;(*&nbsp;(-&nbsp;(:y&nbsp;oc)&nbsp;(:y&nbsp;v1))&nbsp;2&#x2F;3))
+                </span><br/>
+<span class="covered" title="16 out of 16 forms covered">
+                073&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+&nbsp;(:z&nbsp;v1)&nbsp;(*&nbsp;(-&nbsp;(:z&nbsp;oc)&nbsp;(:z&nbsp;v1))&nbsp;2&#x2F;3))))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                074&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                075&nbsp;&nbsp;(defn&nbsp;canonicalise
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                076&nbsp;&nbsp;&nbsp;&nbsp;&quot;Objects&nbsp;read&nbsp;in&nbsp;from&nbsp;STL&nbsp;won&#x27;t&nbsp;have&nbsp;all&nbsp;the&nbsp;keys&#x2F;values&nbsp;we&nbsp;need&nbsp;them&nbsp;to&nbsp;have.
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                077&nbsp;&nbsp;&nbsp;&nbsp;`o`&nbsp;may&nbsp;be&nbsp;a&nbsp;map&nbsp;(representing&nbsp;a&nbsp;facet&nbsp;or&nbsp;a&nbsp;vertex),&nbsp;or&nbsp;a&nbsp;sequence&nbsp;of&nbsp;such&nbsp;maps;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                078&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;it&nbsp;isn&#x27;t&nbsp;recognised&nbsp;it&nbsp;is&nbsp;at&nbsp;present&nbsp;just&nbsp;returned&nbsp;unchanged.&nbsp;`map-kind`,&nbsp;if
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                079&nbsp;&nbsp;&nbsp;&nbsp;passed,&nbsp;must&nbsp;be&nbsp;a&nbsp;keyword&nbsp;indicating&nbsp;the&nbsp;value&nbsp;represented&nbsp;by&nbsp;the&nbsp;`z`&nbsp;axis
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                080&nbsp;&nbsp;&nbsp;&nbsp;(defaults&nbsp;to&nbsp;`:height`).&nbsp;It&nbsp;is&nbsp;an&nbsp;error,&nbsp;and&nbsp;an&nbsp;exception&nbsp;will&nbsp;be&nbsp;thrown,&nbsp;if
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                081&nbsp;&nbsp;&nbsp;&nbsp;`map-kind`&nbsp;is&nbsp;not&nbsp;a&nbsp;keyword.&quot;
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                082&nbsp;&nbsp;&nbsp;&nbsp;([o]&nbsp;(canonicalise&nbsp;o&nbsp;:height))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                083&nbsp;&nbsp;&nbsp;&nbsp;([o&nbsp;map-kind]
+                </span><br/>
+<span class="partial" title="2 out of 3 forms covered">
+                084&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(when-not
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                085&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(keyword?&nbsp;map-kind)
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                086&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.
+                </span><br/>
+<span class="not-covered" title="0 out of 13 forms covered">
+                087&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(subs&nbsp;(str&nbsp;&quot;Must&nbsp;be&nbsp;a&nbsp;keyword:&nbsp;&quot;&nbsp;(or&nbsp;map-kind&nbsp;&quot;nil&quot;))&nbsp;0&nbsp;80))))
                 </span><br/>
 <span class="partial" title="4 out of 5 forms covered">
-                057&nbsp;&nbsp;&nbsp;&nbsp;(cond
+                088&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cond
                 </span><br/>
-<span class="partial" title="15 out of 16 forms covered">
-                058&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and&nbsp;(coll?&nbsp;o)&nbsp;(not&nbsp;(map?&nbsp;o)))&nbsp;(map&nbsp;canonicalise&nbsp;o)
+<span class="partial" title="19 out of 20 forms covered">
+                089&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and&nbsp;(coll?&nbsp;o)&nbsp;(not&nbsp;(map?&nbsp;o)))&nbsp;(map&nbsp;#(canonicalise&nbsp;%&nbsp;map-kind)&nbsp;o)
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                059&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;if&nbsp;it&nbsp;has&nbsp;:facets&nbsp;it&#x27;s&nbsp;an&nbsp;STL&nbsp;structure,&nbsp;but&nbsp;it&nbsp;doesn&#x27;t&nbsp;yet&nbsp;conform&nbsp;to&nbsp;`stl?`
+                090&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;if&nbsp;it&nbsp;has&nbsp;:facets&nbsp;it&#x27;s&nbsp;an&nbsp;STL&nbsp;structure,&nbsp;but&nbsp;it&nbsp;doesn&#x27;t&nbsp;yet&nbsp;conform&nbsp;to&nbsp;`stl?`
                 </span><br/>
 <span class="covered" title="10 out of 10 forms covered">
-                060&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:facets&nbsp;o)&nbsp;(assoc&nbsp;o
+                091&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:facets&nbsp;o)&nbsp;(assoc&nbsp;o
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                061&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:kind&nbsp;:stl
+                092&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:kind&nbsp;:stl
                 </span><br/>
 <span class="partial" title="11 out of 12 forms covered">
-                062&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:id&nbsp;(or&nbsp;(:id&nbsp;o)&nbsp;(keyword&nbsp;(gensym&nbsp;&quot;stl&quot;)))
-                </span><br/>
-<span class="covered" title="5 out of 5 forms covered">
-                063&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:facets&nbsp;(canonicalise&nbsp;(:facets&nbsp;o)))
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                064&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;if&nbsp;it&nbsp;has&nbsp;:vertices&nbsp;it&#x27;s&nbsp;a&nbsp;polygon,&nbsp;but&nbsp;it&nbsp;doesn&#x27;t&nbsp;yet&nbsp;conform&nbsp;to&nbsp;`polygon?`
-                </span><br/>
-<span class="covered" title="10 out of 10 forms covered">
-                065&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:vertices&nbsp;o)&nbsp;(assoc&nbsp;o
-                </span><br/>
-<span class="partial" title="11 out of 12 forms covered">
-                066&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:id&nbsp;(or&nbsp;(:id&nbsp;o)&nbsp;(keyword&nbsp;(gensym&nbsp;&quot;poly&quot;)))
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                067&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:kind&nbsp;:polygon
-                </span><br/>
-<span class="covered" title="5 out of 5 forms covered">
-                068&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:vertices&nbsp;(canonicalise&nbsp;(:vertices&nbsp;o)))
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                069&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;if&nbsp;it&nbsp;has&nbsp;a&nbsp;value&nbsp;for&nbsp;:x&nbsp;it&#x27;s&nbsp;a&nbsp;vertex,&nbsp;but&nbsp;it&nbsp;doesn&#x27;t&nbsp;yet&nbsp;conform&nbsp;to&nbsp;`vertex?`
+                093&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:id&nbsp;(or&nbsp;(:id&nbsp;o)&nbsp;(keyword&nbsp;(gensym&nbsp;&quot;stl&quot;)))
                 </span><br/>
 <span class="covered" title="6 out of 6 forms covered">
-                070&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:x&nbsp;o)&nbsp;(v&#x2F;canonicalise&nbsp;o)
+                094&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:facets&nbsp;(canonicalise&nbsp;(:facets&nbsp;o)&nbsp;map-kind))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                071&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;shouldn&#x27;t&nbsp;happen
+                095&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;if&nbsp;it&nbsp;has&nbsp;:vertices&nbsp;it&#x27;s&nbsp;a&nbsp;polygon,&nbsp;but&nbsp;it&nbsp;doesn&#x27;t&nbsp;yet&nbsp;conform&nbsp;to&nbsp;`polygon?`
                 </span><br/>
-<span class="not-covered" title="0 out of 1 forms covered">
-                072&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else&nbsp;o))
+<span class="covered" title="5 out of 5 forms covered">
+                096&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:vertices&nbsp;o)&nbsp;(centre
                 </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                073&nbsp;&nbsp;
+<span class="covered" title="3 out of 3 forms covered">
+                097&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(tag
+                </span><br/>
+<span class="covered" title="7 out of 7 forms covered">
+                098&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;o
+                </span><br/>
+<span class="partial" title="11 out of 12 forms covered">
+                099&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:id&nbsp;(or&nbsp;(:id&nbsp;o)&nbsp;(keyword&nbsp;(gensym&nbsp;&quot;poly&quot;)))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:kind&nbsp;:polygon
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                101&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:vertices&nbsp;(canonicalise&nbsp;(:vertices&nbsp;o)&nbsp;map-kind))
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                074&nbsp;&nbsp;(defn&nbsp;decode-binary-stl
+                102&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:facet&nbsp;map-kind))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                075&nbsp;&nbsp;&nbsp;&nbsp;&quot;Parse&nbsp;a&nbsp;binary&nbsp;STL&nbsp;file&nbsp;from&nbsp;this&nbsp;`filename`&nbsp;and&nbsp;return&nbsp;an&nbsp;STL&nbsp;structure
+                103&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;if&nbsp;it&nbsp;has&nbsp;a&nbsp;value&nbsp;for&nbsp;:x&nbsp;it&#x27;s&nbsp;a&nbsp;vertex,&nbsp;but&nbsp;it&nbsp;doesn&#x27;t&nbsp;yet&nbsp;conform&nbsp;to&nbsp;`vertex?`
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                104&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:x&nbsp;o)&nbsp;(v&#x2F;canonicalise&nbsp;o)
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                076&nbsp;&nbsp;&nbsp;&nbsp;representing&nbsp;its&nbsp;contents.
+                105&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;shouldn&#x27;t&nbsp;happen
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                106&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else&nbsp;o)))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                077&nbsp;&nbsp;
+                107&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                108&nbsp;&nbsp;(defn&nbsp;decode-binary-stl
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                078&nbsp;&nbsp;&nbsp;&nbsp;**NOTE**&nbsp;that&nbsp;we&#x27;ve&nbsp;no&nbsp;way&nbsp;of&nbsp;verifying&nbsp;that&nbsp;the&nbsp;input&nbsp;file&nbsp;is&nbsp;binary&nbsp;STL
+                109&nbsp;&nbsp;&nbsp;&nbsp;&quot;Parse&nbsp;a&nbsp;binary&nbsp;STL&nbsp;file&nbsp;from&nbsp;this&nbsp;`filename`&nbsp;and&nbsp;return&nbsp;an&nbsp;STL&nbsp;structure
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                079&nbsp;&nbsp;&nbsp;&nbsp;data,&nbsp;if&nbsp;it&nbsp;is&nbsp;not&nbsp;this&nbsp;will&nbsp;run&nbsp;but&nbsp;will&nbsp;return&nbsp;garbage.&quot;
+                110&nbsp;&nbsp;&nbsp;&nbsp;representing&nbsp;its&nbsp;contents.&nbsp;`map-kind`,&nbsp;if&nbsp;passed,&nbsp;must&nbsp;be&nbsp;a&nbsp;keyword
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                080&nbsp;&nbsp;&nbsp;&nbsp;[filename]
+                111&nbsp;&nbsp;&nbsp;&nbsp;indicating&nbsp;the&nbsp;value&nbsp;represented&nbsp;by&nbsp;the&nbsp;`z`&nbsp;axis&nbsp;(defaults&nbsp;to&nbsp;`:height`).
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                112&nbsp;&nbsp;&nbsp;&nbsp;It&nbsp;is&nbsp;an&nbsp;error,&nbsp;and&nbsp;an&nbsp;exception&nbsp;will&nbsp;be&nbsp;thrown,&nbsp;if&nbsp;`map-kind`&nbsp;is&nbsp;not&nbsp;a
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                113&nbsp;&nbsp;&nbsp;&nbsp;keyword.
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                114&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                115&nbsp;&nbsp;&nbsp;&nbsp;**NOTE**&nbsp;that&nbsp;we&#x27;ve&nbsp;no&nbsp;way&nbsp;of&nbsp;verifying&nbsp;that&nbsp;the&nbsp;input&nbsp;file&nbsp;is&nbsp;binary&nbsp;STL
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                116&nbsp;&nbsp;&nbsp;&nbsp;data,&nbsp;if&nbsp;it&nbsp;is&nbsp;not&nbsp;this&nbsp;will&nbsp;run&nbsp;but&nbsp;will&nbsp;return&nbsp;garbage.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                117&nbsp;&nbsp;&nbsp;&nbsp;([filename]
                 </span><br/>
 <span class="not-covered" title="0 out of 4 forms covered">
-                081&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[in&nbsp;(io&#x2F;input-stream&nbsp;filename)]
+                118&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(decode-binary-stl&nbsp;filename&nbsp;:height))
                 </span><br/>
-<span class="not-covered" title="0 out of 6 forms covered">
-                082&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(canonicalise&nbsp;(b&#x2F;decode&nbsp;binary-stl&nbsp;in))))
+<span class="not-tracked" title="0 out of 0 forms covered">
+                119&nbsp;&nbsp;&nbsp;&nbsp;([filename&nbsp;map-kind]
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                120&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(when-not
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                121&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(keyword?&nbsp;map-kind)
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                122&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.
+                </span><br/>
+<span class="not-covered" title="0 out of 13 forms covered">
+                123&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(subs&nbsp;(str&nbsp;&quot;Must&nbsp;be&nbsp;a&nbsp;keyword:&nbsp;&quot;&nbsp;(or&nbsp;map-kind&nbsp;&quot;nil&quot;))&nbsp;0&nbsp;80))))
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                124&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[in&nbsp;(io&#x2F;input-stream&nbsp;filename)]
+                </span><br/>
+<span class="not-covered" title="0 out of 7 forms covered">
+                125&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(canonicalise&nbsp;(b&#x2F;decode&nbsp;binary-stl&nbsp;in)&nbsp;map-kind))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                083&nbsp;&nbsp;
+                126&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                084&nbsp;&nbsp;(defn-&nbsp;vect-&gt;str&nbsp;[prefix&nbsp;v]
+                127&nbsp;&nbsp;(defn-&nbsp;vect-&gt;str&nbsp;[prefix&nbsp;v]
                 </span><br/>
 <span class="not-covered" title="0 out of 16 forms covered">
-                085&nbsp;&nbsp;&nbsp;&nbsp;(str&nbsp;prefix&nbsp;&quot;&nbsp;&quot;&nbsp;(:x&nbsp;v)&nbsp;&quot;&nbsp;&quot;&nbsp;(:y&nbsp;v)&nbsp;&quot;&nbsp;&quot;&nbsp;(:z&nbsp;v)&nbsp;&quot;\n&quot;))
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                086&nbsp;&nbsp;
-                </span><br/>
-<span class="covered" title="2 out of 2 forms covered">
-                087&nbsp;&nbsp;(defn-&nbsp;facet2str&nbsp;[tri]
-                </span><br/>
-<span class="not-covered" title="0 out of 4 forms covered">
-                088&nbsp;&nbsp;&nbsp;&nbsp;(str
-                </span><br/>
-<span class="not-covered" title="0 out of 6 forms covered">
-                089&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(vect-&gt;str&nbsp;&quot;facet&nbsp;normal&quot;&nbsp;(:normal&nbsp;tri))
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                090&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;outer&nbsp;loop\n&quot;
-                </span><br/>
-<span class="not-covered" title="0 out of 3 forms covered">
-                091&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply&nbsp;str
-                </span><br/>
-<span class="not-covered" title="0 out of 3 forms covered">
-                092&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
-                </span><br/>
-<span class="not-covered" title="0 out of 4 forms covered">
-                093&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(vect-&gt;str&nbsp;&quot;vertex&quot;&nbsp;%)
-                </span><br/>
-<span class="not-covered" title="0 out of 3 forms covered">
-                094&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:vertices&nbsp;tri)))
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                095&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;endloop\nendfacet\n&quot;))
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                096&nbsp;&nbsp;
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                097&nbsp;&nbsp;(defn&nbsp;stl-&gt;ascii
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                098&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;as&nbsp;a&nbsp;string&nbsp;an&nbsp;ASCII&nbsp;rendering&nbsp;of&nbsp;the&nbsp;`stl`&nbsp;structure.&quot;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                099&nbsp;&nbsp;&nbsp;&nbsp;([stl]
-                </span><br/>
-<span class="not-covered" title="0 out of 4 forms covered">
-                100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(stl-&gt;ascii&nbsp;stl&nbsp;&quot;unknown&quot;))
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                101&nbsp;&nbsp;&nbsp;&nbsp;([stl&nbsp;solidname]
-                </span><br/>
-<span class="not-covered" title="0 out of 6 forms covered">
-                102&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                103&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;solid&nbsp;&quot;
-                </span><br/>
-<span class="not-covered" title="0 out of 1 forms covered">
-                104&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;solidname
-                </span><br/>
-<span class="not-covered" title="0 out of 5 forms covered">
-                105&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(s&#x2F;trim&nbsp;(:header&nbsp;stl))
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                106&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;\n&quot;
-                </span><br/>
-<span class="not-covered" title="0 out of 2 forms covered">
-                107&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply
-                </span><br/>
-<span class="not-covered" title="0 out of 1 forms covered">
-                108&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;str
-                </span><br/>
-<span class="not-covered" title="0 out of 2 forms covered">
-                109&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
-                </span><br/>
-<span class="not-covered" title="0 out of 1 forms covered">
-                110&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;facet2str
-                </span><br/>
-<span class="not-covered" title="0 out of 3 forms covered">
-                111&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:facets&nbsp;stl)))
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                112&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;endsolid&nbsp;&quot;
-                </span><br/>
-<span class="not-covered" title="0 out of 1 forms covered">
-                113&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;solidname
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                114&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;\n&quot;)))
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                115&nbsp;&nbsp;
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                116&nbsp;&nbsp;(defn&nbsp;write-ascii-stl
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                117&nbsp;&nbsp;&nbsp;&nbsp;&quot;Write&nbsp;an&nbsp;`stl`&nbsp;structure&nbsp;as&nbsp;read&nbsp;by&nbsp;`decode-binary-stl`&nbsp;to&nbsp;this
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                118&nbsp;&nbsp;&nbsp;&nbsp;`filename`&nbsp;as&nbsp;ASCII&nbsp;encoded&nbsp;STL.&quot;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                119&nbsp;&nbsp;&nbsp;&nbsp;([filename&nbsp;stl]
-                </span><br/>
-<span class="not-covered" title="0 out of 5 forms covered">
-                120&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[b&nbsp;(fs&#x2F;base-name&nbsp;filename&nbsp;true)]
-                </span><br/>
-<span class="not-covered" title="0 out of 2 forms covered">
-                121&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(write-ascii-stl
-                </span><br/>
-<span class="not-covered" title="0 out of 2 forms covered">
-                122&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;filename&nbsp;stl
-                </span><br/>
-<span class="not-covered" title="0 out of 15 forms covered">
-                123&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(subs&nbsp;b&nbsp;0&nbsp;(or&nbsp;(s&#x2F;index-of&nbsp;b&nbsp;&quot;.&quot;)&nbsp;(count&nbsp;b))))))
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                124&nbsp;&nbsp;&nbsp;&nbsp;([filename&nbsp;stl&nbsp;solidname]
-                </span><br/>
-<span class="not-covered" title="0 out of 16 forms covered">
-                125&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(l&#x2F;debug&nbsp;&quot;Solid&nbsp;name&nbsp;is&nbsp;&quot;&nbsp;solidname)
-                </span><br/>
-<span class="not-covered" title="0 out of 2 forms covered">
-                126&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(spit
-                </span><br/>
-<span class="not-covered" title="0 out of 1 forms covered">
-                127&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;filename
-                </span><br/>
-<span class="not-covered" title="0 out of 4 forms covered">
-                128&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(stl-&gt;ascii&nbsp;stl&nbsp;solidname))))
+                128&nbsp;&nbsp;&nbsp;&nbsp;(str&nbsp;prefix&nbsp;&quot;&nbsp;&quot;&nbsp;(:x&nbsp;v)&nbsp;&quot;&nbsp;&quot;&nbsp;(:y&nbsp;v)&nbsp;&quot;&nbsp;&quot;&nbsp;(:z&nbsp;v)&nbsp;&quot;\n&quot;))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
                 129&nbsp;&nbsp;
                 </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                130&nbsp;&nbsp;(defn&nbsp;binary-stl-to-ascii
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                131&nbsp;&nbsp;&nbsp;&nbsp;&quot;Convert&nbsp;the&nbsp;binary&nbsp;STL&nbsp;file&nbsp;indicated&nbsp;by&nbsp;`in-filename`,&nbsp;and&nbsp;write&nbsp;it&nbsp;to
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                132&nbsp;&nbsp;&nbsp;&nbsp;`out-filename`,&nbsp;if&nbsp;specified;&nbsp;otherwise,&nbsp;to&nbsp;a&nbsp;file&nbsp;with&nbsp;the&nbsp;same&nbsp;basename
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                133&nbsp;&nbsp;&nbsp;&nbsp;as&nbsp;`in-filename`&nbsp;but&nbsp;the&nbsp;extension&nbsp;`.ascii.stl`.&quot;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                134&nbsp;&nbsp;&nbsp;&nbsp;([in-filename]
+<span class="covered" title="2 out of 2 forms covered">
+                130&nbsp;&nbsp;(defn-&nbsp;facet2str&nbsp;[tri]
                 </span><br/>
 <span class="not-covered" title="0 out of 4 forms covered">
-                135&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[[_&nbsp;ext]&nbsp;(fs&#x2F;split-ext&nbsp;in-filename)]
-                </span><br/>
-<span class="not-covered" title="0 out of 2 forms covered">
-                136&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(binary-stl-to-ascii
-                </span><br/>
-<span class="not-covered" title="0 out of 1 forms covered">
-                137&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in-filename
-                </span><br/>
-<span class="not-covered" title="0 out of 3 forms covered">
-                138&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str
-                </span><br/>
-<span class="not-covered" title="0 out of 3 forms covered">
-                139&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(subs
-                </span><br/>
-<span class="not-covered" title="0 out of 1 forms covered">
-                140&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in-filename
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                141&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0
-                </span><br/>
-<span class="not-covered" title="0 out of 5 forms covered">
-                142&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or
-                </span><br/>
-<span class="not-covered" title="0 out of 4 forms covered">
-                143&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(s&#x2F;last-index-of&nbsp;in-filename&nbsp;&quot;.&quot;)
-                </span><br/>
-<span class="not-covered" title="0 out of 2 forms covered">
-                144&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(count&nbsp;in-filename)))
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                145&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;.ascii&quot;
-                </span><br/>
-<span class="not-covered" title="0 out of 1 forms covered">
-                146&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ext))))
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                147&nbsp;&nbsp;&nbsp;&nbsp;([in-filename&nbsp;out-filename]
+                131&nbsp;&nbsp;&nbsp;&nbsp;(str
                 </span><br/>
 <span class="not-covered" title="0 out of 6 forms covered">
-                148&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(write-ascii-stl&nbsp;out-filename&nbsp;(decode-binary-stl&nbsp;in-filename))))
+                132&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(vect-&gt;str&nbsp;&quot;facet&nbsp;normal&quot;&nbsp;(:normal&nbsp;tri))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                133&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;outer&nbsp;loop\n&quot;
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                134&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply&nbsp;str
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                135&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                136&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(vect-&gt;str&nbsp;&quot;vertex&quot;&nbsp;%)
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                137&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:vertices&nbsp;tri)))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                138&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;endloop\nendfacet\n&quot;))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                139&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                140&nbsp;&nbsp;(defn&nbsp;stl-&gt;ascii
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                141&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;as&nbsp;a&nbsp;string&nbsp;an&nbsp;ASCII&nbsp;rendering&nbsp;of&nbsp;the&nbsp;`stl`&nbsp;structure.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                142&nbsp;&nbsp;&nbsp;&nbsp;([stl]
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                143&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(stl-&gt;ascii&nbsp;stl&nbsp;&quot;unknown&quot;))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                144&nbsp;&nbsp;&nbsp;&nbsp;([stl&nbsp;solidname]
+                </span><br/>
+<span class="not-covered" title="0 out of 6 forms covered">
+                145&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                146&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;solid&nbsp;&quot;
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                147&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;solidname
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                148&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(s&#x2F;trim&nbsp;(:header&nbsp;stl))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                149&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;\n&quot;
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                150&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                151&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;str
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                152&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                153&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;facet2str
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                154&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:facets&nbsp;stl)))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                155&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;endsolid&nbsp;&quot;
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                156&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;solidname
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                157&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;\n&quot;)))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                158&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                159&nbsp;&nbsp;(defn&nbsp;write-ascii-stl
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                160&nbsp;&nbsp;&nbsp;&nbsp;&quot;Write&nbsp;an&nbsp;`stl`&nbsp;structure&nbsp;as&nbsp;read&nbsp;by&nbsp;`decode-binary-stl`&nbsp;to&nbsp;this
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                161&nbsp;&nbsp;&nbsp;&nbsp;`filename`&nbsp;as&nbsp;ASCII&nbsp;encoded&nbsp;STL.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                162&nbsp;&nbsp;&nbsp;&nbsp;([filename&nbsp;stl]
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                163&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[b&nbsp;(fs&#x2F;base-name&nbsp;filename&nbsp;true)]
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                164&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(write-ascii-stl
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                165&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;filename&nbsp;stl
+                </span><br/>
+<span class="not-covered" title="0 out of 15 forms covered">
+                166&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(subs&nbsp;b&nbsp;0&nbsp;(or&nbsp;(s&#x2F;index-of&nbsp;b&nbsp;&quot;.&quot;)&nbsp;(count&nbsp;b))))))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                167&nbsp;&nbsp;&nbsp;&nbsp;([filename&nbsp;stl&nbsp;solidname]
+                </span><br/>
+<span class="not-covered" title="0 out of 16 forms covered">
+                168&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(l&#x2F;debug&nbsp;&quot;Solid&nbsp;name&nbsp;is&nbsp;&quot;&nbsp;solidname)
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                169&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(spit
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                170&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;filename
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                171&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(stl-&gt;ascii&nbsp;stl&nbsp;solidname))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                172&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                173&nbsp;&nbsp;(defn&nbsp;binary-stl-to-ascii
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                174&nbsp;&nbsp;&nbsp;&nbsp;&quot;Convert&nbsp;the&nbsp;binary&nbsp;STL&nbsp;file&nbsp;indicated&nbsp;by&nbsp;`in-filename`,&nbsp;and&nbsp;write&nbsp;it&nbsp;to
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                175&nbsp;&nbsp;&nbsp;&nbsp;`out-filename`,&nbsp;if&nbsp;specified;&nbsp;otherwise,&nbsp;to&nbsp;a&nbsp;file&nbsp;with&nbsp;the&nbsp;same&nbsp;basename
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                176&nbsp;&nbsp;&nbsp;&nbsp;as&nbsp;`in-filename`&nbsp;but&nbsp;the&nbsp;extension&nbsp;`.ascii.stl`.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                177&nbsp;&nbsp;&nbsp;&nbsp;([in-filename]
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                178&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[[_&nbsp;ext]&nbsp;(fs&#x2F;split-ext&nbsp;in-filename)]
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                179&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(binary-stl-to-ascii
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                180&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in-filename
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                181&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                182&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(subs
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                183&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in-filename
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                184&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                185&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                186&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(s&#x2F;last-index-of&nbsp;in-filename&nbsp;&quot;.&quot;)
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                187&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(count&nbsp;in-filename)))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                188&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;.ascii&quot;
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                189&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ext))))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                190&nbsp;&nbsp;&nbsp;&nbsp;([in-filename&nbsp;out-filename]
+                </span><br/>
+<span class="not-covered" title="0 out of 6 forms covered">
+                191&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(write-ascii-stl&nbsp;out-filename&nbsp;(decode-binary-stl&nbsp;in-filename))))
                 </span><br/>
  </body>
 </html>

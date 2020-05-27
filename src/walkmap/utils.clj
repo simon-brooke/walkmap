@@ -1,6 +1,7 @@
 (ns walkmap.utils
   "Miscellaneous utility functions."
-  (:require [walkmap.path :as p]
+  (:require [clojure.math.numeric-tower :as m]
+            [walkmap.path :as p]
             [walkmap.polygon :as q]
             [walkmap.vertex :as v]))
 
@@ -14,13 +15,9 @@
 
 (defn vertices
   "If `o` is an object with vertices, return those vertices, else nil."
-  ;; TODO: it's possibly a design mistake that I'm currently distinguishing
-  ;; between polygons and paths on the basis that one has `:vertices` and
-  ;; the other has `:nodes`. Possibly it would be better to have a key
-  ;; `:closed` which was `true` for polygons, `false` (or missing) for
-  ;; paths.
   [o]
   (cond
     (v/vertex? o) (list o)
     (q/polygon? o) (:vertices o)
-    (p/path? o) (:nodes o)))
+    (p/path? o) (:vertices o)))
+

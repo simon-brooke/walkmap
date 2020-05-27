@@ -6,6 +6,22 @@
             [walkmap.utils :as u]
             [walkmap.vertex :as v]))
 
+;; TODO: Think about reification/dereification. How can we cull a polygon, if
+;; some vertices still index it? I *think* that what's needed is that when
+;; we store something in the superstructure, we replace all its vertices (and
+;; other dependent structures, if any with their ids - as well as, obviously,
+;; adding/merging those vertices/dependent structures into the superstructure
+;; as first class objects in themselves. That means, for each identified thing,
+;; the superstructure only contains one copy of it.
+;;
+;; The question then is, when we want to do things with those objects, do we
+;; exteract a copy with its dependent structures fixed back up (reification),
+;; or do we indirect through the superstructure every time we want to access
+;; them? In a sense, the copy in the superstructure is the 'one true copy',
+;; but it may become very difficult then to have one true copy of the
+;; superstructure - unless we replace the superstructure altogether with a
+;; database, which may be the Right Thing To Do.
+
 (defn index-vertex
   "Return a superstructure like `s` in which object `o` is indexed by vertex
   `v`. It is an error (and an exception may be thrown) if
@@ -14,11 +30,6 @@
   2. `o` is not a map;
   3. `o` does not have a value for the key `:id`;
   4. `v` is not a vertex."
-  ;; two copies of the same vertex are not identical enough to one another
-  ;; to be used as keys in a map. So our vertices need to have ids, and we need
-  ;; to key the vertex-index by vertex ids.
-  ;; TODO: BUT WE CANNOT USE GENSYMED ids, because two vertices with the same
-  ;; vertices must have the same id!
   [s o v]
   (if-not (v/vertex? o)
     (if (:id o)

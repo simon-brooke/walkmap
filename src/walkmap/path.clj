@@ -8,11 +8,11 @@
 
 (defn path?
   "True if `o` satisfies the conditions for a path. A path shall be a map
-  having the key `:nodes`, whose value shall be a sequence of vertices as
+  having the key `:vertices`, whose value shall be a sequence of vertices as
   defined in `walkmap.vertex`."
   [o]
   (let
-    [v (:nodes o)]
+    [v (:vertices o)]
     (and
       (seq? v)
       (> (count v) 2)
@@ -25,7 +25,7 @@
   [& vertices]
   (if
     (every? vertex? vertices)
-    {:nodes vertices :id (keyword (gensym "path")) :kind :path}
+    {:vertices vertices :id (keyword (gensym "path")) :kind :path}
     (throw (IllegalArgumentException. "Each item on path must be a vertex."))))
 
 (defn polygon->path
@@ -38,7 +38,7 @@
   [o]
   (if
     (polygon? o)
-    (assoc (dissoc o :vertices) :kind :path :nodes (concat (:vertices o) (list (first (:vertices o)))))
+    (assoc (dissoc o :vertices) :kind :path :vertices (concat (:vertices o) (list (first (:vertices o)))))
     (throw (IllegalArgumentException. "Not a polygon!"))))
 
 (defn path->edges
@@ -60,7 +60,7 @@
         (e/edge (first o) (rest o))
         (path->edges (rest o))))
     (path? o)
-    (path->edges (:nodes o))
+    (path->edges (:vertices o))
     :else
     (throw (IllegalArgumentException.
              "Not a path or sequence of vertices!"))))

@@ -26,7 +26,7 @@
 
 (defn tag
   "Return an object like this `object` but with these `tags` added to its tags,
-  if they are not already present.It is an error (and an exception will be
+  if they are not already present. It is an error (and an exception will be
   thrown) if
 
   1. `object` is not a map;

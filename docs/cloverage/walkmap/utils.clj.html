@@ -11,76 +11,67 @@
                 002&nbsp;&nbsp;&nbsp;&nbsp;&quot;Miscellaneous&nbsp;utility&nbsp;functions.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                003&nbsp;&nbsp;&nbsp;&nbsp;(:require&nbsp;[walkmap.path&nbsp;:as&nbsp;p]
+                003&nbsp;&nbsp;&nbsp;&nbsp;(:require&nbsp;[clojure.math.numeric-tower&nbsp;:as&nbsp;m]
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                004&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.polygon&nbsp;:as&nbsp;q]
+                004&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.path&nbsp;:as&nbsp;p]
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                005&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.vertex&nbsp;:as&nbsp;v]))
+                005&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.polygon&nbsp;:as&nbsp;q]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                006&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.vertex&nbsp;:as&nbsp;v]))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                006&nbsp;&nbsp;
+                007&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                007&nbsp;&nbsp;(defn&nbsp;deep-merge
+                008&nbsp;&nbsp;(defn&nbsp;deep-merge
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                008&nbsp;&nbsp;&nbsp;&nbsp;&quot;Recursively&nbsp;merges&nbsp;maps.&nbsp;If&nbsp;vals&nbsp;are&nbsp;not&nbsp;maps,&nbsp;the&nbsp;last&nbsp;value&nbsp;wins.&quot;
+                009&nbsp;&nbsp;&nbsp;&nbsp;&quot;Recursively&nbsp;merges&nbsp;maps.&nbsp;If&nbsp;vals&nbsp;are&nbsp;not&nbsp;maps,&nbsp;the&nbsp;last&nbsp;value&nbsp;wins.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                009&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;TODO:&nbsp;not&nbsp;my&nbsp;implementation,&nbsp;not&nbsp;sure&nbsp;I&nbsp;entirely&nbsp;trust&nbsp;it.
+                010&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;TODO:&nbsp;not&nbsp;my&nbsp;implementation,&nbsp;not&nbsp;sure&nbsp;I&nbsp;entirely&nbsp;trust&nbsp;it.
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                010&nbsp;&nbsp;&nbsp;&nbsp;[&amp;&nbsp;vals]
+                011&nbsp;&nbsp;&nbsp;&nbsp;[&amp;&nbsp;vals]
                 </span><br/>
 <span class="not-covered" title="0 out of 5 forms covered">
-                011&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(every?&nbsp;map?&nbsp;vals)
+                012&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(every?&nbsp;map?&nbsp;vals)
                 </span><br/>
 <span class="not-covered" title="0 out of 5 forms covered">
-                012&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply&nbsp;merge-with&nbsp;deep-merge&nbsp;vals)
+                013&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply&nbsp;merge-with&nbsp;deep-merge&nbsp;vals)
                 </span><br/>
 <span class="not-covered" title="0 out of 3 forms covered">
-                013&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(last&nbsp;vals)))
+                014&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(last&nbsp;vals)))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                014&nbsp;&nbsp;
+                015&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                015&nbsp;&nbsp;(defn&nbsp;vertices
+                016&nbsp;&nbsp;(defn&nbsp;vertices
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                016&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;`o`&nbsp;is&nbsp;an&nbsp;object&nbsp;with&nbsp;vertices,&nbsp;return&nbsp;those&nbsp;vertices,&nbsp;else&nbsp;nil.&quot;
+                017&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;`o`&nbsp;is&nbsp;an&nbsp;object&nbsp;with&nbsp;vertices,&nbsp;return&nbsp;those&nbsp;vertices,&nbsp;else&nbsp;nil.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                017&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;TODO:&nbsp;it&#x27;s&nbsp;possibly&nbsp;a&nbsp;design&nbsp;mistake&nbsp;that&nbsp;I&#x27;m&nbsp;currently&nbsp;distinguishing
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                018&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;between&nbsp;polygons&nbsp;and&nbsp;paths&nbsp;on&nbsp;the&nbsp;basis&nbsp;that&nbsp;one&nbsp;has&nbsp;`:vertices`&nbsp;and
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                019&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;the&nbsp;other&nbsp;has&nbsp;`:nodes`.&nbsp;Possibly&nbsp;it&nbsp;would&nbsp;be&nbsp;better&nbsp;to&nbsp;have&nbsp;a&nbsp;key
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                020&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;`:closed`&nbsp;which&nbsp;was&nbsp;`true`&nbsp;for&nbsp;polygons,&nbsp;`false`&nbsp;(or&nbsp;missing)&nbsp;for
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                021&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;paths.
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                022&nbsp;&nbsp;&nbsp;&nbsp;[o]
+                018&nbsp;&nbsp;&nbsp;&nbsp;[o]
                 </span><br/>
 <span class="not-covered" title="0 out of 4 forms covered">
-                023&nbsp;&nbsp;&nbsp;&nbsp;(cond
+                019&nbsp;&nbsp;&nbsp;&nbsp;(cond
                 </span><br/>
 <span class="not-covered" title="0 out of 6 forms covered">
-                024&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(v&#x2F;vertex?&nbsp;o)&nbsp;(list&nbsp;o)
+                020&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(v&#x2F;vertex?&nbsp;o)&nbsp;(list&nbsp;o)
                 </span><br/>
 <span class="not-covered" title="0 out of 6 forms covered">
-                025&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(q&#x2F;polygon?&nbsp;o)&nbsp;(:vertices&nbsp;o)
+                021&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(q&#x2F;polygon?&nbsp;o)&nbsp;(:vertices&nbsp;o)
                 </span><br/>
 <span class="not-covered" title="0 out of 6 forms covered">
-                026&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(p&#x2F;path?&nbsp;o)&nbsp;(:nodes&nbsp;o)))
+                022&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(p&#x2F;path?&nbsp;o)&nbsp;(:vertices&nbsp;o)))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                023&nbsp;&nbsp;
                 </span><br/>
  </body>
 </html>

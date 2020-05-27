@@ -1,24 +1,17 @@
 (ns walkmap.geometry
   (:require [clojure.math.combinatorics :as combo]
-            [clojure.math.numeric-tower :as m]
-            [walkmap.edge :as e]
-            [walkmap.path :refer [path? polygon->path]]
-            [walkmap.polygon :refer [polygon?]]
-            [walkmap.vertex :as v]))
+            [clojure.math.numeric-tower :as m]))
 
-(defn on?
-  "True if the vertex `v` is on the edge `e`."
-  [e v]
-  (let [p (v/ensure3d (:start e))
-        q (v/ensure3d v)
-        r (v/ensure3d (:end e))]
-    (and
-      (e/collinear? p q r)
-      (<= (:x q) (max (:x p) (:x r)))
-      (>= (:x q) (min (:x p) (:x r)))
-      (<= (:y q) (max (:y p) (:y r)))
-      (>= (:y q) (min (:y p) (:y r)))
-      (<= (:z q) (max (:z p) (:z r)))
-      (>= (:z q) (min (:z p) (:z r))))))
-
-
+(defn =ish
+  "True if numbers `n1`, `n2` are roughly equal; that is to say, equal to
+  within `tolerance` (defaults to one part in a million)."
+  ([n1 n2]
+   (if (and (number? n1) (number? n2))
+     (let [m (m/abs (min n1 n2))
+           t (if (zero? m) 0.000001 (* 0.000001 m))]
+       (=ish n1 n2 t))
+     (= n1 n2)))
+  ([n1 n2 tolerance]
+   (if (and (number? n1) (number? n2))
+     (< (m/abs (- n1 n2)) tolerance)
+     (= n1 n2))))
