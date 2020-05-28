@@ -2,7 +2,9 @@
   "Utility functions for writing stereolithography (STL) files (and possibly,
   later, other geometry files of interest to us) as scalable vector graphics
   (SVG)."
-  (:require [clojure.string :as s]
+  (:require [clojure.java.io :as io]
+            [clojure.string :as s]
+            [clojure.xml :as x]
             [dali.io :as neatly-folded-clock]
             [hiccup.core :refer [html]]
             [taoensso.timbre :as l :refer [info error spy]]
@@ -106,3 +108,9 @@
        :hiccup (spit out-filename (html s))
        (throw (Exception. "Unexpected renderer value: " *preferred-svg-render*)))
      s)))
+
+
+(defn read-svg
+  ([file-name]
+   (read-svg file-name nil))
+  ([file-name map-kind]

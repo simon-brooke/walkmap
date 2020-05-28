@@ -40,7 +40,7 @@
           ;; stage we need to build a map.
           (assoc vi (:id v) (assoc current (:id o) (:id v))))
         (throw (IllegalArgumentException. "Not a vertex: " v)))
-      (throw (IllegalArgumentException. (subs (str "No `:id` value: " o) 0 80))))
+      (throw (IllegalArgumentException. (u/truncate (str "No `:id` value: " o) 80))))
     ;; it shouldn't actually be an error to try to index a vertex, but it
     ;; also isn't useful to do so, so I'd be inclined to ignore it.
     (:vertex-index s)))

@@ -30,17 +30,21 @@
   thrown) if
 
   1. `object` is not a map;
-  2. any of `tags` is not a keyword."
+  2. any of `tags` is not a keyword or sequence of keywords.
+
+  It's legal to include sequences of keywords in `tags`, so that users can do
+  useful things like `(tag obj (map keyword some-strings))`."
   [object & tags]
-  (if
-    (map? object)
+  (let [tags' (flatten tags)]
     (if
-      (every? keyword? tags)
-      (assoc object ::tags (union (set tags) (::tags object)))
+      (map? object)
+      (if
+        (every? keyword? tags')
+        (assoc object ::tags (union (set tags') (::tags object)))
+        (throw (IllegalArgumentException.
+                 (str "Must be keyword(s): " (map type tags')))))
       (throw (IllegalArgumentException.
-               (str "Must be keyword(s): " (map type tags)))))
-    (throw (IllegalArgumentException.
-             (str "Must be a map: " (type object))))))
+               (str "Must be a map: " (type object)))))))
 
 (defmacro tags
   "Return the tags of this object, if any."

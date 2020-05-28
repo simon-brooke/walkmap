@@ -47,5 +47,8 @@
     (is (thrown? IllegalArgumentException (tagged? {} :foo "bar" :ban))
         "An exception should be thrown if any of `tags` is not a keyword: `tagged?`.")
     (is (thrown? IllegalArgumentException (untag {} :foo "bar" :ban))
-        "An exception should be thrown if any of `tags` is not a keywordp: `untag`.")))
+        "An exception should be thrown if any of `tags` is not a keywordp: `untag`.")
+    (let [o (tag {} :foo '(:bar :ban) :froboz)]
+      (is (tagged? o :ban :bar :foo :froboz)
+          "It's now allowed to include lists of tags in the arg list for `tag`."))))
 

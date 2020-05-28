@@ -5,7 +5,8 @@
   two vertices, create an edge from them and use `walkmap.edge/length`."
   (:require [clojure.math.numeric-tower :as m]
             [clojure.string :as s]
-            [walkmap.geometry :refer [=ish]]))
+            [walkmap.geometry :refer [=ish]]
+            [walkmap.utils :refer [truncate]]))
 
 (defn vertex-key
   "Making sure we get the same key everytime we key a vertex with the same
@@ -25,7 +26,7 @@
         (str "vert_" (:x o) "_" (:y o))
         :else
         (throw (IllegalArgumentException.
-                 (subs (str "Not a vertex: " (or o "nil")) 0 80))))
+                 (truncate (str "Not a vertex: " (or o "nil")) 80))))
       "."
       "-")))
 
@@ -79,10 +80,10 @@
     (assoc o :kind :vertex :id (vertex-key o))
     (throw
       (IllegalArgumentException.
-        (subs
+        (truncate
           (str "Not a proto-vertex: must have numeric `:x` and `:y`: "
                (or o "nil"))
-          0 80)))))
+          80)))))
 
 (def ensure3d
   "Given a vertex `o`, if `o` has a `:z` value, just return `o`; otherwise
@@ -98,7 +99,7 @@
        (cond
          (not (vertex? o)) (throw
                              (IllegalArgumentException.
-                               (subs (str "Not a vertex: " (or o "nil")) 0 80)))
+                               (truncate (str "Not a vertex: " (or o "nil")) 80)))
          (:z o) o
          :else (assoc o :z dflt))))))
 
@@ -111,4 +112,4 @@
         (assoc o :z 0.0)
         (throw
           (IllegalArgumentException.
-            (subs (str "Not a vertex: " (or o "nil")) 0 80)))))))
+            (truncate (str "Not a vertex: " (or o "nil")) 80)))))))

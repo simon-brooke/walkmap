@@ -8,6 +8,7 @@
             [walkmap.edge :as e]
             [walkmap.polygon :refer [polygon?]]
             [walkmap.tag :refer [tag]]
+            [walkmap.utils :as u]
             [walkmap.vertex :as v])
   (:import org.clojars.smee.binary.core.BinaryIO
            java.io.DataInput))
@@ -84,7 +85,7 @@
    (when-not
      (keyword? map-kind)
      (throw (IllegalArgumentException.
-              (subs (str "Must be a keyword: " (or map-kind "nil")) 0 80))))
+              (u/truncate (str "Must be a keyword: " (or map-kind "nil")) 80))))
    (cond
      (and (coll? o) (not (map? o))) (map #(canonicalise % map-kind) o)
      ;; if it has :facets it's an STL structure, but it doesn't yet conform to `stl?`
@@ -120,7 +121,7 @@
    (when-not
      (keyword? map-kind)
      (throw (IllegalArgumentException.
-              (subs (str "Must be a keyword: " (or map-kind "nil")) 0 80))))
+              (u/truncate (str "Must be a keyword: " (or map-kind "nil")) 80))))
    (let [in (io/input-stream filename)]
      (canonicalise (b/decode binary-stl in) map-kind))))
 
