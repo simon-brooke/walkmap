@@ -5,6 +5,7 @@
   (:require [clojure.string :as s]
             [walkmap.edge :as e]
             [walkmap.polygon :refer [polygon?]]
+            [walkmap.utils :refer [kind-type]]
             [walkmap.vertex :refer [vertex?]]))
 
 (defn path?
@@ -30,7 +31,7 @@
     (throw (IllegalArgumentException.
              (str
                "Each item on path must be a vertex: "
-               (s/join " " (map #(or (:kind %) (type %) "nil") vertices)))))))
+               (s/join " " (map kind-type vertices)))))))
 
 (defn polygon->path
   "If `o` is a polygon, return an equivalent path. What's different about

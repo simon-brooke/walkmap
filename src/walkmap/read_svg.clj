@@ -7,10 +7,11 @@
             [clojure.string :as s]
             [clojure.xml :as x]
             [clojure.zip :as z]
-            [taoensso.timbre :as l :refer [info error spy]]
+            [taoensso.timbre :as l]
             [walkmap.path :refer [path]]
 ;;            [walkmap.polygon :refer [polygon]]
             [walkmap.tag :refer [tag]]
+            [walkmap.utils :refer [kind-type truncate]]
             [walkmap.vertex :refer [vertex vertex?]]))
 
 (defn upper-case?
@@ -19,38 +20,53 @@
 
 (defn match->vertex
   [match-vector x y]
-  (let [command (nth match-vector 1)
-        xcoord (read-string (nth match-vector 2))
-        ycoord (read-string (nth match-vector 3))
-        ;; upper case command letters mean the coordinates that follow are
-        ;; absolute; lower case, relative.
-        x' (if (upper-case? command) xcoord (+ x xcoord))
-        y' (if (upper-case? command) ycoord (+ y ycoord))]
-    (case (s/lower-case command)
-      ("m" "l") {:vertex (vertex x' y') :x x' :y y'})))
+  (when-not (empty? match-vector)
+    (let [command (nth match-vector 1)
+          xcoord (read-string (nth match-vector 2))
+          ycoord (read-string (nth match-vector 3))
+          ;; upper case command letters mean the coordinates that follow are
+          ;; absolute; lower case, relative.
+          x' (if (upper-case? command) xcoord (+ x xcoord))
+          y' (if (upper-case? command) ycoord (+ y ycoord))]
+      (case (s/lower-case command)
+        ("m" "l") {:vertex (vertex x' y') :x x' :y y'}
+        nil))))
 
 (defn command-string->vertices
+  "Return the destination of each successive line (`l`, `L`) and move (`m`, `M`)
+  command in this string `s`, expected to be an SVG path command string."
   [s]
-  (let [matcher (re-matcher #"([a-zA-Z]) +([-+]?[0-9]*\.?[0-9]+) +([-+]?[0-9]*\.?[0-9]+) +" s)]
-    (loop [match (re-find matcher) ;loop starts with 2 set arguments
+  (let [cmd-matcher ;; matches a 'command' in the string: a letter followed by
+        ;;spaces and numbers
+        (re-matcher #"[a-zA-Z][^a-zA-Z]*" s)
+        seg-pattern ;; matches a command which initiates a move of the current
+        ;; position.
+        #"([a-zA-Z]) +([-+]?[0-9]*\.?[0-9]+) +([-+]?[0-9]*\.?[0-9]+) +"]
+    (loop [match (re-find cmd-matcher)
            result []
            x 0
            y 0]
       (if-not match
         (filter vertex? result)
-        (let [m (match->vertex match x y)]
-          (recur (re-find matcher)    ;loop with 2 new arguments
+        (let [m (match->vertex (re-find seg-pattern match) x y)]
+          (recur (re-find cmd-matcher)    ;loop with 2 new arguments
                  (conj result (:vertex m))
-                 (:x m)
-                 (:y m)))))))
+                 (or (:x m) x)
+                 (or (:y m) y)))))))
 
 (defn path-elt->path
-
+  "Given the SVG path element `elt`, return a walkmap path structure
+  representing the line (`l`, `L`) and move (`m`, `M`) commands in
+  that path."
   [elt]
-  (tag
-    (path (command-string->vertices (-> elt :attrs :d)))
-    (when (-> elt :attrs :class)
-      (map keyword (s/split (-> elt :attrs :class) #" ")))))
+  (if (= (-> elt :tag) :path)
+    (let [vs (command-string->vertices (-> elt :attrs :d))
+          p  (when-not (empty? vs) (apply path vs))]
+      (if (and p (-> elt :attrs :class))
+        (tag p (map keyword (s/split (-> elt :attrs :class) #" ")))
+        p))
+    (throw (IllegalArgumentException.
+             (str "Must be an SVG `path` element: " elt)))))
 
 (defn progeny
   "Return all the nodes in the XML structure below this `elt` which match
@@ -79,17 +95,4 @@
   ([file-name map-kind]
     (let [xml (x/parse (io/file file-name))
           paths (progeny xml #(= (:tag %) :path))]
-      (map path-elt->path paths))))
-
-(read-svg "resources/iom/manual_roads.svg")
-
-
-;; (def xx (z/xml-zip (x/parse (io/file "resources/iom/manual_roads.svg"))))
-
-;; (type xx)
-;; (first xx)
-
-;; (zx/xml-> xx :svg :g :path)
-
-;; (def xxx (x/parse (io/file "resources/iom/manual_roads.svg")))
-
+      (remove nil? (map path-elt->path paths)))))

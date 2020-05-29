@@ -26,4 +26,10 @@
     (subs s 0 n)
     s))
 
-
+(defn kind-type
+  "Identify the type of an `object`, e.g. for logging. If it has a `:kind` key,
+  it's one of ours, and that's what we want. Otherwise, we want its type; but
+  the type of `nil` is `nil`, which doesn't get printed when assembling error
+  ,essages, so return \"nil\"."
+  [object]
+  (or (:kind object) (type object) "nil"))
