@@ -91,13 +91,13 @@
      ;; if it has :facets it's an STL structure, but it doesn't yet conform to `stl?`
      (:facets o) (assoc o
                    :kind :stl
-                   :id (or (:id o) (keyword (gensym "stl")))
+                   :walkmap.id/id (or (:walkmap.id/id o) (keyword (gensym "stl")))
                    :facets (canonicalise (:facets o) map-kind))
      ;; if it has :vertices it's a polygon, but it doesn't yet conform to `polygon?`
      (:vertices o) (centre
                      (tag
                        (assoc o
-                         :id (or (:id o) (keyword (gensym "poly")))
+                         :walkmap.id/id (or (:walkmap.id/id o) (keyword (gensym "poly")))
                          :kind :polygon
                          :vertices (canonicalise (:vertices o) map-kind))
                        :facet map-kind))

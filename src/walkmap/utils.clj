@@ -10,14 +10,6 @@
     (apply merge-with deep-merge vals)
     (last vals)))
 
-;; (defn vertices
-;;   "If `o` is an object with vertices, return those vertices, else nil."
-;;   [o]
-;;   (cond
-;;     (v/vertex? o) (list o)
-;;     (q/polygon? o) (:vertices o)
-;;     (p/path? o) (:vertices o)))
-
 (defn truncate
   "If string `s` is more than `n` characters long, return the first `n`
   characters; otherwise, return `s`."

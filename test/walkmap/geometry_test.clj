@@ -11,4 +11,4 @@
     (is (=ish 0 0.0) "Tricky conrer case!")
     (is (=ish :foo :foo) "Fails over to plain old equals for non-numbers.")
     (is (=ish 6 5 10000) "If tolerance is wide enough, anything can be equal.")
-    (is (=ish "hello" "goodbye" 10000) "Well, except non-numbers, of course.")))
+    (is (not (=ish "hello" "goodbye" 10000)) "Well, except non-numbers, of course.")))

@@ -19,7 +19,7 @@
       (seq? v)
       (> (count v) 2)
       (every? vertex? v)
-      (:id o)
+      (:walkmap.id/id o)
       (or (nil? (:kind o)) (= (:kind o) :path)))))
 
 (defn path
@@ -27,7 +27,7 @@
   [& vertices]
   (if
     (every? vertex? vertices)
-    {:vertices vertices :id (keyword (gensym "path")) :kind :path}
+    {:vertices vertices :walkmap.id/id (keyword (gensym "path")) :kind :path}
     (throw (IllegalArgumentException.
              (str
                "Each item on path must be a vertex: "

@@ -11,7 +11,7 @@
   [v1 v2]
   (if
     (and (vertex? v1) (vertex? v2))
-    {:kind :edge :id (keyword (gensym "edge")) :start v1 :end v2}
+    {:kind :edge :walkmap.id/id (keyword (gensym "edge")) :start v1 :end v2}
     (throw (IllegalArgumentException. "Must be vertices."))))
 
 (defn edge?

@@ -42,7 +42,7 @@
   [o]
   (and
     (map? o)
-    (:id o)
+    (:walkmap.id/id o)
     (number? (:x o))
     (number? (:y o))
     (or (nil? (:z o)) (number? (:z o)))
@@ -57,15 +57,15 @@
 
 (defn vertex
   "Make a vertex with this `x`, `y` and (if provided) `z` values. Returns a map
-  with those values, plus a unique `:id` value, and `:kind` set to `:vertex`.
-  It's not necessary to use this function to create a vertex, but the `:id`
+  with those values, plus a unique `:walkmap.id/id` value, and `:kind` set to `:vertex`.
+  It's not necessary to use this function to create a vertex, but the `:walkmap.id/id`
   must be present and must be unique."
   ([x y]
    (let [v {:x x :y y :kind :vertex}]
-     (assoc v :id (vertex-key v))))
+     (assoc v :walkmap.id/id (vertex-key v))))
   ([x y z]
    (let [v (assoc (vertex x y) :z z)]
-     (assoc v :id (vertex-key v)))))
+     (assoc v :walkmap.id/id (vertex-key v)))))
 
 (defn canonicalise
   "If `o` is a map with numeric values for `:x`, `:y` and optionally `:z`,
@@ -77,7 +77,7 @@
       (number? (:x o))
       (number? (:y o))
       (or (nil? (:z o)) (number? (:z o))))
-    (assoc o :kind :vertex :id (vertex-key o))
+    (assoc o :kind :vertex :walkmap.id/id (vertex-key o))
     (throw
       (IllegalArgumentException.
         (truncate

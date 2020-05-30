@@ -37,7 +37,7 @@
   It's legal to include sequences of keywords in `tags`, so that users can do
   useful things like `(tag obj (map keyword some-strings))`."
   [object & tags]
-  (l/debug "Tagging" (or (:kind object) (type object) nil) "with" tags)
+  (l/debug "Tagging" (kind-type object) "with" tags)
   (let [tags' (flatten tags)]
     (if
       (map? object)

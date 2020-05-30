@@ -13,7 +13,7 @@
       (coll? v)
       (> (count v) 2)
       (every? vertex? v)
-      (:id o)
+      (:walkmap.id/id o)
       (or (nil? (:kind o)) (= (:kind o) :polygon)))))
 
 
