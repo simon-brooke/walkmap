@@ -163,10 +163,6 @@
        (IllegalArgumentException.
          (str "Superstructure must be a map: " (u/kind-type s)))))
    (assoc
-     (u/deep-merge s (in-store-find-objects o))
+     (u/deep-merge s (in-store-find-objects o) (index-vertices s o))
      (:walkmap.id/id o)
-     (in-store-replace-with-keys o)
-     ::vertex-index
-     (u/deep-merge
-       (index-vertices s o)
-       (::vertex-index s)))))
+     (in-store-replace-with-keys o))))
