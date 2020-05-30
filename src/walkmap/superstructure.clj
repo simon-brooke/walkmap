@@ -75,25 +75,6 @@
          #(index-vertex s o %)
          (:vertices o)))}))
 
-;; (declare in-retrieve)
-
-;; (defn in-retrieve-map
-;;   "Internal to `in-retrieve`, q.v. Handle the case where `x` is a map.
-;;   Separated out for debugging/unit testing purposes. Use at your own peril."
-;;   [x s]
-;;   (let [v (reduce
-;;             (fn [m k]
-;;               (assoc m k (in-retrieve (x k) s)))
-;;             {}
-;;             (keys (dissoc x :walkmap.id/id)))
-;;         id (:walkmap.id/id x)]
-;;     (if id
-;;       (assoc
-;;         v
-;;         :walkmap.id/id
-;;         (:walkmap.id/id x))))
-;;   )
-
 (defn in-retrieve
   "Internal guts of `retrieve`, q.v. `x` can be anything; `s` must be a
   walkmap superstructure. TODO: recursive, quite likely to blow the fragile
@@ -119,6 +100,7 @@
                    :walkmap.id/id
                    (:walkmap.id/id x))
                  v))
+    (set? x) x ;; TODO: should I search in sets for objects when storing?
     (coll? x) (map #(in-retrieve % s) x)
     :else x))
 
@@ -136,6 +118,7 @@
   ([o s]
    (l/debug "Finding objects in:" o)
    (cond
+     (set? o) s ;; TODO: should I search in sets for objects when storing?
      (map? o) (if (:walkmap.id/id o)
                 (assoc
                   (in-store-find-objects (vals o) s)
