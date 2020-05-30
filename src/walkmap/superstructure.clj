@@ -24,6 +24,8 @@
 ;; superstructure - unless we replace the superstructure altogether with a
 ;; database, which may be the Right Thing To Do.
 
+(def vertex-index ::vertex-index)
+
 (defn vertices
   "If `o` is an object with vertices, return those vertices, else nil."
   [o]
@@ -44,7 +46,7 @@
   (if-not (v/vertex? o)
     (if (:walkmap.id/id o)
       (if (v/vertex? v)
-        (let [vi (or (:vertex-index s) {})
+        (let [vi (or (::vertex-index s) {})
               current (or (vi (:walkmap.id/id v)) {})]
           ;; deep-merge doesn't merge sets, only maps; so at this
           ;; stage we need to build a map.
@@ -53,7 +55,7 @@
       (throw (IllegalArgumentException. (u/truncate (str "No `:walkmap.id/id` value: " o) 80))))
     ;; it shouldn't actually be an error to try to index a vertex, but it
     ;; also isn't useful to do so, so I'd be inclined to ignore it.
-    (:vertex-index s)))
+    (::vertex-index s)))
 
 (defn index-vertices
   "Return a superstructure like `s` in which object `o` is indexed by its
@@ -65,7 +67,7 @@
   [s o]
   (u/deep-merge
     s
-    {:vertex-index
+    {::vertex-index
      (reduce
        u/deep-merge
        {}
@@ -73,21 +75,24 @@
          #(index-vertex s o %)
          (:vertices o)))}))
 
-(defn in-retrieve-map
-  "Internal to `in-retrieve`, q.v. Handle the case where `x` is a map.
-  Separated out for debugging/unit testing purposes. Use at your own peril."
-  [x s]
-  (let [v (reduce
-            (fn [m k]
-              (assoc m k (in-retrieve (x k) s)))
-            {}
-            (keys (dissoc x :walkmap.id/id)))
-        id (:walkmap.id/id x)]
-    (if id
-      (assoc
-        v
-        :walkmap.id/id
-        (:walkmap.id/id x)))))
+;; (declare in-retrieve)
+
+;; (defn in-retrieve-map
+;;   "Internal to `in-retrieve`, q.v. Handle the case where `x` is a map.
+;;   Separated out for debugging/unit testing purposes. Use at your own peril."
+;;   [x s]
+;;   (let [v (reduce
+;;             (fn [m k]
+;;               (assoc m k (in-retrieve (x k) s)))
+;;             {}
+;;             (keys (dissoc x :walkmap.id/id)))
+;;         id (:walkmap.id/id x)]
+;;     (if id
+;;       (assoc
+;;         v
+;;         :walkmap.id/id
+;;         (:walkmap.id/id x))))
+;;   )
 
 (defn in-retrieve
   "Internal guts of `retrieve`, q.v. `x` can be anything; `s` must be a
@@ -101,7 +106,19 @@
                    (in-retrieve (s x) s)
                    x)
     ;; if it's a map, for every key which is not `:walkmap.id/id`, recurse.
-    (map? x) (in-retrieve-map x s)
+    (map? x) (let [v (reduce
+                       (fn [m k]
+                         (assoc m k (in-retrieve (x k) s)))
+                       {}
+                       (keys (dissoc x :walkmap.id/id)))
+                   id (:walkmap.id/id x)]
+               ;; if it has an id, bind it to that id in the returned value.
+               (if id
+                 (assoc
+                   v
+                   :walkmap.id/id
+                   (:walkmap.id/id x))
+                 v))
     (coll? x) (map #(in-retrieve % s) x)
     :else x))
 
@@ -166,7 +183,7 @@
      (u/deep-merge s (in-store-find-objects o))
      (:walkmap.id/id o)
      (in-store-replace-with-keys o)
-     :vertex-index
+     ::vertex-index
      (u/deep-merge
        (index-vertices s o)
-       (:vertex-index s)))))
+       (::vertex-index s)))))
