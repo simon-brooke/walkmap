@@ -25,13 +25,12 @@
 (defn path
   "Return a path constructed from these `vertices`."
   [& vertices]
-  (if
-    (every? vertex? vertices)
-    {:vertices vertices :walkmap.id/id (keyword (gensym "path")) :kind :path}
+  (when-not (every? vertex? vertices)
     (throw (IllegalArgumentException.
              (str
                "Each item on path must be a vertex: "
-               (s/join " " (map kind-type vertices)))))))
+               (s/join " " (map kind-type (remove vertex? vertices)))))))
+  {:vertices vertices :walkmap.id/id (keyword (gensym "path")) :kind :path})
 
 (defn polygon->path
   "If `o` is a polygon, return an equivalent path. What's different about
@@ -41,10 +40,12 @@
 
   If `o` is not a polygon, will throw an exception."
   [o]
-  (if
-    (polygon? o)
-    (assoc (dissoc o :vertices) :kind :path :vertices (concat (:vertices o) (list (first (:vertices o)))))
-    (throw (IllegalArgumentException. "Not a polygon!"))))
+  (when-not (polygon? o)
+    (throw (IllegalArgumentException. (str "Not a polygon: " (kind-type o)))))
+  (assoc (dissoc o :vertices)
+    :kind :path
+    ;; `concat` rather than `conj` because order matters.
+    :vertices (concat (:vertices o) (list (first (:vertices o))))))
 
 (defn path->edges
   "if `o` is a path, a polygon, or a sequence of vertices, return a sequence of
