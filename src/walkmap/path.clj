@@ -2,8 +2,10 @@
   "Essentially the specification for things we shall consider to be path.
   **Note that** for these purposes `path` means any continuous linear
   feature, where such features specifically include watercourses."
-  (:require [walkmap.edge :as e]
+  (:require [clojure.string :as s]
+            [walkmap.edge :as e]
             [walkmap.polygon :refer [polygon?]]
+            [walkmap.utils :refer [kind-type]]
             [walkmap.vertex :refer [vertex?]]))
 
 (defn path?
@@ -17,7 +19,7 @@
       (seq? v)
       (> (count v) 2)
       (every? vertex? v)
-      (:id o)
+      (:walkmap.id/id o)
       (or (nil? (:kind o)) (= (:kind o) :path)))))
 
 (defn path
@@ -25,8 +27,11 @@
   [& vertices]
   (if
     (every? vertex? vertices)
-    {:vertices vertices :id (keyword (gensym "path")) :kind :path}
-    (throw (IllegalArgumentException. "Each item on path must be a vertex."))))
+    {:vertices vertices :walkmap.id/id (keyword (gensym "path")) :kind :path}
+    (throw (IllegalArgumentException.
+             (str
+               "Each item on path must be a vertex: "
+               (s/join " " (map kind-type vertices)))))))
 
 (defn polygon->path
   "If `o` is a polygon, return an equivalent path. What's different about

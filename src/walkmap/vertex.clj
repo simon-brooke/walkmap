@@ -5,7 +5,8 @@
   two vertices, create an edge from them and use `walkmap.edge/length`."
   (:require [clojure.math.numeric-tower :as m]
             [clojure.string :as s]
-            [walkmap.geometry :refer [=ish]]))
+            [walkmap.geometry :refer [=ish]]
+            [walkmap.utils :refer [truncate]]))
 
 (defn vertex-key
   "Making sure we get the same key everytime we key a vertex with the same
@@ -25,7 +26,7 @@
         (str "vert_" (:x o) "_" (:y o))
         :else
         (throw (IllegalArgumentException.
-                 (subs (str "Not a vertex: " (or o "nil")) 0 80))))
+                 (truncate (str "Not a vertex: " (or o "nil")) 80))))
       "."
       "-")))
 
@@ -41,7 +42,7 @@
   [o]
   (and
     (map? o)
-    (:id o)
+    (:walkmap.id/id o)
     (number? (:x o))
     (number? (:y o))
     (or (nil? (:z o)) (number? (:z o)))
@@ -56,15 +57,15 @@
 
 (defn vertex
   "Make a vertex with this `x`, `y` and (if provided) `z` values. Returns a map
-  with those values, plus a unique `:id` value, and `:kind` set to `:vertex`.
-  It's not necessary to use this function to create a vertex, but the `:id`
+  with those values, plus a unique `:walkmap.id/id` value, and `:kind` set to `:vertex`.
+  It's not necessary to use this function to create a vertex, but the `:walkmap.id/id`
   must be present and must be unique."
   ([x y]
    (let [v {:x x :y y :kind :vertex}]
-     (assoc v :id (vertex-key v))))
+     (assoc v :walkmap.id/id (vertex-key v))))
   ([x y z]
    (let [v (assoc (vertex x y) :z z)]
-     (assoc v :id (vertex-key v)))))
+     (assoc v :walkmap.id/id (vertex-key v)))))
 
 (defn canonicalise
   "If `o` is a map with numeric values for `:x`, `:y` and optionally `:z`,
@@ -76,13 +77,13 @@
       (number? (:x o))
       (number? (:y o))
       (or (nil? (:z o)) (number? (:z o))))
-    (assoc o :kind :vertex :id (vertex-key o))
+    (assoc o :kind :vertex :walkmap.id/id (vertex-key o))
     (throw
       (IllegalArgumentException.
-        (subs
+        (truncate
           (str "Not a proto-vertex: must have numeric `:x` and `:y`: "
                (or o "nil"))
-          0 80)))))
+          80)))))
 
 (def ensure3d
   "Given a vertex `o`, if `o` has a `:z` value, just return `o`; otherwise
@@ -98,7 +99,7 @@
        (cond
          (not (vertex? o)) (throw
                              (IllegalArgumentException.
-                               (subs (str "Not a vertex: " (or o "nil")) 0 80)))
+                               (truncate (str "Not a vertex: " (or o "nil")) 80)))
          (:z o) o
          :else (assoc o :z dflt))))))
 
@@ -111,4 +112,4 @@
         (assoc o :z 0.0)
         (throw
           (IllegalArgumentException.
-            (subs (str "Not a vertex: " (or o "nil")) 0 80)))))))
+            (truncate (str "Not a vertex: " (or o "nil")) 80)))))))

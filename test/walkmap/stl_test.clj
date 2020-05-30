@@ -7,7 +7,7 @@
 (deftest canonicalise-test
   (testing "Canonicalisation of objects read from STL: vertices."
     (is (vertex? (canonicalise {:x 3.0, :y 1.0, :z 1.0}))
-        "Vertex: should have an `:id` and `:kind` = `:vertex`.")
+        "Vertex: should have an `:walkmap.id/id` and `:kind` = `:vertex`.")
     (is (= (:x (canonicalise {:x 3.0, :y 1.0, :z 1.0})) 3.0)
         "`:x` value should be unchanged.")
     (is (= (:y (canonicalise {:x 3.0, :y 1.0, :z 1.0})) 1.0)
@@ -28,7 +28,7 @@
              :abc 0}
           p' (canonicalise p)]
       (is (polygon? p')
-          "Polygon: should have an `:id` and `:kind` = `:polygon`.")
+          "Polygon: should have an `:walkmap.id/id` and `:kind` = `:polygon`.")
       (is (= (count (:vertices p)) (count (:vertices p')))
           "Number of vertices should not change")
       (map
@@ -93,4 +93,4 @@
                                     {:x 51.0, :y 20.0, :z 1.0}],
                          :abc 0}]}
           stl' (canonicalise stl)]
-      (is (stl? stl') "Stl: should have an `:id` and `:kind` = `:stl`."))))
+      (is (stl? stl') "Stl: should have an `:walkmap.id/id` and `:kind` = `:stl`."))))

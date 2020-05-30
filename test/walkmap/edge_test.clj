@@ -8,32 +8,32 @@
   (testing "identification of edges."
     (is (edge? {:start (vertex 0.0 0.0 0.0)
                 :end (vertex 3 4 0.0)}) "It is.")
-    (is (not (edge? {:start {:y 0.0 :z 0.0 :id 'foo}
-                     :end {:x 3 :y 4 :z 0.0 :id 'bar}})) "Start lacks :x key")
-    (is (not (edge? {:start {:x nil :y 0.0 :z 0.0 :id 'foo}
-                     :end {:x 3 :y 4 :z 0.0 :id 'bar}})) "Start lacks :x value")
-    (is (not (edge? {:begin {:x nil :y 0.0 :z 0.0 :id 'foo}
-                     :end {:x 3 :y 4 :z 0.0 :id 'bar}})) "Lacks start key")
-    (is (not (edge? {:start {:x nil :y 0.0 :z 0.0 :id 'foo}
-                     :finish {:x 3 :y 4 :z 0.0 :id 'bar}})) "Lacks end key")
-    (is (not (edge? {:start {:x "zero" :y 0.0 :z 0.0 :id 'foo}
-                     :end {:x 3 :y 4 :z 0.0 :id 'bar}})) "Value of x in start is not a number")
+    (is (not (edge? {:start {:y 0.0 :z 0.0 :walkmap.id/id 'foo}
+                     :end {:x 3 :y 4 :z 0.0 :walkmap.id/id 'bar}})) "Start lacks :x key")
+    (is (not (edge? {:start {:x nil :y 0.0 :z 0.0 :walkmap.id/id 'foo}
+                     :end {:x 3 :y 4 :z 0.0 :walkmap.id/id 'bar}})) "Start lacks :x value")
+    (is (not (edge? {:begin {:x nil :y 0.0 :z 0.0 :walkmap.id/id 'foo}
+                     :end {:x 3 :y 4 :z 0.0 :walkmap.id/id 'bar}})) "Lacks start key")
+    (is (not (edge? {:start {:x nil :y 0.0 :z 0.0 :walkmap.id/id 'foo}
+                     :finish {:x 3 :y 4 :z 0.0 :walkmap.id/id 'bar}})) "Lacks end key")
+    (is (not (edge? {:start {:x "zero" :y 0.0 :z 0.0 :walkmap.id/id 'foo}
+                     :end {:x 3 :y 4 :z 0.0 :walkmap.id/id 'bar}})) "Value of x in start is not a number")
     (is (false? (edge? "I am not an edge")) "Edge mustbe a map.")))
 
 (deftest collinear-test
   (testing "collinearity"
-    (is (collinear? {:start {:x 0.0 :y 0.0 :z 0.0 :id 'foo} :end {:x 3.0 :y 4.0 :z 0.0 :id 'bar}}
-                    {:start {:x 3.0 :y 4.0 :z 0.0 :id 'foo} :end {:x 9.0 :y 12.0 :z 0.0 :id 'bar}})
+    (is (collinear? {:start {:x 0.0 :y 0.0 :z 0.0 :walkmap.id/id 'foo} :end {:x 3.0 :y 4.0 :z 0.0 :walkmap.id/id 'bar}}
+                    {:start {:x 3.0 :y 4.0 :z 0.0 :walkmap.id/id 'foo} :end {:x 9.0 :y 12.0 :z 0.0 :walkmap.id/id 'bar}})
         "Should be")
     (is (not
-          (collinear? {:start {:x 0.0 :y 0.0 :z 0.0 :id 'foo} :end {:x 3 :y 4 :z 0.0 :id 'bar}}
-                      {:start {:x 1.0 :y 2.0 :z 3.5 :id 'foo} :end {:x 4.0 :y 6.0 :z 3.5 :id 'bar}}))
+          (collinear? {:start {:x 0.0 :y 0.0 :z 0.0 :walkmap.id/id 'foo} :end {:x 3 :y 4 :z 0.0 :walkmap.id/id 'bar}}
+                      {:start {:x 1.0 :y 2.0 :z 3.5 :walkmap.id/id 'foo} :end {:x 4.0 :y 6.0 :z 3.5 :walkmap.id/id 'bar}}))
         "Should not be!")
-    (is (collinear? {:start {:x 0.0 :y 0.0 :z 0.0 :id 'foo} :end {:x 3.0 :y 4.0 :z 0.0 :id 'bar}}
-                    {:start {:x 0.0 :y 0.0 :z 0.0 :id 'foo} :end {:x 9.0 :y 12.0 :z 0.0 :id 'bar}})
+    (is (collinear? {:start {:x 0.0 :y 0.0 :z 0.0 :walkmap.id/id 'foo} :end {:x 3.0 :y 4.0 :z 0.0 :walkmap.id/id 'bar}}
+                    {:start {:x 0.0 :y 0.0 :z 0.0 :walkmap.id/id 'foo} :end {:x 9.0 :y 12.0 :z 0.0 :walkmap.id/id 'bar}})
         "Edge case: same start location")
-    (is (collinear? {:start {:x 0.0 :y 0.0 :z 0.0 :id 'foo} :end {:x 9.0 :y 12.0 :z 0.0 :id 'bar}}
-                    {:start {:x 3.0 :y 4.0 :z 0.0 :id 'foo} :end {:x 9.0 :y 12.0 :z 0.0 :id 'bar}})
+    (is (collinear? {:start {:x 0.0 :y 0.0 :z 0.0 :walkmap.id/id 'foo} :end {:x 9.0 :y 12.0 :z 0.0 :walkmap.id/id 'bar}}
+                    {:start {:x 3.0 :y 4.0 :z 0.0 :walkmap.id/id 'foo} :end {:x 9.0 :y 12.0 :z 0.0 :walkmap.id/id 'bar}})
         "Edge case: same end location")
     ))
 
@@ -89,7 +89,7 @@
 
 (deftest length-test
   (testing "length of an edge"
-    (is (= (length {:start {:x 0.0 :y 0.0 :z 0.0 :id 'foo} :end {:x 3.0 :y 4.0 :z 0.0 :id 'bar}}) 5.0))))
+    (is (= (length {:start {:x 0.0 :y 0.0 :z 0.0 :walkmap.id/id 'foo} :end {:x 3.0 :y 4.0 :z 0.0 :walkmap.id/id 'bar}}) 5.0))))
 
 (deftest minimad-test
   (testing "finding minimum and maximum coordinates of edges."
@@ -98,12 +98,12 @@
 
 (deftest parallel-test
   (testing "parallelism"
-    (is (parallel? {:start {:x 0.0 :y 0.0 :z 0.0 :id 'foo} :end {:x 3 :y 4 :z 0.0 :id 'bar}}
-                   {:start {:x 1.0 :y 2.0 :z 3.5 :id 'foo} :end {:x 4.0 :y 6.0 :z 3.5 :id 'bar}})
+    (is (parallel? {:start {:x 0.0 :y 0.0 :z 0.0 :walkmap.id/id 'foo} :end {:x 3 :y 4 :z 0.0 :walkmap.id/id 'bar}}
+                   {:start {:x 1.0 :y 2.0 :z 3.5 :walkmap.id/id 'foo} :end {:x 4.0 :y 6.0 :z 3.5 :walkmap.id/id 'bar}})
         "Should be")
     (is (not
-          (parallel? {:start {:x 0.0 :y 0.0 :z 0.0 :id 'foo} :end {:x 3 :y 4 :z 0.0 :id 'bar}}
-                     {:start {:x 1.0 :y 2.0 :z 3.5 :id 'foo} :end {:x 4.0 :y 6.0 :z 3.49 :id 'bar}}))
+          (parallel? {:start {:x 0.0 :y 0.0 :z 0.0 :walkmap.id/id 'foo} :end {:x 3 :y 4 :z 0.0 :walkmap.id/id 'bar}}
+                     {:start {:x 1.0 :y 2.0 :z 3.5 :walkmap.id/id 'foo} :end {:x 4.0 :y 6.0 :z 3.49 :walkmap.id/id 'bar}}))
         "Should not be!")))
 
 (deftest overlaps2d-test
@@ -114,8 +114,8 @@
 (deftest unit-vector-test
   (testing "deriving the unit vector"
     (is (=
-          (unit-vector {:start {:x 0.0 :y 0.0 :z 0.0 :id 'foo} :end {:x 3 :y 4 :z 0.0 :id 'bar}})
+          (unit-vector {:start {:x 0.0 :y 0.0 :z 0.0 :walkmap.id/id 'foo} :end {:x 3 :y 4 :z 0.0 :walkmap.id/id 'bar}})
           {:x 0.6, :y 0.8, :z 0.0}))
     (is (=
-          (unit-vector {:start {:x 1.0 :y 2.0 :z 3.5 :id 'foo} :end {:x 4.0 :y 6.0 :z 3.5 :id 'bar}})
+          (unit-vector {:start {:x 1.0 :y 2.0 :z 3.5 :walkmap.id/id 'foo} :end {:x 4.0 :y 6.0 :z 3.5 :walkmap.id/id 'bar}})
           {:x 0.6, :y 0.8, :z 0.0}))))
