@@ -5,6 +5,8 @@
 (defn deep-merge
   "Recursively merges maps. If vals are not maps, the last value wins."
   ;; TODO: not my implementation, not sure I entirely trust it.
+  ;; TODO TODO: if we are to successfully merge walkmap objects, we must
+  ;; return, on each object, the union of its tags if any.
   [& vals]
   (if (every? map? vals)
     (apply merge-with deep-merge vals)

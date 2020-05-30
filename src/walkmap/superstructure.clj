@@ -63,14 +63,31 @@
   2. `o` is not a map;
   3. `o` does not have a value for the key `:walkmap.id/id`."
   [s o]
-  (assoc
+  (u/deep-merge
     s
-    :vertex-index
-    (reduce
-      u/deep-merge
-      (map
-        #(index-vertex s o %)
-        (vertices o)))))
+    {:vertex-index
+     (reduce
+       u/deep-merge
+       {}
+       (map
+         #(index-vertex s o %)
+         (:vertices o)))}))
+
+(defn in-retrieve-map
+  "Internal to `in-retrieve`, q.v. Handle the case where `x` is a map.
+  Separated out for debugging/unit testing purposes. Use at your own peril."
+  [x s]
+  (let [v (reduce
+            (fn [m k]
+              (assoc m k (in-retrieve (x k) s)))
+            {}
+            (keys (dissoc x :walkmap.id/id)))
+        id (:walkmap.id/id x)]
+    (if id
+      (assoc
+        v
+        :walkmap.id/id
+        (:walkmap.id/id x)))))
 
 (defn in-retrieve
   "Internal guts of `retrieve`, q.v. `x` can be anything; `s` must be a
@@ -84,13 +101,7 @@
                    (in-retrieve (s x) s)
                    x)
     ;; if it's a map, for every key which is not `:walkmap.id/id`, recurse.
-    (map? x) (reduce
-               (fn [m k]
-                 (if (= k :walkmap.id/id)
-                   k
-                   (assoc m k (in-retrieve (x k) s))))
-               {}
-               (keys x))
+    (map? x) (in-retrieve-map x s)
     (coll? x) (map #(in-retrieve % s) x)
     :else x))
 
@@ -140,18 +151,22 @@
   1. `s` is not a map;
   2. `o` is not a recognisable walkmap object"
   ([o]
-   (store {} o))
+   (store o {}))
   ([o s]
-;;    (when-not (:walkmap.id/id o)
-;;      (throw
-;;        (IllegalArgumentException.
-;;          (str "Not a walkmap object: no value for `:walkmap.id/id`: "
-;;               (u/kind-type o)))))
-;;    (when-not (map? s)
-;;      (throw
-;;        (IllegalArgumentException.
-;;          (str "Superstructure must be a map: " (u/kind-type s)))))
+   (when-not (:walkmap.id/id o)
+     (throw
+       (IllegalArgumentException.
+         (str "Not a walkmap object: no value for `:walkmap.id/id`: "
+              (u/kind-type o)))))
+   (when-not (map? s)
+     (throw
+       (IllegalArgumentException.
+         (str "Superstructure must be a map: " (u/kind-type s)))))
    (assoc
      (u/deep-merge s (in-store-find-objects o))
      (:walkmap.id/id o)
-     (in-store-replace-with-keys o))))
+     (in-store-replace-with-keys o)
+     :vertex-index
+     (u/deep-merge
+       (index-vertices s o)
+       (:vertex-index s)))))
