@@ -1,4 +1,4 @@
-(ns walkmap.core
+(ns walkmap.routing
   "Finding optimal routes to traverse a map."
     (:require [walkmap.path :as p]
             [walkmap.polygon :as q]

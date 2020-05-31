@@ -1,6 +1,6 @@
-(ns walkmap.geometry-test
+(ns walkmap.utils-test
   (:require [clojure.test :refer :all]
-            [walkmap.geometry :refer :all]))
+            [walkmap.utils :refer :all]))
 
 (deftest =ish-tests
   (testing "Rough equality"

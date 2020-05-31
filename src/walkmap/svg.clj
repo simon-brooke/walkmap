@@ -108,9 +108,3 @@
        :hiccup (spit out-filename (html s))
        (throw (Exception. "Unexpected renderer value: " *preferred-svg-render*)))
      s)))
-
-
-(defn read-svg
-  ([file-name]
-   (read-svg file-name nil))
-  ([file-name map-kind]

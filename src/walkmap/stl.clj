@@ -6,6 +6,7 @@
             [org.clojars.smee.binary.core :as b]
             [taoensso.timbre :as l]
             [walkmap.edge :as e]
+            [walkmap.ocean :as o]
             [walkmap.polygon :refer [centre gradient polygon?]]
             [walkmap.superstructure :refer [store]]
             [walkmap.tag :refer [tag]]

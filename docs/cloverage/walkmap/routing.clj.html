@@ -1,0 +1,62 @@
+<html>
+ <head>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" href="../coverage.css"/>  <title> walkmap/routing.clj </title>
+ </head>
+ <body>
+<span class="covered" title="1 out of 1 forms covered">
+                001&nbsp;&nbsp;(ns&nbsp;walkmap.routing
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                002&nbsp;&nbsp;&nbsp;&nbsp;&quot;Finding&nbsp;optimal&nbsp;routes&nbsp;to&nbsp;traverse&nbsp;a&nbsp;map.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                003&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:require&nbsp;[walkmap.path&nbsp;:as&nbsp;p]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                004&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.polygon&nbsp;:as&nbsp;q]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                005&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.stl&nbsp;:as&nbsp;s]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                006&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.utils&nbsp;:as&nbsp;u]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.vertex&nbsp;:as&nbsp;v]))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                008&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                009&nbsp;&nbsp;;;&nbsp;Breadth&nbsp;first&nbsp;search&nbsp;is&nbsp;a&nbsp;good&nbsp;algorithm&nbsp;for&nbsp;terrain&nbsp;in&nbsp;which&nbsp;all&nbsp;steps&nbsp;have
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                010&nbsp;&nbsp;;;&nbsp;equal,&nbsp;but&nbsp;in&nbsp;our&nbsp;world&nbsp;(like&nbsp;the&nbsp;real&nbsp;world),&nbsp;they&nbsp;don&#x27;t.
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                011&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                012&nbsp;&nbsp;;;&nbsp;Reading&nbsp;list:
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                013&nbsp;&nbsp;;;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                014&nbsp;&nbsp;;;&nbsp;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;A*_search_algorithm
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                015&nbsp;&nbsp;;;&nbsp;https:&#x2F;&#x2F;www.redblobgames.com&#x2F;pathfinding&#x2F;a-star&#x2F;introduction.html
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                016&nbsp;&nbsp;;;&nbsp;https:&#x2F;&#x2F;faculty.nps.edu&#x2F;ncrowe&#x2F;opmpaper2.htm
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                017&nbsp;&nbsp;;;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                018&nbsp;&nbsp;;;&nbsp;See&nbsp;https:&#x2F;&#x2F;simon-brooke.github.io&#x2F;the-great-game&#x2F;codox&#x2F;Pathmaking.html
+                </span><br/>
+ </body>
+</html>

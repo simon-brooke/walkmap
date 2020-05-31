@@ -6,8 +6,7 @@
   (:require [clojure.math.numeric-tower :as m]
             [clojure.string :as s]
             [taoensso.timbre :as l]
-            [walkmap.geometry :refer [=ish]]
-            [walkmap.utils :refer [kind-type truncate]]))
+            [walkmap.utils :refer [=ish kind-type truncate]]))
 
 (defn vertex-key
   "Making sure we get the same key everytime we key a vertex with the same

@@ -31,5 +31,5 @@
                   ["uberjar"]
                   ["change" "version" "leiningen.release/bump-version"]
                   ["vcs" "commit"]]
-  :repl-options {:init-ns walkmap.core}
+  :repl-options {:init-ns walkmap.superstructure}
   :url "https://simon-brooke.github.io/walkmap/")

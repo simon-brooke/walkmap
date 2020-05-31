@@ -11,67 +11,127 @@
                 002&nbsp;&nbsp;&nbsp;&nbsp;&quot;Miscellaneous&nbsp;utility&nbsp;functions.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                003&nbsp;&nbsp;&nbsp;&nbsp;(:require&nbsp;[clojure.math.numeric-tower&nbsp;:as&nbsp;m]
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                004&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.path&nbsp;:as&nbsp;p]
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                005&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.polygon&nbsp;:as&nbsp;q]
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                006&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.vertex&nbsp;:as&nbsp;v]))
+                003&nbsp;&nbsp;&nbsp;&nbsp;(:require&nbsp;[clojure.math.numeric-tower&nbsp;:as&nbsp;m]))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                007&nbsp;&nbsp;
+                004&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                008&nbsp;&nbsp;(defn&nbsp;deep-merge
+                005&nbsp;&nbsp;(defn&nbsp;deep-merge
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                009&nbsp;&nbsp;&nbsp;&nbsp;&quot;Recursively&nbsp;merges&nbsp;maps.&nbsp;If&nbsp;vals&nbsp;are&nbsp;not&nbsp;maps,&nbsp;the&nbsp;last&nbsp;value&nbsp;wins.&quot;
+                006&nbsp;&nbsp;&nbsp;&nbsp;&quot;Recursively&nbsp;merges&nbsp;maps.&nbsp;If&nbsp;vals&nbsp;are&nbsp;not&nbsp;maps,&nbsp;the&nbsp;last&nbsp;value&nbsp;wins.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                010&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;TODO:&nbsp;not&nbsp;my&nbsp;implementation,&nbsp;not&nbsp;sure&nbsp;I&nbsp;entirely&nbsp;trust&nbsp;it.
+                007&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;TODO:&nbsp;not&nbsp;my&nbsp;implementation,&nbsp;not&nbsp;sure&nbsp;I&nbsp;entirely&nbsp;trust&nbsp;it.
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                011&nbsp;&nbsp;&nbsp;&nbsp;[&amp;&nbsp;vals]
+                008&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;TODO&nbsp;TODO:&nbsp;if&nbsp;we&nbsp;are&nbsp;to&nbsp;successfully&nbsp;merge&nbsp;walkmap&nbsp;objects,&nbsp;we&nbsp;must
                 </span><br/>
-<span class="not-covered" title="0 out of 5 forms covered">
-                012&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(every?&nbsp;map?&nbsp;vals)
+<span class="not-tracked" title="0 out of 0 forms covered">
+                009&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;return,&nbsp;on&nbsp;each&nbsp;object,&nbsp;the&nbsp;union&nbsp;of&nbsp;its&nbsp;tags&nbsp;if&nbsp;any.
                 </span><br/>
-<span class="not-covered" title="0 out of 5 forms covered">
-                013&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply&nbsp;merge-with&nbsp;deep-merge&nbsp;vals)
+<span class="not-tracked" title="0 out of 0 forms covered">
+                010&nbsp;&nbsp;&nbsp;&nbsp;[&amp;&nbsp;vals]
                 </span><br/>
-<span class="not-covered" title="0 out of 3 forms covered">
-                014&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(last&nbsp;vals)))
+<span class="covered" title="5 out of 5 forms covered">
+                011&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(every?&nbsp;map?&nbsp;vals)
+                </span><br/>
+<span class="covered" title="5 out of 5 forms covered">
+                012&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply&nbsp;merge-with&nbsp;deep-merge&nbsp;vals)
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                013&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(last&nbsp;vals)))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                015&nbsp;&nbsp;
+                014&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                016&nbsp;&nbsp;(defn&nbsp;vertices
+                015&nbsp;&nbsp;(defn&nbsp;truncate
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                017&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;`o`&nbsp;is&nbsp;an&nbsp;object&nbsp;with&nbsp;vertices,&nbsp;return&nbsp;those&nbsp;vertices,&nbsp;else&nbsp;nil.&quot;
+                016&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;string&nbsp;`s`&nbsp;is&nbsp;more&nbsp;than&nbsp;`n`&nbsp;characters&nbsp;long,&nbsp;return&nbsp;the&nbsp;first&nbsp;`n`
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                018&nbsp;&nbsp;&nbsp;&nbsp;[o]
+                017&nbsp;&nbsp;&nbsp;&nbsp;characters;&nbsp;otherwise,&nbsp;return&nbsp;`s`.&quot;
                 </span><br/>
-<span class="not-covered" title="0 out of 4 forms covered">
-                019&nbsp;&nbsp;&nbsp;&nbsp;(cond
+<span class="not-tracked" title="0 out of 0 forms covered">
+                018&nbsp;&nbsp;&nbsp;&nbsp;[s&nbsp;n]
                 </span><br/>
-<span class="not-covered" title="0 out of 6 forms covered">
-                020&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(v&#x2F;vertex?&nbsp;o)&nbsp;(list&nbsp;o)
+<span class="not-covered" title="0 out of 21 forms covered">
+                019&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(and&nbsp;(string?&nbsp;s)&nbsp;(number?&nbsp;n)&nbsp;(&gt;&nbsp;(count&nbsp;s)&nbsp;n))
                 </span><br/>
-<span class="not-covered" title="0 out of 6 forms covered">
-                021&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(q&#x2F;polygon?&nbsp;o)&nbsp;(:vertices&nbsp;o)
+<span class="not-covered" title="0 out of 5 forms covered">
+                020&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(subs&nbsp;s&nbsp;0&nbsp;n)
                 </span><br/>
-<span class="not-covered" title="0 out of 6 forms covered">
-                022&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(p&#x2F;path?&nbsp;o)&nbsp;(:vertices&nbsp;o)))
+<span class="not-covered" title="0 out of 1 forms covered">
+                021&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                023&nbsp;&nbsp;
+                022&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                023&nbsp;&nbsp;(defn&nbsp;kind-type
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                024&nbsp;&nbsp;&nbsp;&nbsp;&quot;Identify&nbsp;the&nbsp;type&nbsp;of&nbsp;an&nbsp;`object`,&nbsp;e.g.&nbsp;for&nbsp;logging.&nbsp;If&nbsp;it&nbsp;has&nbsp;a&nbsp;`:kind`&nbsp;key,
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                025&nbsp;&nbsp;&nbsp;&nbsp;it&#x27;s&nbsp;one&nbsp;of&nbsp;ours,&nbsp;and&nbsp;that&#x27;s&nbsp;what&nbsp;we&nbsp;want.&nbsp;Otherwise,&nbsp;we&nbsp;want&nbsp;its&nbsp;type;&nbsp;but
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                026&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;type&nbsp;of&nbsp;`nil`&nbsp;is&nbsp;`nil`,&nbsp;which&nbsp;doesn&#x27;t&nbsp;get&nbsp;printed&nbsp;when&nbsp;assembling&nbsp;error
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                027&nbsp;&nbsp;&nbsp;&nbsp;,essages,&nbsp;so&nbsp;return&nbsp;\&quot;nil\&quot;.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                028&nbsp;&nbsp;&nbsp;&nbsp;[object]
+                </span><br/>
+<span class="partial" title="14 out of 15 forms covered">
+                029&nbsp;&nbsp;&nbsp;&nbsp;(or&nbsp;(:kind&nbsp;object)&nbsp;(type&nbsp;object)&nbsp;&quot;nil&quot;))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                030&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                031&nbsp;&nbsp;(defn&nbsp;=ish
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                032&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;numbers&nbsp;`n1`,&nbsp;`n2`&nbsp;are&nbsp;roughly&nbsp;equal;&nbsp;that&nbsp;is&nbsp;to&nbsp;say,&nbsp;equal&nbsp;to
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                033&nbsp;&nbsp;&nbsp;&nbsp;within&nbsp;`tolerance`&nbsp;(defaults&nbsp;to&nbsp;one&nbsp;part&nbsp;in&nbsp;a&nbsp;million).&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                034&nbsp;&nbsp;&nbsp;&nbsp;([n1&nbsp;n2]
+                </span><br/>
+<span class="covered" title="11 out of 11 forms covered">
+                035&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(and&nbsp;(number?&nbsp;n1)&nbsp;(number?&nbsp;n2))
+                </span><br/>
+<span class="covered" title="7 out of 7 forms covered">
+                036&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[m&nbsp;(m&#x2F;abs&nbsp;(min&nbsp;n1&nbsp;n2))
+                </span><br/>
+<span class="covered" title="9 out of 9 forms covered">
+                037&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t&nbsp;(if&nbsp;(zero?&nbsp;m)&nbsp;0.000001&nbsp;(*&nbsp;0.000001&nbsp;m))]
+                </span><br/>
+<span class="covered" title="5 out of 5 forms covered">
+                038&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=ish&nbsp;n1&nbsp;n2&nbsp;t))
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                039&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;n1&nbsp;n2)))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                040&nbsp;&nbsp;&nbsp;&nbsp;([n1&nbsp;n2&nbsp;tolerance]
+                </span><br/>
+<span class="covered" title="11 out of 11 forms covered">
+                041&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(and&nbsp;(number?&nbsp;n1)&nbsp;(number?&nbsp;n2))
+                </span><br/>
+<span class="covered" title="9 out of 9 forms covered">
+                042&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;&nbsp;(m&#x2F;abs&nbsp;(-&nbsp;n1&nbsp;n2))&nbsp;tolerance)
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                043&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;n1&nbsp;n2))))
                 </span><br/>
  </body>
 </html>

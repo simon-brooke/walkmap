@@ -1,0 +1,299 @@
+<html>
+ <head>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" href="../coverage.css"/>  <title> walkmap/read_svg.clj </title>
+ </head>
+ <body>
+<span class="covered" title="1 out of 1 forms covered">
+                001&nbsp;&nbsp;(ns&nbsp;walkmap.read-svg
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                002&nbsp;&nbsp;&nbsp;&nbsp;&quot;Utility&nbsp;functions&nbsp;for&nbsp;&nbsp;scalable&nbsp;vector&nbsp;graphics&nbsp;(SVG)&nbsp;into&nbsp;walkmap
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                003&nbsp;&nbsp;&nbsp;&nbsp;structures.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                004&nbsp;&nbsp;&nbsp;&nbsp;(:require&nbsp;[clojure.data.zip&nbsp;:as&nbsp;dz]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                005&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[clojure.data.zip.xml&nbsp;:as&nbsp;zx]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                006&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[clojure.java.io&nbsp;:as&nbsp;io]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[clojure.string&nbsp;:as&nbsp;s]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                008&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[clojure.xml&nbsp;:as&nbsp;x]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                009&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[clojure.zip&nbsp;:as&nbsp;z]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[taoensso.timbre&nbsp;:as&nbsp;l]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                011&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.path&nbsp;:refer&nbsp;[path]]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                012&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.tag&nbsp;:refer&nbsp;[tag]]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                013&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.utils&nbsp;:refer&nbsp;[kind-type&nbsp;truncate]]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                014&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.vertex&nbsp;:refer&nbsp;[vertex&nbsp;vertex?]]))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                015&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                016&nbsp;&nbsp;(defn&nbsp;upper-case?
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                017&nbsp;&nbsp;&nbsp;&nbsp;[s]
+                </span><br/>
+<span class="not-covered" title="0 out of 6 forms covered">
+                018&nbsp;&nbsp;&nbsp;&nbsp;(every?&nbsp;#(Character&#x2F;isUpperCase&nbsp;%)&nbsp;s))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                019&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                020&nbsp;&nbsp;(defn&nbsp;match-&gt;vertex
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                021&nbsp;&nbsp;&nbsp;&nbsp;[match-vector&nbsp;x&nbsp;y]
+                </span><br/>
+<span class="not-covered" title="0 out of 6 forms covered">
+                022&nbsp;&nbsp;&nbsp;&nbsp;(when-not&nbsp;(empty?&nbsp;match-vector)
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                023&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[command&nbsp;(nth&nbsp;match-vector&nbsp;1)
+                </span><br/>
+<span class="not-covered" title="0 out of 6 forms covered">
+                024&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xcoord&nbsp;(read-string&nbsp;(nth&nbsp;match-vector&nbsp;2))
+                </span><br/>
+<span class="not-covered" title="0 out of 6 forms covered">
+                025&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ycoord&nbsp;(read-string&nbsp;(nth&nbsp;match-vector&nbsp;3))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                026&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;upper&nbsp;case&nbsp;command&nbsp;letters&nbsp;mean&nbsp;the&nbsp;coordinates&nbsp;that&nbsp;follow&nbsp;are
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                027&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;absolute;&nbsp;lower&nbsp;case,&nbsp;relative.
+                </span><br/>
+<span class="not-covered" title="0 out of 9 forms covered">
+                028&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x&#x27;&nbsp;(if&nbsp;(upper-case?&nbsp;command)&nbsp;xcoord&nbsp;(+&nbsp;x&nbsp;xcoord))
+                </span><br/>
+<span class="not-covered" title="0 out of 9 forms covered">
+                029&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y&#x27;&nbsp;(if&nbsp;(upper-case?&nbsp;command)&nbsp;ycoord&nbsp;(+&nbsp;y&nbsp;ycoord))]
+                </span><br/>
+<span class="not-covered" title="0 out of 6 forms covered">
+                030&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(case&nbsp;(s&#x2F;lower-case&nbsp;command)
+                </span><br/>
+<span class="not-covered" title="0 out of 20 forms covered">
+                031&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&quot;m&quot;&nbsp;&quot;l&quot;)&nbsp;{:vertex&nbsp;(vertex&nbsp;x&#x27;&nbsp;y&#x27;)&nbsp;:x&nbsp;x&#x27;&nbsp;:y&nbsp;y&#x27;}
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                032&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nil))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                033&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                034&nbsp;&nbsp;(defn&nbsp;command-string-&gt;vertices
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                035&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;the&nbsp;destination&nbsp;of&nbsp;each&nbsp;successive&nbsp;line&nbsp;(`l`,&nbsp;`L`)&nbsp;and&nbsp;move&nbsp;(`m`,&nbsp;`M`)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                036&nbsp;&nbsp;&nbsp;&nbsp;command&nbsp;in&nbsp;this&nbsp;string&nbsp;`s`,&nbsp;expected&nbsp;to&nbsp;be&nbsp;an&nbsp;SVG&nbsp;path&nbsp;command&nbsp;string.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                037&nbsp;&nbsp;&nbsp;&nbsp;[s]
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                038&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[cmd-matcher&nbsp;;;&nbsp;matches&nbsp;a&nbsp;&#x27;command&#x27;&nbsp;in&nbsp;the&nbsp;string:&nbsp;a&nbsp;letter&nbsp;followed&nbsp;by
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                039&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;spaces&nbsp;and&nbsp;numbers
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                040&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(re-matcher&nbsp;#&quot;[a-zA-Z][^a-zA-Z]*&quot;&nbsp;s)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                041&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seg-pattern&nbsp;;;&nbsp;matches&nbsp;a&nbsp;command&nbsp;which&nbsp;initiates&nbsp;a&nbsp;move&nbsp;of&nbsp;the&nbsp;current
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                042&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;position.
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                043&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&quot;([a-zA-Z])&nbsp;+([-+]?[0-9]*\.?[0-9]+)&nbsp;+([-+]?[0-9]*\.?[0-9]+)&nbsp;+&quot;]
+                </span><br/>
+<span class="not-covered" title="0 out of 11 forms covered">
+                044&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(loop&nbsp;[match&nbsp;(re-find&nbsp;cmd-matcher)
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                045&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result&nbsp;[]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                046&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;0
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                047&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y&nbsp;0]
+                </span><br/>
+<span class="not-covered" title="0 out of 8 forms covered">
+                048&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if-not&nbsp;match
+                </span><br/>
+<span class="not-covered" title="0 out of 8 forms covered">
+                049&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(filter&nbsp;vertex?&nbsp;result)
+                </span><br/>
+<span class="not-covered" title="0 out of 18 forms covered">
+                050&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[m&nbsp;(match-&gt;vertex&nbsp;(re-find&nbsp;seg-pattern&nbsp;match)&nbsp;x&nbsp;y)]
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                051&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(recur&nbsp;(re-find&nbsp;cmd-matcher)&nbsp;&nbsp;&nbsp;&nbsp;;loop&nbsp;with&nbsp;2&nbsp;new&nbsp;arguments
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                052&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(conj&nbsp;result&nbsp;(:vertex&nbsp;m))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                053&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or&nbsp;(:x&nbsp;m)&nbsp;x)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                054&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or&nbsp;(:y&nbsp;m)&nbsp;y)))))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                055&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                056&nbsp;&nbsp;(defn&nbsp;path-elt-&gt;path
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                057&nbsp;&nbsp;&nbsp;&nbsp;&quot;Given&nbsp;the&nbsp;SVG&nbsp;path&nbsp;element&nbsp;`elt`,&nbsp;return&nbsp;a&nbsp;walkmap&nbsp;path&nbsp;structure
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                058&nbsp;&nbsp;&nbsp;&nbsp;representing&nbsp;the&nbsp;line&nbsp;(`l`,&nbsp;`L`)&nbsp;and&nbsp;move&nbsp;(`m`,&nbsp;`M`)&nbsp;commands&nbsp;in
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                059&nbsp;&nbsp;&nbsp;&nbsp;that&nbsp;path.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                060&nbsp;&nbsp;&nbsp;&nbsp;[elt]
+                </span><br/>
+<span class="not-covered" title="0 out of 7 forms covered">
+                061&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(=&nbsp;(:tag&nbsp;elt)&nbsp;:path)
+                </span><br/>
+<span class="not-covered" title="0 out of 8 forms covered">
+                062&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[vs&nbsp;(command-string-&gt;vertices&nbsp;(-&gt;&nbsp;elt&nbsp;:attrs&nbsp;:d))
+                </span><br/>
+<span class="not-covered" title="0 out of 10 forms covered">
+                063&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p&nbsp;&nbsp;(when-not&nbsp;(empty?&nbsp;vs)&nbsp;(apply&nbsp;path&nbsp;vs))]
+                </span><br/>
+<span class="not-covered" title="0 out of 11 forms covered">
+                064&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(and&nbsp;p&nbsp;(-&gt;&nbsp;elt&nbsp;:attrs&nbsp;:class))
+                </span><br/>
+<span class="not-covered" title="0 out of 14 forms covered">
+                065&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(tag&nbsp;p&nbsp;(map&nbsp;keyword&nbsp;(s&#x2F;split&nbsp;(-&gt;&nbsp;elt&nbsp;:attrs&nbsp;:class)&nbsp;#&quot;&nbsp;&quot;)))
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                066&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p))
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                067&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                068&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str&nbsp;&quot;Must&nbsp;be&nbsp;an&nbsp;SVG&nbsp;`path`&nbsp;element:&nbsp;&quot;&nbsp;elt)))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                069&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                070&nbsp;&nbsp;(defn&nbsp;progeny
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                071&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;all&nbsp;the&nbsp;nodes&nbsp;in&nbsp;the&nbsp;XML&nbsp;structure&nbsp;below&nbsp;this&nbsp;`elt`&nbsp;which&nbsp;match
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                072&nbsp;&nbsp;&nbsp;&nbsp;this&nbsp;`predicate`.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                073&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;the&nbsp;name&nbsp;`descendants`&nbsp;is&nbsp;bound&nbsp;in&nbsp;`clojure.core`&nbsp;for&nbsp;something&nbsp;quite
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                074&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;different,&nbsp;and&nbsp;I&nbsp;chose&nbsp;not&nbsp;to&nbsp;rebind&nbsp;it.
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                075&nbsp;&nbsp;&nbsp;&nbsp;[elt&nbsp;predicate]
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                076&nbsp;&nbsp;&nbsp;&nbsp;(if
+                </span><br/>
+<span class="not-covered" title="0 out of 6 forms covered">
+                077&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply&nbsp;predicate&nbsp;(list&nbsp;elt))
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                078&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(list&nbsp;elt)
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                079&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(reduce
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                080&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;concat
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                081&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(remove
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                082&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;empty?
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                083&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                084&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(progeny&nbsp;%&nbsp;predicate)
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                085&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:content&nbsp;elt))))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                086&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                087&nbsp;&nbsp;(defn&nbsp;read-svg
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                088&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;I&nbsp;tried&nbsp;to&nbsp;get&nbsp;this&nbsp;working&nbsp;with&nbsp;all&nbsp;the&nbsp;clever&nbsp;zip&nbsp;stuff&nbsp;in
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                089&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;`clojure.zip`,&nbsp;`clojure.data.zip`,&nbsp;and&nbsp;so&nbsp;on.&nbsp;It&nbsp;would&nbsp;probably&nbsp;have
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                090&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;been&nbsp;more&nbsp;elegant,&nbsp;but&nbsp;it&nbsp;kept&nbsp;crashing&nbsp;out&nbsp;of&nbsp;heap&nbsp;space&nbsp;on&nbsp;even
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                091&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;quite&nbsp;small&nbsp;XML&nbsp;files.&nbsp;So&nbsp;I&#x27;ve&nbsp;implemented&nbsp;my&nbsp;own&nbsp;solution.
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                092&nbsp;&nbsp;&nbsp;&nbsp;([file-name]
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                093&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(read-svg&nbsp;file-name&nbsp;nil))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                094&nbsp;&nbsp;&nbsp;&nbsp;([file-name&nbsp;map-kind]
+                </span><br/>
+<span class="not-covered" title="0 out of 6 forms covered">
+                095&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[xml&nbsp;(x&#x2F;parse&nbsp;(io&#x2F;file&nbsp;file-name))
+                </span><br/>
+<span class="not-covered" title="0 out of 10 forms covered">
+                096&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;paths&nbsp;(progeny&nbsp;xml&nbsp;#(=&nbsp;(:tag&nbsp;%)&nbsp;:path))]
+                </span><br/>
+<span class="not-covered" title="0 out of 7 forms covered">
+                097&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(remove&nbsp;nil?&nbsp;(map&nbsp;path-elt-&gt;path&nbsp;paths)))))
+                </span><br/>
+ </body>
+</html>

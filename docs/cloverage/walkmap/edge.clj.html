@@ -20,556 +20,514 @@
                 005&nbsp;&nbsp;&nbsp;&nbsp;(:require&nbsp;[clojure.math.numeric-tower&nbsp;:as&nbsp;m]
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                006&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.polygon&nbsp;:refer&nbsp;[polygon?]]
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.vertex&nbsp;:refer&nbsp;[ensure2d&nbsp;ensure3d&nbsp;vertex&nbsp;vertex=&nbsp;vertex?]]))
+                006&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.vertex&nbsp;:refer&nbsp;[ensure2d&nbsp;ensure3d&nbsp;vertex&nbsp;vertex=&nbsp;vertex?]]))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                008&nbsp;&nbsp;
+                007&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                009&nbsp;&nbsp;(defn&nbsp;edge
+                008&nbsp;&nbsp;(defn&nbsp;edge
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                010&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;an&nbsp;edge&nbsp;between&nbsp;vertices&nbsp;`v1`&nbsp;and&nbsp;`v2`.&quot;
+                009&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;an&nbsp;edge&nbsp;between&nbsp;vertices&nbsp;`v1`&nbsp;and&nbsp;`v2`.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                011&nbsp;&nbsp;&nbsp;&nbsp;[v1&nbsp;v2]
+                010&nbsp;&nbsp;&nbsp;&nbsp;[v1&nbsp;v2]
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                012&nbsp;&nbsp;&nbsp;&nbsp;(if
+                011&nbsp;&nbsp;&nbsp;&nbsp;(if
                 </span><br/>
 <span class="covered" title="10 out of 10 forms covered">
-                013&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and&nbsp;(vertex?&nbsp;v1)&nbsp;(vertex?&nbsp;v2))
+                012&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and&nbsp;(vertex?&nbsp;v1)&nbsp;(vertex?&nbsp;v2))
                 </span><br/>
 <span class="covered" title="13 out of 13 forms covered">
-                014&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:kind&nbsp;:edge&nbsp;:id&nbsp;(keyword&nbsp;(gensym&nbsp;&quot;edge&quot;))&nbsp;:start&nbsp;v1&nbsp;:end&nbsp;v2}
+                013&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:kind&nbsp;:edge&nbsp;:walkmap.id&#x2F;id&nbsp;(keyword&nbsp;(gensym&nbsp;&quot;edge&quot;))&nbsp;:start&nbsp;v1&nbsp;:end&nbsp;v2}
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                015&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;&quot;Must&nbsp;be&nbsp;vertices.&quot;))))
+                014&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;&quot;Must&nbsp;be&nbsp;vertices.&quot;))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                016&nbsp;&nbsp;
+                015&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                017&nbsp;&nbsp;(defn&nbsp;edge?
+                016&nbsp;&nbsp;(defn&nbsp;edge?
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                018&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;`o`&nbsp;satisfies&nbsp;the&nbsp;conditions&nbsp;for&nbsp;a&nbsp;edge.&nbsp;An&nbsp;edge&nbsp;shall&nbsp;be&nbsp;a&nbsp;map
+                017&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;`o`&nbsp;satisfies&nbsp;the&nbsp;conditions&nbsp;for&nbsp;a&nbsp;edge.&nbsp;An&nbsp;edge&nbsp;shall&nbsp;be&nbsp;a&nbsp;map
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                019&nbsp;&nbsp;&nbsp;&nbsp;having&nbsp;the&nbsp;keys&nbsp;`:start`&nbsp;and&nbsp;`:end`,&nbsp;such&nbsp;that&nbsp;the&nbsp;values&nbsp;of&nbsp;each&nbsp;of&nbsp;those
+                018&nbsp;&nbsp;&nbsp;&nbsp;having&nbsp;the&nbsp;keys&nbsp;`:start`&nbsp;and&nbsp;`:end`,&nbsp;such&nbsp;that&nbsp;the&nbsp;values&nbsp;of&nbsp;each&nbsp;of&nbsp;those
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                020&nbsp;&nbsp;&nbsp;&nbsp;keys&nbsp;shall&nbsp;be&nbsp;a&nbsp;vertex.&quot;
+                019&nbsp;&nbsp;&nbsp;&nbsp;keys&nbsp;shall&nbsp;be&nbsp;a&nbsp;vertex.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                021&nbsp;&nbsp;&nbsp;&nbsp;[o]
+                020&nbsp;&nbsp;&nbsp;&nbsp;[o]
                 </span><br/>
 <span class="covered" title="9 out of 9 forms covered">
-                022&nbsp;&nbsp;&nbsp;&nbsp;(and
+                021&nbsp;&nbsp;&nbsp;&nbsp;(and
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                023&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map?&nbsp;o)
+                022&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map?&nbsp;o)
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                024&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(vertex?&nbsp;(:start&nbsp;o))
+                023&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(vertex?&nbsp;(:start&nbsp;o))
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                025&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(vertex?&nbsp;(:end&nbsp;o))))
+                024&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(vertex?&nbsp;(:end&nbsp;o))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                026&nbsp;&nbsp;
+                025&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                027&nbsp;&nbsp;(defn&nbsp;length
+                026&nbsp;&nbsp;(defn&nbsp;length
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                028&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;the&nbsp;length&nbsp;of&nbsp;the&nbsp;edge&nbsp;`e`.&quot;
+                027&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;the&nbsp;length&nbsp;of&nbsp;the&nbsp;edge&nbsp;`e`.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                029&nbsp;&nbsp;&nbsp;&nbsp;[e]
+                028&nbsp;&nbsp;&nbsp;&nbsp;[e]
                 </span><br/>
 <span class="covered" title="6 out of 6 forms covered">
-                030&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[start&nbsp;(ensure3d&nbsp;(:start&nbsp;e))
+                029&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[start&nbsp;(ensure3d&nbsp;(:start&nbsp;e))
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                031&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end&nbsp;(ensure3d&nbsp;(:end&nbsp;e))]
+                030&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end&nbsp;(ensure3d&nbsp;(:end&nbsp;e))]
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                032&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(m&#x2F;sqrt
+                031&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(m&#x2F;sqrt
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                033&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(reduce
+                032&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(reduce
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                034&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+
+                033&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                035&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
+                034&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
                 </span><br/>
 <span class="covered" title="11 out of 11 forms covered">
-                036&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(m&#x2F;expt&nbsp;(-&nbsp;(%&nbsp;end)&nbsp;(%&nbsp;start))&nbsp;2)
+                035&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(m&#x2F;expt&nbsp;(-&nbsp;(%&nbsp;end)&nbsp;(%&nbsp;start))&nbsp;2)
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                037&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[:x&nbsp;:y&nbsp;:z])))))
+                036&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[:x&nbsp;:y&nbsp;:z])))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                038&nbsp;&nbsp;
+                037&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                039&nbsp;&nbsp;(defn&nbsp;centre
+                038&nbsp;&nbsp;(defn&nbsp;centre
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                040&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;the&nbsp;vertex&nbsp;that&nbsp;represents&nbsp;the&nbsp;centre&nbsp;of&nbsp;this&nbsp;`edge`.&quot;
+                039&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;the&nbsp;vertex&nbsp;that&nbsp;represents&nbsp;the&nbsp;centre&nbsp;of&nbsp;this&nbsp;`edge`.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                041&nbsp;&nbsp;&nbsp;&nbsp;[edge]
+                040&nbsp;&nbsp;&nbsp;&nbsp;[edge]
                 </span><br/>
 <span class="covered" title="6 out of 6 forms covered">
-                042&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[s&nbsp;(ensure3d&nbsp;(:start&nbsp;edge))
+                041&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[s&nbsp;(ensure3d&nbsp;(:start&nbsp;edge))
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                043&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e&nbsp;(ensure3d&nbsp;(:end&nbsp;edge))]
+                042&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e&nbsp;(ensure3d&nbsp;(:end&nbsp;edge))]
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                044&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(vertex
+                043&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(vertex
                 </span><br/>
 <span class="covered" title="16 out of 16 forms covered">
-                045&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+&nbsp;(:x&nbsp;s)&nbsp;(&#x2F;&nbsp;(-&nbsp;(:x&nbsp;e)&nbsp;(:x&nbsp;s))&nbsp;2))
+                044&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+&nbsp;(:x&nbsp;s)&nbsp;(&#x2F;&nbsp;(-&nbsp;(:x&nbsp;e)&nbsp;(:x&nbsp;s))&nbsp;2))
                 </span><br/>
 <span class="covered" title="16 out of 16 forms covered">
-                046&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+&nbsp;(:y&nbsp;s)&nbsp;(&#x2F;&nbsp;(-&nbsp;(:y&nbsp;e)&nbsp;(:y&nbsp;s))&nbsp;2))
+                045&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+&nbsp;(:y&nbsp;s)&nbsp;(&#x2F;&nbsp;(-&nbsp;(:y&nbsp;e)&nbsp;(:y&nbsp;s))&nbsp;2))
                 </span><br/>
 <span class="covered" title="16 out of 16 forms covered">
-                047&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+&nbsp;(:z&nbsp;s)&nbsp;(&#x2F;&nbsp;(-&nbsp;(:z&nbsp;e)&nbsp;(:z&nbsp;s))&nbsp;2)))))
+                046&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+&nbsp;(:z&nbsp;s)&nbsp;(&#x2F;&nbsp;(-&nbsp;(:z&nbsp;e)&nbsp;(:z&nbsp;s))&nbsp;2)))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                048&nbsp;&nbsp;
+                047&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                049&nbsp;&nbsp;(defn&nbsp;unit-vector
+                048&nbsp;&nbsp;(defn&nbsp;unit-vector
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                050&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;an&nbsp;vertex&nbsp;parallel&nbsp;to&nbsp;`e`&nbsp;starting&nbsp;from&nbsp;the&nbsp;coordinate&nbsp;origin.&nbsp;Two
+                049&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;an&nbsp;vertex&nbsp;parallel&nbsp;to&nbsp;`e`&nbsp;starting&nbsp;from&nbsp;the&nbsp;coordinate&nbsp;origin.&nbsp;Two
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                051&nbsp;&nbsp;&nbsp;&nbsp;edges&nbsp;which&nbsp;are&nbsp;parallel&nbsp;will&nbsp;have&nbsp;the&nbsp;same&nbsp;unit&nbsp;vector.&quot;
+                050&nbsp;&nbsp;&nbsp;&nbsp;edges&nbsp;which&nbsp;are&nbsp;parallel&nbsp;will&nbsp;have&nbsp;the&nbsp;same&nbsp;unit&nbsp;vector.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                052&nbsp;&nbsp;&nbsp;&nbsp;[e]
+                051&nbsp;&nbsp;&nbsp;&nbsp;[e]
                 </span><br/>
 <span class="covered" title="14 out of 14 forms covered">
-                053&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[e&#x27;&nbsp;{:start&nbsp;(ensure3d&nbsp;(:start&nbsp;e))&nbsp;:end&nbsp;(ensure3d&nbsp;(:end&nbsp;e))}
+                052&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[e&#x27;&nbsp;{:start&nbsp;(ensure3d&nbsp;(:start&nbsp;e))&nbsp;:end&nbsp;(ensure3d&nbsp;(:end&nbsp;e))}
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                054&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l&nbsp;(length&nbsp;e&#x27;)]
+                053&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l&nbsp;(length&nbsp;e&#x27;)]
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                055&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(reduce
+                054&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(reduce
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                056&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;merge
+                055&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;merge
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                057&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{}
+                056&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{}
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                058&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
+                057&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                059&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(fn&nbsp;[k]
+                058&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(fn&nbsp;[k]
                 </span><br/>
 <span class="covered" title="17 out of 17 forms covered">
-                060&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{k&nbsp;(&#x2F;&nbsp;(-&nbsp;(k&nbsp;(:end&nbsp;e&#x27;))&nbsp;(k&nbsp;(:start&nbsp;e&#x27;)))&nbsp;l)})
+                059&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{k&nbsp;(&#x2F;&nbsp;(-&nbsp;(k&nbsp;(:end&nbsp;e&#x27;))&nbsp;(k&nbsp;(:start&nbsp;e&#x27;)))&nbsp;l)})
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                061&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[:x&nbsp;:y&nbsp;:z]))))
+                060&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[:x&nbsp;:y&nbsp;:z]))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                062&nbsp;&nbsp;
+                061&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                063&nbsp;&nbsp;(defn&nbsp;parallel?
+                062&nbsp;&nbsp;(defn&nbsp;parallel?
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                064&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;all&nbsp;`edges`&nbsp;passed&nbsp;are&nbsp;parallel&nbsp;with&nbsp;one&nbsp;another.&quot;
+                063&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;all&nbsp;`edges`&nbsp;passed&nbsp;are&nbsp;parallel&nbsp;with&nbsp;one&nbsp;another.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                065&nbsp;&nbsp;&nbsp;&nbsp;[&amp;&nbsp;edges]
+                064&nbsp;&nbsp;&nbsp;&nbsp;[&amp;&nbsp;edges]
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                066&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[uvs&nbsp;(map&nbsp;unit-vector&nbsp;edges)]
+                065&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[uvs&nbsp;(map&nbsp;unit-vector&nbsp;edges)]
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                067&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(every?
+                066&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(every?
                 </span><br/>
 <span class="covered" title="6 out of 6 forms covered">
-                068&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(vertex=&nbsp;%&nbsp;(first&nbsp;uvs))
+                067&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(vertex=&nbsp;%&nbsp;(first&nbsp;uvs))
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                069&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(rest&nbsp;uvs))))
+                068&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(rest&nbsp;uvs))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                070&nbsp;&nbsp;
+                069&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                071&nbsp;&nbsp;(defn&nbsp;collinear?
+                070&nbsp;&nbsp;(defn&nbsp;collinear?
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                072&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;edges&nbsp;`e1`&nbsp;and&nbsp;`e2`&nbsp;are&nbsp;collinear&nbsp;with&nbsp;one&nbsp;another.&quot;
+                071&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;edges&nbsp;`e1`&nbsp;and&nbsp;`e2`&nbsp;are&nbsp;collinear&nbsp;with&nbsp;one&nbsp;another.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                073&nbsp;&nbsp;&nbsp;&nbsp;[e1&nbsp;e2]
+                072&nbsp;&nbsp;&nbsp;&nbsp;[e1&nbsp;e2]
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                074&nbsp;&nbsp;&nbsp;&nbsp;(parallel?
+                073&nbsp;&nbsp;&nbsp;&nbsp;(parallel?
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                075&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e1
+                074&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e1
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                076&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e2
+                075&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e2
                 </span><br/>
 <span class="covered" title="9 out of 9 forms covered">
-                077&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(vertex=&nbsp;(:start&nbsp;e1)&nbsp;(:start&nbsp;e2))
+                076&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(vertex=&nbsp;(:start&nbsp;e1)&nbsp;(:start&nbsp;e2))
                 </span><br/>
 <span class="covered" title="9 out of 9 forms covered">
-                078&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:start&nbsp;(:start&nbsp;e1)&nbsp;:end&nbsp;(:end&nbsp;e2)}
+                077&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:start&nbsp;(:start&nbsp;e1)&nbsp;:end&nbsp;(:end&nbsp;e2)}
                 </span><br/>
 <span class="covered" title="9 out of 9 forms covered">
-                079&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:start&nbsp;(:start&nbsp;e1)&nbsp;:end&nbsp;(:start&nbsp;e2)})))
+                078&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:start&nbsp;(:start&nbsp;e1)&nbsp;:end&nbsp;(:start&nbsp;e2)})))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                080&nbsp;&nbsp;
+                079&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                081&nbsp;&nbsp;(defn&nbsp;collinear2d?
+                080&nbsp;&nbsp;(defn&nbsp;collinear2d?
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                082&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;the&nbsp;projections&nbsp;of&nbsp;edges&nbsp;`e1`,&nbsp;`e2`&nbsp;onto&nbsp;the&nbsp;x,&nbsp;y&nbsp;plane&nbsp;are
+                081&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;the&nbsp;projections&nbsp;of&nbsp;edges&nbsp;`e1`,&nbsp;`e2`&nbsp;onto&nbsp;the&nbsp;x,&nbsp;y&nbsp;plane&nbsp;are
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                083&nbsp;&nbsp;&nbsp;&nbsp;collinear.&quot;
+                082&nbsp;&nbsp;&nbsp;&nbsp;collinear.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                084&nbsp;&nbsp;&nbsp;&nbsp;[e1&nbsp;e2]
+                083&nbsp;&nbsp;&nbsp;&nbsp;[e1&nbsp;e2]
                 </span><br/>
 <span class="covered" title="15 out of 15 forms covered">
-                085&nbsp;&nbsp;&nbsp;&nbsp;(collinear?&nbsp;{:start&nbsp;(ensure2d&nbsp;(:start&nbsp;e1))&nbsp;:end&nbsp;(ensure2d&nbsp;(:end&nbsp;e1))}
+                084&nbsp;&nbsp;&nbsp;&nbsp;(collinear?&nbsp;{:start&nbsp;(ensure2d&nbsp;(:start&nbsp;e1))&nbsp;:end&nbsp;(ensure2d&nbsp;(:end&nbsp;e1))}
                 </span><br/>
 <span class="covered" title="13 out of 13 forms covered">
-                086&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:start&nbsp;(ensure2d&nbsp;(:start&nbsp;e2))&nbsp;:end&nbsp;(ensure2d&nbsp;(:end&nbsp;e2))}))
+                085&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:start&nbsp;(ensure2d&nbsp;(:start&nbsp;e2))&nbsp;:end&nbsp;(ensure2d&nbsp;(:end&nbsp;e2))}))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                087&nbsp;&nbsp;
+                086&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                088&nbsp;&nbsp;(defn&nbsp;minimaxd
+                087&nbsp;&nbsp;(defn&nbsp;minimaxd
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                089&nbsp;&nbsp;&nbsp;&nbsp;&quot;Apply&nbsp;function&nbsp;`f`&nbsp;to&nbsp;`coord`&nbsp;of&nbsp;the&nbsp;vertices&nbsp;at&nbsp;start&nbsp;and&nbsp;end&nbsp;of&nbsp;`edge`
+                088&nbsp;&nbsp;&nbsp;&nbsp;&quot;Apply&nbsp;function&nbsp;`f`&nbsp;to&nbsp;`coord`&nbsp;of&nbsp;the&nbsp;vertices&nbsp;at&nbsp;start&nbsp;and&nbsp;end&nbsp;of&nbsp;`edge`
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                090&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;return&nbsp;the&nbsp;result.&nbsp;Intended&nbsp;use&nbsp;case&nbsp;is&nbsp;`f`&nbsp;=&nbsp;`min`&nbsp;or&nbsp;`max`,&nbsp;`coord`
+                089&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;return&nbsp;the&nbsp;result.&nbsp;Intended&nbsp;use&nbsp;case&nbsp;is&nbsp;`f`&nbsp;=&nbsp;`min`&nbsp;or&nbsp;`max`,&nbsp;`coord`
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                091&nbsp;&nbsp;&nbsp;&nbsp;is&nbsp;`:x`,&nbsp;`:y`&nbsp;or&nbsp;`:z`.&nbsp;No&nbsp;checks&nbsp;are&nbsp;made&nbsp;for&nbsp;sane&nbsp;arguments.&quot;
+                090&nbsp;&nbsp;&nbsp;&nbsp;is&nbsp;`:x`,&nbsp;`:y`&nbsp;or&nbsp;`:z`.&nbsp;No&nbsp;checks&nbsp;are&nbsp;made&nbsp;for&nbsp;sane&nbsp;arguments.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                092&nbsp;&nbsp;&nbsp;&nbsp;[edge&nbsp;coord&nbsp;f]
+                091&nbsp;&nbsp;&nbsp;&nbsp;[edge&nbsp;coord&nbsp;f]
                 </span><br/>
 <span class="covered" title="15 out of 15 forms covered">
-                093&nbsp;&nbsp;&nbsp;&nbsp;(apply&nbsp;f&nbsp;(list&nbsp;(coord&nbsp;(:start&nbsp;edge))&nbsp;(coord&nbsp;(:end&nbsp;edge)))))
+                092&nbsp;&nbsp;&nbsp;&nbsp;(apply&nbsp;f&nbsp;(list&nbsp;(coord&nbsp;(:start&nbsp;edge))&nbsp;(coord&nbsp;(:end&nbsp;edge)))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                094&nbsp;&nbsp;
+                093&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                095&nbsp;&nbsp;(defn&nbsp;on?
+                094&nbsp;&nbsp;(defn&nbsp;on?
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                096&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;the&nbsp;vertex&nbsp;`v`&nbsp;is&nbsp;on&nbsp;the&nbsp;edge&nbsp;`e`.&quot;
+                095&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;the&nbsp;vertex&nbsp;`v`&nbsp;is&nbsp;on&nbsp;the&nbsp;edge&nbsp;`e`.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                097&nbsp;&nbsp;&nbsp;&nbsp;[e&nbsp;v]
+                096&nbsp;&nbsp;&nbsp;&nbsp;[e&nbsp;v]
                 </span><br/>
 <span class="covered" title="6 out of 6 forms covered">
-                098&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[p&nbsp;(ensure3d&nbsp;(:start&nbsp;e))
+                097&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[p&nbsp;(ensure3d&nbsp;(:start&nbsp;e))
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                099&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;q&nbsp;(ensure3d&nbsp;v)
+                098&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;q&nbsp;(ensure3d&nbsp;v)
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r&nbsp;(ensure3d&nbsp;(:end&nbsp;e))]
+                099&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r&nbsp;(ensure3d&nbsp;(:end&nbsp;e))]
                 </span><br/>
 <span class="partial" title="20 out of 25 forms covered">
-                101&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and
+                100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and
                 </span><br/>
 <span class="covered" title="10 out of 10 forms covered">
-                102&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(collinear?&nbsp;(edge&nbsp;p&nbsp;q)&nbsp;(edge&nbsp;q&nbsp;r))
+                101&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(collinear?&nbsp;(edge&nbsp;p&nbsp;q)&nbsp;(edge&nbsp;q&nbsp;r))
                 </span><br/>
 <span class="covered" title="13 out of 13 forms covered">
-                103&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;=&nbsp;(:x&nbsp;q)&nbsp;(max&nbsp;(:x&nbsp;p)&nbsp;(:x&nbsp;r)))
+                102&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;=&nbsp;(:x&nbsp;q)&nbsp;(max&nbsp;(:x&nbsp;p)&nbsp;(:x&nbsp;r)))
                 </span><br/>
 <span class="covered" title="13 out of 13 forms covered">
-                104&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&gt;=&nbsp;(:x&nbsp;q)&nbsp;(min&nbsp;(:x&nbsp;p)&nbsp;(:x&nbsp;r)))
+                103&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&gt;=&nbsp;(:x&nbsp;q)&nbsp;(min&nbsp;(:x&nbsp;p)&nbsp;(:x&nbsp;r)))
                 </span><br/>
 <span class="covered" title="13 out of 13 forms covered">
-                105&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;=&nbsp;(:y&nbsp;q)&nbsp;(max&nbsp;(:y&nbsp;p)&nbsp;(:y&nbsp;r)))
+                104&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;=&nbsp;(:y&nbsp;q)&nbsp;(max&nbsp;(:y&nbsp;p)&nbsp;(:y&nbsp;r)))
                 </span><br/>
 <span class="covered" title="13 out of 13 forms covered">
-                106&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&gt;=&nbsp;(:y&nbsp;q)&nbsp;(min&nbsp;(:y&nbsp;p)&nbsp;(:y&nbsp;r)))
+                105&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&gt;=&nbsp;(:y&nbsp;q)&nbsp;(min&nbsp;(:y&nbsp;p)&nbsp;(:y&nbsp;r)))
                 </span><br/>
 <span class="covered" title="13 out of 13 forms covered">
-                107&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;=&nbsp;(:z&nbsp;q)&nbsp;(max&nbsp;(:z&nbsp;p)&nbsp;(:z&nbsp;r)))
+                106&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;=&nbsp;(:z&nbsp;q)&nbsp;(max&nbsp;(:z&nbsp;p)&nbsp;(:z&nbsp;r)))
                 </span><br/>
 <span class="covered" title="12 out of 12 forms covered">
-                108&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&gt;=&nbsp;(:z&nbsp;q)&nbsp;(min&nbsp;(:z&nbsp;p)&nbsp;(:z&nbsp;r))))))
+                107&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&gt;=&nbsp;(:z&nbsp;q)&nbsp;(min&nbsp;(:z&nbsp;p)&nbsp;(:z&nbsp;r))))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                109&nbsp;&nbsp;
+                108&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                110&nbsp;&nbsp;(defn&nbsp;on2d?
+                109&nbsp;&nbsp;(defn&nbsp;on2d?
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                111&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;vertex&nbsp;`v`&nbsp;is&nbsp;on&nbsp;edge&nbsp;`e`&nbsp;when&nbsp;projected&nbsp;onto&nbsp;the&nbsp;x,&nbsp;y&nbsp;plane.&quot;
+                110&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;vertex&nbsp;`v`&nbsp;is&nbsp;on&nbsp;edge&nbsp;`e`&nbsp;when&nbsp;projected&nbsp;onto&nbsp;the&nbsp;x,&nbsp;y&nbsp;plane.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                112&nbsp;&nbsp;&nbsp;&nbsp;[e&nbsp;v]
+                111&nbsp;&nbsp;&nbsp;&nbsp;[e&nbsp;v]
                 </span><br/>
 <span class="covered" title="15 out of 15 forms covered">
-                113&nbsp;&nbsp;&nbsp;&nbsp;(on?&nbsp;(edge&nbsp;(ensure2d&nbsp;(:start&nbsp;e))&nbsp;(ensure2d&nbsp;(:end&nbsp;e)))&nbsp;v))
+                112&nbsp;&nbsp;&nbsp;&nbsp;(on?&nbsp;(edge&nbsp;(ensure2d&nbsp;(:start&nbsp;e))&nbsp;(ensure2d&nbsp;(:end&nbsp;e)))&nbsp;v))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                114&nbsp;&nbsp;
+                113&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                115&nbsp;&nbsp;(defn&nbsp;overlaps2d?
+                114&nbsp;&nbsp;(defn&nbsp;overlaps2d?
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                116&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;the&nbsp;recangle&nbsp;in&nbsp;the&nbsp;x,y&nbsp;plane&nbsp;bisected&nbsp;by&nbsp;edge&nbsp;`e1`&nbsp;overlaps&nbsp;that
+                115&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;the&nbsp;recangle&nbsp;in&nbsp;the&nbsp;x,y&nbsp;plane&nbsp;bisected&nbsp;by&nbsp;edge&nbsp;`e1`&nbsp;overlaps&nbsp;that
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                117&nbsp;&nbsp;&nbsp;&nbsp;bisected&nbsp;by&nbsp;edge&nbsp;`e2`.&nbsp;It&nbsp;is&nbsp;an&nbsp;error&nbsp;if&nbsp;either&nbsp;`e1`&nbsp;or&nbsp;`e2`&nbsp;is&nbsp;not&nbsp;an&nbsp;edge.&quot;
+                116&nbsp;&nbsp;&nbsp;&nbsp;bisected&nbsp;by&nbsp;edge&nbsp;`e2`.&nbsp;It&nbsp;is&nbsp;an&nbsp;error&nbsp;if&nbsp;either&nbsp;`e1`&nbsp;or&nbsp;`e2`&nbsp;is&nbsp;not&nbsp;an&nbsp;edge.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                118&nbsp;&nbsp;&nbsp;&nbsp;[e1&nbsp;e2]
+                117&nbsp;&nbsp;&nbsp;&nbsp;[e1&nbsp;e2]
                 </span><br/>
 <span class="partial" title="11 out of 12 forms covered">
-                119&nbsp;&nbsp;&nbsp;&nbsp;(when&nbsp;(and&nbsp;(edge?&nbsp;e1)&nbsp;(edge?&nbsp;e2))
+                118&nbsp;&nbsp;&nbsp;&nbsp;(when&nbsp;(and&nbsp;(edge?&nbsp;e1)&nbsp;(edge?&nbsp;e2))
                 </span><br/>
 <span class="partial" title="11 out of 13 forms covered">
-                120&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and
+                119&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and
                 </span><br/>
 <span class="covered" title="12 out of 12 forms covered">
-                121&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&gt;&nbsp;(minimaxd&nbsp;e1&nbsp;:x&nbsp;max)&nbsp;(minimaxd&nbsp;e2&nbsp;:x&nbsp;min))
+                120&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&gt;&nbsp;(minimaxd&nbsp;e1&nbsp;:x&nbsp;max)&nbsp;(minimaxd&nbsp;e2&nbsp;:x&nbsp;min))
                 </span><br/>
 <span class="covered" title="12 out of 12 forms covered">
-                122&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;&nbsp;(minimaxd&nbsp;e1&nbsp;:x&nbsp;min)&nbsp;(minimaxd&nbsp;e2&nbsp;:x&nbsp;max))
+                121&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;&nbsp;(minimaxd&nbsp;e1&nbsp;:x&nbsp;min)&nbsp;(minimaxd&nbsp;e2&nbsp;:x&nbsp;max))
                 </span><br/>
 <span class="covered" title="12 out of 12 forms covered">
-                123&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&gt;&nbsp;(minimaxd&nbsp;e1&nbsp;:y&nbsp;max)&nbsp;(minimaxd&nbsp;e2&nbsp;:y&nbsp;min))
+                122&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&gt;&nbsp;(minimaxd&nbsp;e1&nbsp;:y&nbsp;max)&nbsp;(minimaxd&nbsp;e2&nbsp;:y&nbsp;min))
                 </span><br/>
 <span class="covered" title="11 out of 11 forms covered">
-                124&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;&nbsp;(minimaxd&nbsp;e1&nbsp;:y&nbsp;min)&nbsp;(minimaxd&nbsp;e2&nbsp;:y&nbsp;max)))))
+                123&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;&nbsp;(minimaxd&nbsp;e1&nbsp;:y&nbsp;min)&nbsp;(minimaxd&nbsp;e2&nbsp;:y&nbsp;max)))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                125&nbsp;&nbsp;
+                124&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                125&nbsp;&nbsp;(defn&nbsp;intersection2d
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                126&nbsp;&nbsp;;;&nbsp;Don&#x27;t&nbsp;think&nbsp;I&nbsp;need&nbsp;this.
+                126&nbsp;&nbsp;&nbsp;&nbsp;&quot;The&nbsp;probability&nbsp;of&nbsp;two&nbsp;lines&nbsp;intersecting&nbsp;in&nbsp;3d&nbsp;space&nbsp;is&nbsp;low,&nbsp;and&nbsp;actually
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                127&nbsp;&nbsp;;;&nbsp;(defn&nbsp;orientation
+                127&nbsp;&nbsp;&nbsp;&nbsp;that&nbsp;is&nbsp;mostly&nbsp;not&nbsp;something&nbsp;we&#x27;re&nbsp;interested&nbsp;in.&nbsp;We&#x27;re&nbsp;interested&nbsp;in
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                128&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&quot;Determine&nbsp;whether&nbsp;the&nbsp;ordered&nbsp;sequence&nbsp;of&nbsp;vertices&nbsp;`p`,&nbsp;`q`&nbsp;and&nbsp;`r`&nbsp;run
+                128&nbsp;&nbsp;&nbsp;&nbsp;intersection&nbsp;in&nbsp;the&nbsp;`x,y`&nbsp;plane.&nbsp;This&nbsp;function&nbsp;returns&nbsp;a&nbsp;vertex&nbsp;representing
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                129&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;clockwise,&nbsp;collinear&nbsp;or&nbsp;anticlockwise&nbsp;in&nbsp;the&nbsp;x,y&nbsp;plane.&quot;
+                129&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;point&nbsp;vertically&nbsp;over&nbsp;the&nbsp;intersection&nbsp;of&nbsp;edges&nbsp;`e1`,&nbsp;`e2`&nbsp;in&nbsp;the&nbsp;`x,y`
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                130&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;[p&nbsp;q&nbsp;r]
+                130&nbsp;&nbsp;&nbsp;&nbsp;plane,&nbsp;whose&nbsp;`z`&nbsp;coordinate&nbsp;is
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                131&nbsp;&nbsp;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                131&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;(let&nbsp;[v&nbsp;(-&nbsp;(*&nbsp;(-&nbsp;(:y&nbsp;q)&nbsp;(:y&nbsp;p))&nbsp;(-&nbsp;(:x&nbsp;r)&nbsp;(:x&nbsp;q)))
+                132&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;0&nbsp;if&nbsp;both&nbsp;edges&nbsp;are&nbsp;2d&nbsp;(i.e.&nbsp;have&nbsp;missing&nbsp;or&nbsp;zero&nbsp;`z`&nbsp;coordinates);
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                132&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*&nbsp;(-&nbsp;(:x&nbsp;q)&nbsp;(:x&nbsp;p))&nbsp;(-&nbsp;(:y&nbsp;r)&nbsp;(:y&nbsp;q))))]
+                133&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;if&nbsp;one&nbsp;edge&nbsp;is&nbsp;2d,&nbsp;then&nbsp;the&nbsp;point&nbsp;on&nbsp;the&nbsp;other&nbsp;edge&nbsp;over&nbsp;the&nbsp;intersection;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                133&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cond
+                134&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;otherwise,&nbsp;the&nbsp;average&nbsp;of&nbsp;the&nbsp;z&nbsp;coordinates&nbsp;of&nbsp;the&nbsp;points&nbsp;on&nbsp;the&nbsp;two
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                134&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(zero?&nbsp;v)&nbsp;:collinear
+                135&nbsp;&nbsp;&nbsp;&nbsp;edges&nbsp;over&nbsp;the&nbsp;intersection.
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                136&nbsp;&nbsp;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                135&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(pos?&nbsp;v)&nbsp;:clockwise
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                136&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                137&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:anticlockwise)))
+                137&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;no&nbsp;such&nbsp;intersection&nbsp;exists,&nbsp;`nil`&nbsp;is&nbsp;returned.
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
                 138&nbsp;&nbsp;
                 </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                139&nbsp;&nbsp;(defn&nbsp;intersection2d
+<span class="not-tracked" title="0 out of 0 forms covered">
+                139&nbsp;&nbsp;&nbsp;&nbsp;It&nbsp;is&nbsp;an&nbsp;error,&nbsp;and&nbsp;an&nbsp;exception&nbsp;will&nbsp;be&nbsp;thrown,&nbsp;if&nbsp;either&nbsp;`e1`&nbsp;or&nbsp;`e2`&nbsp;is
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                140&nbsp;&nbsp;&nbsp;&nbsp;&quot;The&nbsp;probability&nbsp;of&nbsp;two&nbsp;lines&nbsp;intersecting&nbsp;in&nbsp;3d&nbsp;space&nbsp;is&nbsp;low,&nbsp;and&nbsp;actually
+                140&nbsp;&nbsp;&nbsp;&nbsp;not&nbsp;an&nbsp;edge.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                141&nbsp;&nbsp;&nbsp;&nbsp;that&nbsp;is&nbsp;mostly&nbsp;not&nbsp;something&nbsp;we&#x27;re&nbsp;interested&nbsp;in.&nbsp;We&#x27;re&nbsp;interested&nbsp;in
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                142&nbsp;&nbsp;&nbsp;&nbsp;intersection&nbsp;in&nbsp;the&nbsp;`x,y`&nbsp;plane.&nbsp;This&nbsp;function&nbsp;returns&nbsp;a&nbsp;vertex&nbsp;representing
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                143&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;point&nbsp;vertically&nbsp;over&nbsp;the&nbsp;intersection&nbsp;of&nbsp;edges&nbsp;`e1`,&nbsp;`e2`&nbsp;in&nbsp;the&nbsp;`x,y`
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                144&nbsp;&nbsp;&nbsp;&nbsp;plane,&nbsp;whose&nbsp;`z`&nbsp;coordinate&nbsp;is
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                145&nbsp;&nbsp;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                146&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;0&nbsp;if&nbsp;both&nbsp;edges&nbsp;are&nbsp;2d&nbsp;(i.e.&nbsp;have&nbsp;missing&nbsp;or&nbsp;zero&nbsp;`z`&nbsp;coordinates);
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                147&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;if&nbsp;one&nbsp;edge&nbsp;is&nbsp;2d,&nbsp;then&nbsp;the&nbsp;point&nbsp;on&nbsp;the&nbsp;other&nbsp;edge&nbsp;over&nbsp;the&nbsp;intersection;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                148&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;otherwise,&nbsp;the&nbsp;average&nbsp;of&nbsp;the&nbsp;z&nbsp;coordinates&nbsp;of&nbsp;the&nbsp;points&nbsp;on&nbsp;the&nbsp;two
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                149&nbsp;&nbsp;&nbsp;&nbsp;edges&nbsp;over&nbsp;the&nbsp;intersection.
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                150&nbsp;&nbsp;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                151&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;no&nbsp;such&nbsp;intersection&nbsp;exists,&nbsp;`nil`&nbsp;is&nbsp;returned.
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                152&nbsp;&nbsp;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                153&nbsp;&nbsp;&nbsp;&nbsp;It&nbsp;is&nbsp;an&nbsp;error,&nbsp;and&nbsp;an&nbsp;exception&nbsp;will&nbsp;be&nbsp;thrown,&nbsp;if&nbsp;either&nbsp;`e1`&nbsp;or&nbsp;`e2`&nbsp;is
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                154&nbsp;&nbsp;&nbsp;&nbsp;not&nbsp;an&nbsp;edge.&quot;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                155&nbsp;&nbsp;&nbsp;&nbsp;[e1&nbsp;e2]
+                141&nbsp;&nbsp;&nbsp;&nbsp;[e1&nbsp;e2]
                 </span><br/>
 <span class="covered" title="11 out of 11 forms covered">
-                156&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(and&nbsp;(edge?&nbsp;e1)&nbsp;(edge?&nbsp;e2))
+                142&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(and&nbsp;(edge?&nbsp;e1)&nbsp;(edge?&nbsp;e2))
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                157&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(when
+                143&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(when
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                158&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(overlaps2d?&nbsp;e1&nbsp;e2)&nbsp;;;&nbsp;relatively&nbsp;cheap&nbsp;check
+                144&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(overlaps2d?&nbsp;e1&nbsp;e2)&nbsp;;;&nbsp;relatively&nbsp;cheap&nbsp;check
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                159&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if
+                145&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                160&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(collinear2d?&nbsp;e1&nbsp;e2)
+                146&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(collinear2d?&nbsp;e1&nbsp;e2)
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                161&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;any&nbsp;point&nbsp;within&nbsp;the&nbsp;overlap&nbsp;will&nbsp;do,&nbsp;but&nbsp;we&#x27;ll&nbsp;pick&nbsp;the&nbsp;end&nbsp;of&nbsp;e1
+                147&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;any&nbsp;point&nbsp;within&nbsp;the&nbsp;overlap&nbsp;will&nbsp;do,&nbsp;but&nbsp;we&#x27;ll&nbsp;pick&nbsp;the&nbsp;end&nbsp;of&nbsp;e1
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                162&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;which&nbsp;is&nbsp;on&nbsp;e2
+                148&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;which&nbsp;is&nbsp;on&nbsp;e2
                 </span><br/>
 <span class="partial" title="10 out of 13 forms covered">
-                163&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(on2d?&nbsp;e2&nbsp;(:start&nbsp;e1))&nbsp;(:start&nbsp;e1)&nbsp;(:end&nbsp;e1))
+                149&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(on2d?&nbsp;e2&nbsp;(:start&nbsp;e1))&nbsp;(:start&nbsp;e1)&nbsp;(:end&nbsp;e1))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                164&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;blatantly&nbsp;stolen&nbsp;from
+                150&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;blatantly&nbsp;stolen&nbsp;from
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                165&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;https:&#x2F;&#x2F;gist.github.com&#x2F;cassiel&#x2F;3e725b49670356a9b936
+                151&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;https:&#x2F;&#x2F;gist.github.com&#x2F;cassiel&#x2F;3e725b49670356a9b936
                 </span><br/>
 <span class="covered" title="6 out of 6 forms covered">
-                166&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[x1&nbsp;(:x&nbsp;(:start&nbsp;e1))
+                152&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[x1&nbsp;(:x&nbsp;(:start&nbsp;e1))
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                167&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x2&nbsp;(:x&nbsp;(:end&nbsp;e1))
+                153&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x2&nbsp;(:x&nbsp;(:end&nbsp;e1))
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                168&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x3&nbsp;(:x&nbsp;(:start&nbsp;e2))
+                154&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x3&nbsp;(:x&nbsp;(:start&nbsp;e2))
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                169&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x4&nbsp;(:x&nbsp;(:end&nbsp;e2))
+                155&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x4&nbsp;(:x&nbsp;(:end&nbsp;e2))
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                170&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y1&nbsp;(:y&nbsp;(:start&nbsp;e1))
+                156&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y1&nbsp;(:y&nbsp;(:start&nbsp;e1))
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                171&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y2&nbsp;(:y&nbsp;(:end&nbsp;e1))
+                157&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y2&nbsp;(:y&nbsp;(:end&nbsp;e1))
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                172&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y3&nbsp;(:y&nbsp;(:start&nbsp;e2))
+                158&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y3&nbsp;(:y&nbsp;(:start&nbsp;e2))
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                173&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y4&nbsp;(:y&nbsp;(:end&nbsp;e2))
+                159&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y4&nbsp;(:y&nbsp;(:end&nbsp;e2))
                 </span><br/>
 <span class="covered" title="12 out of 12 forms covered">
-                174&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;denom&nbsp;(-&nbsp;(*&nbsp;(-&nbsp;x1&nbsp;x2)&nbsp;(-&nbsp;y3&nbsp;y4))
+                160&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;denom&nbsp;(-&nbsp;(*&nbsp;(-&nbsp;x1&nbsp;x2)&nbsp;(-&nbsp;y3&nbsp;y4))
                 </span><br/>
 <span class="covered" title="10 out of 10 forms covered">
-                175&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*&nbsp;(-&nbsp;y1&nbsp;y2)&nbsp;(-&nbsp;x3&nbsp;x4)))
+                161&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*&nbsp;(-&nbsp;y1&nbsp;y2)&nbsp;(-&nbsp;x3&nbsp;x4)))
                 </span><br/>
 <span class="covered" title="10 out of 10 forms covered">
-                176&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x1y2-y1x2&nbsp;(-&nbsp;(*&nbsp;x1&nbsp;y2)&nbsp;(*&nbsp;y1&nbsp;x2))
+                162&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x1y2-y1x2&nbsp;(-&nbsp;(*&nbsp;x1&nbsp;y2)&nbsp;(*&nbsp;y1&nbsp;x2))
                 </span><br/>
 <span class="covered" title="10 out of 10 forms covered">
-                177&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x3y4-y3x4&nbsp;(-&nbsp;(*&nbsp;x3&nbsp;y4)&nbsp;(*&nbsp;y3&nbsp;x4))
+                163&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x3y4-y3x4&nbsp;(-&nbsp;(*&nbsp;x3&nbsp;y4)&nbsp;(*&nbsp;y3&nbsp;x4))
                 </span><br/>
 <span class="covered" title="9 out of 9 forms covered">
-                178&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;px-num&nbsp;(-&nbsp;(*&nbsp;x1y2-y1x2&nbsp;(-&nbsp;x3&nbsp;x4))
+                164&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;px-num&nbsp;(-&nbsp;(*&nbsp;x1y2-y1x2&nbsp;(-&nbsp;x3&nbsp;x4))
                 </span><br/>
 <span class="covered" title="7 out of 7 forms covered">
-                179&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*&nbsp;(-&nbsp;x1&nbsp;x2)&nbsp;x3y4-y3x4))
+                165&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*&nbsp;(-&nbsp;x1&nbsp;x2)&nbsp;x3y4-y3x4))
                 </span><br/>
 <span class="covered" title="9 out of 9 forms covered">
-                180&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;py-num&nbsp;(-&nbsp;(*&nbsp;x1y2-y1x2&nbsp;(-&nbsp;y3&nbsp;y4))
+                166&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;py-num&nbsp;(-&nbsp;(*&nbsp;x1y2-y1x2&nbsp;(-&nbsp;y3&nbsp;y4))
                 </span><br/>
 <span class="covered" title="7 out of 7 forms covered">
-                181&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*&nbsp;(-&nbsp;y1&nbsp;y2)&nbsp;x3y4-y3x4))
+                167&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*&nbsp;(-&nbsp;y1&nbsp;y2)&nbsp;x3y4-y3x4))
                 </span><br/>
 <span class="covered" title="6 out of 6 forms covered">
-                182&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result&nbsp;(when-not&nbsp;(zero?&nbsp;denom)
+                168&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result&nbsp;(when-not&nbsp;(zero?&nbsp;denom)
                 </span><br/>
 <span class="covered" title="10 out of 10 forms covered">
-                183&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(vertex&nbsp;(&#x2F;&nbsp;px-num&nbsp;denom)&nbsp;(&#x2F;&nbsp;py-num&nbsp;denom)))]
+                169&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(vertex&nbsp;(&#x2F;&nbsp;px-num&nbsp;denom)&nbsp;(&#x2F;&nbsp;py-num&nbsp;denom)))]
                 </span><br/>
 <span class="partial" title="19 out of 20 forms covered">
-                184&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(when&nbsp;(and&nbsp;result&nbsp;(on2d?&nbsp;e1&nbsp;result)&nbsp;(on2d?&nbsp;e2&nbsp;result))&nbsp;result))))
+                170&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(when&nbsp;(and&nbsp;result&nbsp;(on2d?&nbsp;e1&nbsp;result)&nbsp;(on2d?&nbsp;e2&nbsp;result))&nbsp;result))))
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                185&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.
+                171&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                186&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str
+                172&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                187&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;Both&nbsp;`e1`&nbsp;and&nbsp;`e2`&nbsp;must&nbsp;be&nbsp;edges.&quot;
+                173&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;Both&nbsp;`e1`&nbsp;and&nbsp;`e2`&nbsp;must&nbsp;be&nbsp;edges.&quot;
                 </span><br/>
 <span class="covered" title="16 out of 16 forms covered">
-                188&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map&nbsp;#(or&nbsp;(:kind&nbsp;%)&nbsp;(type&nbsp;%))&nbsp;[e1&nbsp;e2]))))))
+                174&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map&nbsp;#(or&nbsp;(:kind&nbsp;%)&nbsp;(type&nbsp;%))&nbsp;[e1&nbsp;e2]))))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                189&nbsp;&nbsp;
+                175&nbsp;&nbsp;
                 </span><br/>
  </body>
 </html>
