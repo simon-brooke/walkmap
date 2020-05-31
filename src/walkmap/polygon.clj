@@ -3,8 +3,8 @@
   (:require [clojure.string :as s]
             [walkmap.edge :as e]
             [walkmap.tag :as t]
-            [walkmap.utils :refer [kind-type]]
-            [walkmap.vertex :refer [vertex vertex?]]))
+            [walkmap.utils :refer [check-kind-type check-kind-type-seq kind-type]]
+            [walkmap.vertex :refer [check-vertices vertex vertex?]]))
 
 (defn polygon?
   "True if `o` satisfies the conditions for a polygon. A polygon shall be a
@@ -20,6 +20,20 @@
       (:walkmap.id/id o)
       (or (nil? (:kind o)) (= (:kind o) :polygon)))))
 
+(defmacro check-polygon
+  "If `o` is not a polygon, throw an `IllegalArgumentException` with an
+  appropriate message; otherwise, returns `o`. Macro, so exception is thrown
+  from the calling function."
+  [o]
+  `(check-kind-type ~o polygon? :polygon))
+
+(defmacro check-polygons
+  "If `o` is not a sequence of polygons, throw an `IllegalArgumentException` with an
+  appropriate message; otherwise, returns `o`. Macro, so exception is thrown
+  from the calling function."
+  [o]
+  `(check-kind-type-seq ~o polygon? :polygon))
+
 (defn triangle?
   "True if `o` satisfies the conditions for a triangle. A triangle shall be a
   polygon with exactly three vertices."
@@ -28,24 +42,26 @@
     (coll? o)
     (= (count (:vertices o)) 3)))
 
+(defmacro check-triangle
+  "If `o` is not a triangle, throw an `IllegalArgumentException` with an
+  appropriate message; otherwise, returns `o`. Macro, so exception is thrown
+  from the calling function."
+  [o]
+  `(check-kind-type ~o triangle? :triangle))
+
 (defn polygon
   "Return a polygon constructed from these `vertices`."
-  [vertices]
-  (when-not (every? vertex? vertices)
-    (throw (IllegalArgumentException.
-             (str
-               "Each item on vertices must be a vertex: "
-               (s/join " " (map kind-type (remove vertex? vertices)))))))
-  {:vertices vertices :walkmap.id/id (keyword (gensym "poly")) :kind :polygon})
+  [& vertices]
+  {:vertices (check-vertices vertices)
+   :walkmap.id/id (keyword (gensym "poly"))
+   :kind :polygon})
 
 (defn gradient
   "Return a polygon like `triangle` but with a key `:gradient` whose value is a
   unit vector representing the gradient across `triangle`."
   [triangle]
-  (when-not (triangle? triangle)
-    (throw (IllegalArgumentException.
-             (s/join " " ["Must be a triangle:" (kind-type triangle)]))))
-  (let [order (sort #(max (:z %1) (:z %2)) (:vertices triangle))
+  (let [order (sort #(max (:z %1) (:z %2))
+                    (:vertices (check-triangle triangle)))
         highest (first order)
         lowest (last order)]
      (assoc triangle :gradient (e/unit-vector (e/edge lowest highest)))))
@@ -57,10 +73,7 @@
   `walkmap.polygon`. It is an error (although no exception is currently
   thrown) if the object past is not a triangular polygon."
   [facet]
-  (when-not (triangle? facet)
-    (throw (IllegalArgumentException.
-             (s/join " " ["Must be a triangle:" (kind-type facet)]))))
-  (let [vs (:vertices facet)
+  (let [vs (:vertices (check-triangle facet))
         v1 (first vs)
         opposite (e/edge (nth vs 1) (nth vs 2))
         oc (e/centre opposite)]
@@ -74,10 +87,7 @@
 
 (defn centre
   [poly]
-  (when-not (polygon? poly)
-        (throw (IllegalArgumentException.
-             (s/join " " ["Must be a polygon:" (kind-type poly)]))))
-  (case (count (:vertices poly))
+  (case (count (:vertices (check-polygon poly)))
     3 (triangle-centre poly)
     ;; else
     (throw

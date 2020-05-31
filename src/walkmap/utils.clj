@@ -1,6 +1,7 @@
 (ns walkmap.utils
   "Miscellaneous utility functions."
-  (:require [clojure.math.numeric-tower :as m]))
+  (:require [clojure.math.numeric-tower :as m]
+            [clojure.string :as s]))
 
 (defn deep-merge
   "Recursively merges maps. If vals are not maps, the last value wins."
@@ -41,3 +42,60 @@
    (if (and (number? n1) (number? n2))
      (< (m/abs (- n1 n2)) tolerance)
      (= n1 n2))))
+
+(defmacro check-kind-type
+  "If `object` is not of kind-type `expected`, throws an
+  IllegalArgumentException with an appropriate message; otherwise, returns
+  `object`. If `checkfn` is supplied, it should be a function which tests
+  whether the object is of the expected kind-type.
+
+  Macro, so that the exception is thrown from the calling function."
+  ([object expected]
+   `(if-not (= (kind-type ~object) ~expected)
+      (throw
+        (IllegalArgumentException.
+          (s/join
+            " "
+            ["Expected" ~expected "but found" (kind-type ~object)])))
+      ~object))
+  ([object checkfn expected]
+   `(if-not (~checkfn ~object)
+      (throw
+        (IllegalArgumentException.
+          (s/join
+            " "
+            ["Expected" ~expected "but found" (kind-type ~object)])))
+      ~object)))
+
+(defmacro check-kind-type-seq
+  "If some item on sequence `s` is not of the `expected` kind-type, throws an
+  IllegalArgumentException with an appropriate message; otherwise, returns
+  `object`. If `checkfn` is supplied, it should be a function which tests
+  whether the object is of the expected kind-type.
+
+  Macro, so that the exception is thrown from the calling function."
+  ([s expected]
+  `(if-not (every? #(= (kind-type %) ~expected) ~s)
+     (throw
+       (IllegalArgumentException.
+         (s/join
+           " "
+           ["Expected sequence of"
+            ~expected
+            "but found ("
+            (s/join ", " (remove #(= ~expected %) (map kind-type ~s)))
+            ")"])))
+     ~s))
+  ([s checkfn expected]
+  `(if-not (every? #(~checkfn %) ~s)
+     (throw
+       (IllegalArgumentException.
+         (s/join
+           " "
+           ["Expected sequence of"
+            ~expected
+            "but found ("
+            (s/join ", " (remove #(= ~expected %) (map kind-type ~s)))
+            ")"])))
+     ~s)))
+

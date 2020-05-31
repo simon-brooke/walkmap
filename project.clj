@@ -4,7 +4,8 @@
                      :doc/format :markdown}
           :output-path "docs/codox"
           :source-uri "https://github.com/simon-brooke/walkmap/blob/master/{filepath}#L{line}"}
-  :dependencies [[org.clojure/clojure "1.8.0"]
+  :dependencies [[org.clojure/algo.generic "0.1.3"]
+                 [org.clojure/clojure "1.8.0"]
                  [org.clojure/data.zip "1.0.0"]
                  [org.clojure/math.numeric-tower "0.0.4"]
                  [org.clojure/math.combinatorics "0.1.6"]

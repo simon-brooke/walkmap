@@ -2,7 +2,7 @@
   (:require [clojure.math.numeric-tower :as m]
             [clojure.test :refer :all]
             [walkmap.edge :refer :all]
-            [walkmap.vertex :refer [vertex]]))
+            [walkmap.vertex :refer [vertex vertex=]]))
 
 (deftest edge-test
   (testing "identification of edges."
@@ -98,12 +98,12 @@
 
 (deftest parallel-test
   (testing "parallelism"
-    (is (parallel? {:start {:x 0.0 :y 0.0 :z 0.0 :walkmap.id/id 'foo} :end {:x 3 :y 4 :z 0.0 :walkmap.id/id 'bar}}
-                   {:start {:x 1.0 :y 2.0 :z 3.5 :walkmap.id/id 'foo} :end {:x 4.0 :y 6.0 :z 3.5 :walkmap.id/id 'bar}})
+    (is (parallel? (edge (vertex 0.0 0.0 0.0) (vertex 3 4 0.0))
+                   (edge (vertex 1.0 2.0 3.5) (vertex 4.0 6.0 3.5)))
         "Should be")
     (is (not
-          (parallel? {:start {:x 0.0 :y 0.0 :z 0.0 :walkmap.id/id 'foo} :end {:x 3 :y 4 :z 0.0 :walkmap.id/id 'bar}}
-                     {:start {:x 1.0 :y 2.0 :z 3.5 :walkmap.id/id 'foo} :end {:x 4.0 :y 6.0 :z 3.49 :walkmap.id/id 'bar}}))
+          (parallel? (edge (vertex 0.0 0.0 0.0) (vertex 3 4 0.0))
+                     (edge (vertex 1.0 2.0 3.5) (vertex 4.0 6.0 3.49))))
         "Should not be!")))
 
 (deftest overlaps2d-test
@@ -113,9 +113,9 @@
 
 (deftest unit-vector-test
   (testing "deriving the unit vector"
-    (is (=
-          (unit-vector {:start {:x 0.0 :y 0.0 :z 0.0 :walkmap.id/id 'foo} :end {:x 3 :y 4 :z 0.0 :walkmap.id/id 'bar}})
-          {:x 0.6, :y 0.8, :z 0.0}))
-    (is (=
-          (unit-vector {:start {:x 1.0 :y 2.0 :z 3.5 :walkmap.id/id 'foo} :end {:x 4.0 :y 6.0 :z 3.5 :walkmap.id/id 'bar}})
-          {:x 0.6, :y 0.8, :z 0.0}))))
+    (is (vertex=
+          (unit-vector (edge (vertex 0.0 0.0 0.0) (vertex 3 4 0.0)))
+          (vertex 0.6 0.8 0.0)))
+    (is (vertex=
+          (unit-vector (edge (vertex 1.0 2.0 3.5) (vertex 4.0 6.0 3.5)))
+          (vertex 0.6 0.8 0.0)))))

@@ -3,7 +3,8 @@
   An edge is a line segment having just a start and an end, with no intervening
   nodes."
   (:require [clojure.math.numeric-tower :as m]
-            [walkmap.vertex :refer [ensure2d ensure3d vertex vertex= vertex?]]))
+            [walkmap.utils :as u]
+            [walkmap.vertex :refer [canonicalise ensure2d ensure3d vertex vertex= vertex?]]))
 
 (defn edge
   "Return an edge between vertices `v1` and `v2`."
@@ -51,13 +52,14 @@
   [e]
   (let [e' {:start (ensure3d (:start e)) :end (ensure3d (:end e))}
         l (length e')]
-    (reduce
-      merge
-      {}
-      (map
-        (fn [k]
-          {k (/ (- (k (:end e')) (k (:start e'))) l)})
-        [:x :y :z]))))
+    (canonicalise
+      (reduce
+        merge
+        {}
+        (map
+          (fn [k]
+            {k (/ (- (k (:end e')) (k (:start e'))) l)})
+          [:x :y :z])))))
 
 (defn parallel?
   "True if all `edges` passed are parallel with one another."

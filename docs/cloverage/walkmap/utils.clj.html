@@ -11,127 +11,301 @@
                 002&nbsp;&nbsp;&nbsp;&nbsp;&quot;Miscellaneous&nbsp;utility&nbsp;functions.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                003&nbsp;&nbsp;&nbsp;&nbsp;(:require&nbsp;[clojure.math.numeric-tower&nbsp;:as&nbsp;m]))
+                003&nbsp;&nbsp;&nbsp;&nbsp;(:require&nbsp;[clojure.math.numeric-tower&nbsp;:as&nbsp;m]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                004&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[clojure.string&nbsp;:as&nbsp;s]))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                004&nbsp;&nbsp;
+                005&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                005&nbsp;&nbsp;(defn&nbsp;deep-merge
+                006&nbsp;&nbsp;(defn&nbsp;deep-merge
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                006&nbsp;&nbsp;&nbsp;&nbsp;&quot;Recursively&nbsp;merges&nbsp;maps.&nbsp;If&nbsp;vals&nbsp;are&nbsp;not&nbsp;maps,&nbsp;the&nbsp;last&nbsp;value&nbsp;wins.&quot;
+                007&nbsp;&nbsp;&nbsp;&nbsp;&quot;Recursively&nbsp;merges&nbsp;maps.&nbsp;If&nbsp;vals&nbsp;are&nbsp;not&nbsp;maps,&nbsp;the&nbsp;last&nbsp;value&nbsp;wins.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                007&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;TODO:&nbsp;not&nbsp;my&nbsp;implementation,&nbsp;not&nbsp;sure&nbsp;I&nbsp;entirely&nbsp;trust&nbsp;it.
+                008&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;TODO:&nbsp;not&nbsp;my&nbsp;implementation,&nbsp;not&nbsp;sure&nbsp;I&nbsp;entirely&nbsp;trust&nbsp;it.
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                008&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;TODO&nbsp;TODO:&nbsp;if&nbsp;we&nbsp;are&nbsp;to&nbsp;successfully&nbsp;merge&nbsp;walkmap&nbsp;objects,&nbsp;we&nbsp;must
+                009&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;TODO&nbsp;TODO:&nbsp;if&nbsp;we&nbsp;are&nbsp;to&nbsp;successfully&nbsp;merge&nbsp;walkmap&nbsp;objects,&nbsp;we&nbsp;must
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                009&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;return,&nbsp;on&nbsp;each&nbsp;object,&nbsp;the&nbsp;union&nbsp;of&nbsp;its&nbsp;tags&nbsp;if&nbsp;any.
+                010&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;return,&nbsp;on&nbsp;each&nbsp;object,&nbsp;the&nbsp;union&nbsp;of&nbsp;its&nbsp;tags&nbsp;if&nbsp;any.
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                010&nbsp;&nbsp;&nbsp;&nbsp;[&amp;&nbsp;vals]
+                011&nbsp;&nbsp;&nbsp;&nbsp;[&amp;&nbsp;vals]
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                011&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(every?&nbsp;map?&nbsp;vals)
+                012&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(every?&nbsp;map?&nbsp;vals)
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                012&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply&nbsp;merge-with&nbsp;deep-merge&nbsp;vals)
+                013&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply&nbsp;merge-with&nbsp;deep-merge&nbsp;vals)
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                013&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(last&nbsp;vals)))
+                014&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(last&nbsp;vals)))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                014&nbsp;&nbsp;
+                015&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                015&nbsp;&nbsp;(defn&nbsp;truncate
+                016&nbsp;&nbsp;(defn&nbsp;truncate
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                016&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;string&nbsp;`s`&nbsp;is&nbsp;more&nbsp;than&nbsp;`n`&nbsp;characters&nbsp;long,&nbsp;return&nbsp;the&nbsp;first&nbsp;`n`
+                017&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;string&nbsp;`s`&nbsp;is&nbsp;more&nbsp;than&nbsp;`n`&nbsp;characters&nbsp;long,&nbsp;return&nbsp;the&nbsp;first&nbsp;`n`
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                017&nbsp;&nbsp;&nbsp;&nbsp;characters;&nbsp;otherwise,&nbsp;return&nbsp;`s`.&quot;
+                018&nbsp;&nbsp;&nbsp;&nbsp;characters;&nbsp;otherwise,&nbsp;return&nbsp;`s`.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                018&nbsp;&nbsp;&nbsp;&nbsp;[s&nbsp;n]
+                019&nbsp;&nbsp;&nbsp;&nbsp;[s&nbsp;n]
                 </span><br/>
 <span class="not-covered" title="0 out of 21 forms covered">
-                019&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(and&nbsp;(string?&nbsp;s)&nbsp;(number?&nbsp;n)&nbsp;(&gt;&nbsp;(count&nbsp;s)&nbsp;n))
+                020&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(and&nbsp;(string?&nbsp;s)&nbsp;(number?&nbsp;n)&nbsp;(&gt;&nbsp;(count&nbsp;s)&nbsp;n))
                 </span><br/>
 <span class="not-covered" title="0 out of 5 forms covered">
-                020&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(subs&nbsp;s&nbsp;0&nbsp;n)
+                021&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(subs&nbsp;s&nbsp;0&nbsp;n)
                 </span><br/>
 <span class="not-covered" title="0 out of 1 forms covered">
-                021&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s))
+                022&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                022&nbsp;&nbsp;
+                023&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                023&nbsp;&nbsp;(defn&nbsp;kind-type
+                024&nbsp;&nbsp;(defn&nbsp;kind-type
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                024&nbsp;&nbsp;&nbsp;&nbsp;&quot;Identify&nbsp;the&nbsp;type&nbsp;of&nbsp;an&nbsp;`object`,&nbsp;e.g.&nbsp;for&nbsp;logging.&nbsp;If&nbsp;it&nbsp;has&nbsp;a&nbsp;`:kind`&nbsp;key,
+                025&nbsp;&nbsp;&nbsp;&nbsp;&quot;Identify&nbsp;the&nbsp;type&nbsp;of&nbsp;an&nbsp;`object`,&nbsp;e.g.&nbsp;for&nbsp;logging.&nbsp;If&nbsp;it&nbsp;has&nbsp;a&nbsp;`:kind`&nbsp;key,
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                025&nbsp;&nbsp;&nbsp;&nbsp;it&#x27;s&nbsp;one&nbsp;of&nbsp;ours,&nbsp;and&nbsp;that&#x27;s&nbsp;what&nbsp;we&nbsp;want.&nbsp;Otherwise,&nbsp;we&nbsp;want&nbsp;its&nbsp;type;&nbsp;but
+                026&nbsp;&nbsp;&nbsp;&nbsp;it&#x27;s&nbsp;one&nbsp;of&nbsp;ours,&nbsp;and&nbsp;that&#x27;s&nbsp;what&nbsp;we&nbsp;want.&nbsp;Otherwise,&nbsp;we&nbsp;want&nbsp;its&nbsp;type;&nbsp;but
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                026&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;type&nbsp;of&nbsp;`nil`&nbsp;is&nbsp;`nil`,&nbsp;which&nbsp;doesn&#x27;t&nbsp;get&nbsp;printed&nbsp;when&nbsp;assembling&nbsp;error
+                027&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;type&nbsp;of&nbsp;`nil`&nbsp;is&nbsp;`nil`,&nbsp;which&nbsp;doesn&#x27;t&nbsp;get&nbsp;printed&nbsp;when&nbsp;assembling&nbsp;error
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                027&nbsp;&nbsp;&nbsp;&nbsp;,essages,&nbsp;so&nbsp;return&nbsp;\&quot;nil\&quot;.&quot;
+                028&nbsp;&nbsp;&nbsp;&nbsp;,essages,&nbsp;so&nbsp;return&nbsp;\&quot;nil\&quot;.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                028&nbsp;&nbsp;&nbsp;&nbsp;[object]
+                029&nbsp;&nbsp;&nbsp;&nbsp;[object]
                 </span><br/>
 <span class="partial" title="14 out of 15 forms covered">
-                029&nbsp;&nbsp;&nbsp;&nbsp;(or&nbsp;(:kind&nbsp;object)&nbsp;(type&nbsp;object)&nbsp;&quot;nil&quot;))
+                030&nbsp;&nbsp;&nbsp;&nbsp;(or&nbsp;(:kind&nbsp;object)&nbsp;(type&nbsp;object)&nbsp;&quot;nil&quot;))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                030&nbsp;&nbsp;
+                031&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                031&nbsp;&nbsp;(defn&nbsp;=ish
+                032&nbsp;&nbsp;(defn&nbsp;=ish
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                032&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;numbers&nbsp;`n1`,&nbsp;`n2`&nbsp;are&nbsp;roughly&nbsp;equal;&nbsp;that&nbsp;is&nbsp;to&nbsp;say,&nbsp;equal&nbsp;to
+                033&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;numbers&nbsp;`n1`,&nbsp;`n2`&nbsp;are&nbsp;roughly&nbsp;equal;&nbsp;that&nbsp;is&nbsp;to&nbsp;say,&nbsp;equal&nbsp;to
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                033&nbsp;&nbsp;&nbsp;&nbsp;within&nbsp;`tolerance`&nbsp;(defaults&nbsp;to&nbsp;one&nbsp;part&nbsp;in&nbsp;a&nbsp;million).&quot;
+                034&nbsp;&nbsp;&nbsp;&nbsp;within&nbsp;`tolerance`&nbsp;(defaults&nbsp;to&nbsp;one&nbsp;part&nbsp;in&nbsp;a&nbsp;million).&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                034&nbsp;&nbsp;&nbsp;&nbsp;([n1&nbsp;n2]
+                035&nbsp;&nbsp;&nbsp;&nbsp;([n1&nbsp;n2]
                 </span><br/>
 <span class="covered" title="11 out of 11 forms covered">
-                035&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(and&nbsp;(number?&nbsp;n1)&nbsp;(number?&nbsp;n2))
+                036&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(and&nbsp;(number?&nbsp;n1)&nbsp;(number?&nbsp;n2))
                 </span><br/>
 <span class="covered" title="7 out of 7 forms covered">
-                036&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[m&nbsp;(m&#x2F;abs&nbsp;(min&nbsp;n1&nbsp;n2))
+                037&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[m&nbsp;(m&#x2F;abs&nbsp;(min&nbsp;n1&nbsp;n2))
                 </span><br/>
 <span class="covered" title="9 out of 9 forms covered">
-                037&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t&nbsp;(if&nbsp;(zero?&nbsp;m)&nbsp;0.000001&nbsp;(*&nbsp;0.000001&nbsp;m))]
+                038&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t&nbsp;(if&nbsp;(zero?&nbsp;m)&nbsp;0.000001&nbsp;(*&nbsp;0.000001&nbsp;m))]
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                038&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=ish&nbsp;n1&nbsp;n2&nbsp;t))
+                039&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=ish&nbsp;n1&nbsp;n2&nbsp;t))
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                039&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;n1&nbsp;n2)))
+                040&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;n1&nbsp;n2)))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                040&nbsp;&nbsp;&nbsp;&nbsp;([n1&nbsp;n2&nbsp;tolerance]
+                041&nbsp;&nbsp;&nbsp;&nbsp;([n1&nbsp;n2&nbsp;tolerance]
                 </span><br/>
 <span class="covered" title="11 out of 11 forms covered">
-                041&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(and&nbsp;(number?&nbsp;n1)&nbsp;(number?&nbsp;n2))
+                042&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(and&nbsp;(number?&nbsp;n1)&nbsp;(number?&nbsp;n2))
                 </span><br/>
 <span class="covered" title="9 out of 9 forms covered">
-                042&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;&nbsp;(m&#x2F;abs&nbsp;(-&nbsp;n1&nbsp;n2))&nbsp;tolerance)
+                043&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;&nbsp;(m&#x2F;abs&nbsp;(-&nbsp;n1&nbsp;n2))&nbsp;tolerance)
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                043&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;n1&nbsp;n2))))
+                044&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;n1&nbsp;n2))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                045&nbsp;&nbsp;
+                </span><br/>
+<span class="partial" title="94 out of 198 forms covered">
+                046&nbsp;&nbsp;(defmacro&nbsp;check-kind-type
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                047&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;`object`&nbsp;is&nbsp;not&nbsp;of&nbsp;kind-type&nbsp;`expected`,&nbsp;throws&nbsp;an
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                048&nbsp;&nbsp;&nbsp;&nbsp;IllegalArgumentException&nbsp;with&nbsp;an&nbsp;appropriate&nbsp;message;&nbsp;otherwise,&nbsp;returns
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                049&nbsp;&nbsp;&nbsp;&nbsp;`object`.&nbsp;If&nbsp;`checkfn`&nbsp;is&nbsp;supplied,&nbsp;it&nbsp;should&nbsp;be&nbsp;a&nbsp;function&nbsp;which&nbsp;tests
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                050&nbsp;&nbsp;&nbsp;&nbsp;whether&nbsp;the&nbsp;object&nbsp;is&nbsp;of&nbsp;the&nbsp;expected&nbsp;kind-type.
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                051&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                052&nbsp;&nbsp;&nbsp;&nbsp;Macro,&nbsp;so&nbsp;that&nbsp;the&nbsp;exception&nbsp;is&nbsp;thrown&nbsp;from&nbsp;the&nbsp;calling&nbsp;function.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                053&nbsp;&nbsp;&nbsp;&nbsp;([object&nbsp;expected]
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                054&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`(if-not&nbsp;(=&nbsp;(kind-type&nbsp;~object)&nbsp;~expected)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                055&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                056&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(IllegalArgumentException.
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                057&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(s&#x2F;join
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                058&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;&nbsp;&quot;
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                059&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&quot;Expected&quot;&nbsp;~expected&nbsp;&quot;but&nbsp;found&quot;&nbsp;(kind-type&nbsp;~object)])))
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                060&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~object))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                061&nbsp;&nbsp;&nbsp;&nbsp;([object&nbsp;checkfn&nbsp;expected]
+                </span><br/>
+<span class="covered" title="2 out of 2 forms covered">
+                062&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`(if-not&nbsp;(~checkfn&nbsp;~object)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                063&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                064&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(IllegalArgumentException.
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                065&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(s&#x2F;join
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                066&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;&nbsp;&quot;
+                </span><br/>
+<span class="covered" title="2 out of 2 forms covered">
+                067&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&quot;Expected&quot;&nbsp;~expected&nbsp;&quot;but&nbsp;found&quot;&nbsp;(kind-type&nbsp;~object)])))
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                068&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~object)))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                069&nbsp;&nbsp;
+                </span><br/>
+<span class="partial" title="203 out of 416 forms covered">
+                070&nbsp;&nbsp;(defmacro&nbsp;check-kind-type-seq
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                071&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;some&nbsp;item&nbsp;on&nbsp;sequence&nbsp;`s`&nbsp;is&nbsp;not&nbsp;of&nbsp;the&nbsp;`expected`&nbsp;kind-type,&nbsp;throws&nbsp;an
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                072&nbsp;&nbsp;&nbsp;&nbsp;IllegalArgumentException&nbsp;with&nbsp;an&nbsp;appropriate&nbsp;message;&nbsp;otherwise,&nbsp;returns
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                073&nbsp;&nbsp;&nbsp;&nbsp;`object`.&nbsp;If&nbsp;`checkfn`&nbsp;is&nbsp;supplied,&nbsp;it&nbsp;should&nbsp;be&nbsp;a&nbsp;function&nbsp;which&nbsp;tests
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                074&nbsp;&nbsp;&nbsp;&nbsp;whether&nbsp;the&nbsp;object&nbsp;is&nbsp;of&nbsp;the&nbsp;expected&nbsp;kind-type.
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                075&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                076&nbsp;&nbsp;&nbsp;&nbsp;Macro,&nbsp;so&nbsp;that&nbsp;the&nbsp;exception&nbsp;is&nbsp;thrown&nbsp;from&nbsp;the&nbsp;calling&nbsp;function.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                077&nbsp;&nbsp;&nbsp;&nbsp;([s&nbsp;expected]
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                078&nbsp;&nbsp;&nbsp;&nbsp;`(if-not&nbsp;(every?&nbsp;#(=&nbsp;(kind-type&nbsp;%)&nbsp;~expected)&nbsp;~s)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                079&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                080&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(IllegalArgumentException.
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                081&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(s&#x2F;join
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                082&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;&nbsp;&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                083&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&quot;Expected&nbsp;sequence&nbsp;of&quot;
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                084&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~expected
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                085&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;but&nbsp;found&nbsp;(&quot;
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                086&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(s&#x2F;join&nbsp;&quot;,&nbsp;&quot;&nbsp;(remove&nbsp;#(=&nbsp;~expected&nbsp;%)&nbsp;(map&nbsp;kind-type&nbsp;~s)))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                087&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;)&quot;])))
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                088&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~s))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                089&nbsp;&nbsp;&nbsp;&nbsp;([s&nbsp;checkfn&nbsp;expected]
+                </span><br/>
+<span class="covered" title="2 out of 2 forms covered">
+                090&nbsp;&nbsp;&nbsp;&nbsp;`(if-not&nbsp;(every?&nbsp;#(~checkfn&nbsp;%)&nbsp;~s)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                091&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                092&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(IllegalArgumentException.
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                093&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(s&#x2F;join
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                094&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;&nbsp;&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                095&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&quot;Expected&nbsp;sequence&nbsp;of&quot;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                096&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~expected
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                097&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;but&nbsp;found&nbsp;(&quot;
+                </span><br/>
+<span class="covered" title="2 out of 2 forms covered">
+                098&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(s&#x2F;join&nbsp;&quot;,&nbsp;&quot;&nbsp;(remove&nbsp;#(=&nbsp;~expected&nbsp;%)&nbsp;(map&nbsp;kind-type&nbsp;~s)))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                099&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;)&quot;])))
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~s)))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                101&nbsp;&nbsp;
                 </span><br/>
  </body>
 </html>

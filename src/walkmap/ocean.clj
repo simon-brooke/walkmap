@@ -1,5 +1,6 @@
 (ns walkmap.ocean
-  "Deal with (specifically, at this stage, cull) ocean areas")
+  "Deal with (specifically, at this stage, cull) ocean areas"
+  (:require [walkmap.utils :refer [=ish]]))
 
 (def ^:dynamic *sea-level*
   "The sea level on heightmaps we're currently handling. If characters are to
@@ -14,7 +15,7 @@
   "Of a `facet`, is the altitude of every vertice equal to `*sea-level*`?"
   [facet]
   (every?
-    #(= % *sea-level*)
+    #(=ish % *sea-level*)
     (map :z (:vertices facet))))
 
 (defn cull-ocean-facets

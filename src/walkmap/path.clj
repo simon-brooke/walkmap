@@ -4,8 +4,9 @@
   feature, where such features specifically include watercourses."
   (:require [clojure.string :as s]
             [walkmap.edge :as e]
-            [walkmap.polygon :refer [polygon?]]
-            [walkmap.utils :refer [kind-type]]
+            [walkmap.polygon :refer [check-polygon polygon?]]
+            [walkmap.tag :refer [tag tags]]
+            [walkmap.utils :refer [check-kind-type check-kind-type-seq kind-type]]
             [walkmap.vertex :refer [vertex?]]))
 
 (defn path?
@@ -17,7 +18,7 @@
     [v (:vertices o)]
     (and
       (seq? v)
-      (> (count v) 2)
+      (> (count v) 1)
       (every? vertex? v)
       (:walkmap.id/id o)
       (or (nil? (:kind o)) (= (:kind o) :path)))))
@@ -25,12 +26,25 @@
 (defn path
   "Return a path constructed from these `vertices`."
   [& vertices]
-  (when-not (every? vertex? vertices)
-    (throw (IllegalArgumentException.
-             (str
-               "Each item on path must be a vertex: "
-               (s/join " " (map kind-type (remove vertex? vertices)))))))
-  {:vertices vertices :walkmap.id/id (keyword (gensym "path")) :kind :path})
+  (check-kind-type-seq vertices vertex? :vertex)
+  (if
+    (> (count vertices) 1)
+    {:vertices vertices :walkmap.id/id (keyword (gensym "path")) :kind :path}
+    (throw (IllegalArgumentException. "Path must have more than one vertex."))))
+
+(defmacro check-path
+  "If `o` is not a path, throw an `IllegalArgumentException` with an
+  appropriate message; otherwise, returns `o`. Macro, so exception is thrown
+  from the calling function."
+  [o]
+  `(check-kind-type ~o path? :path))
+
+(defmacro check-paths
+  "If `o` is not a sequence of paths, throw an `IllegalArgumentException` with an
+  appropriate message; otherwise, returns `o`. Macro, so exception is thrown
+  from the calling function."
+  [o]
+  `(check-kind-type-seq ~o path? :path))
 
 (defn polygon->path
   "If `o` is a polygon, return an equivalent path. What's different about
@@ -40,8 +54,8 @@
 
   If `o` is not a polygon, will throw an exception."
   [o]
-  (when-not (polygon? o)
-    (throw (IllegalArgumentException. (str "Not a polygon: " (kind-type o)))))
+;; this is breaking, but I have NO IDEA why!
+;;  (check-polygon o polygon? :polygon)
   (assoc (dissoc o :vertices)
     :kind :path
     ;; `concat` rather than `conj` because order matters.
@@ -55,18 +69,17 @@
   sequence of vertices."
   [o]
   (cond
-    (seq? o)
-    (when
-      (and
-        (vertex? (first o))
-        (vertex? (first (rest o))))
-      (cons
-        ;; TODO: think about: when constructing an edge from a path, should the
-        ;; constructed edge be tagged with the tags of the path?
-        (e/edge (first o) (rest o))
-        (path->edges (rest o))))
-    (path? o)
-    (path->edges (:vertices o))
+    (seq? o) (when
+               (and
+                 (vertex? (first o))
+                 (vertex? (first (rest o))))
+               (cons
+                 ;; TODO: think about: when constructing an edge from a path, should the
+                 ;; constructed edge be tagged with the tags of the path?
+                 (e/edge (first o) (first (rest o)))
+                 (path->edges (rest o))))
+    (path? o) (path->edges (:vertices o))
+    (polygon? o) (path->edges (polygon->path o))
     :else
     (throw (IllegalArgumentException.
              "Not a path or sequence of vertices!"))))
@@ -78,7 +91,4 @@
   2. It is not even quite the same as the length of the path *as rendered*,
   since paths will generally be rendered as spline curves."
   [path]
-  (if
-    (path? path)
-    (reduce + (map e/length (path->edges path)))
-    (throw (IllegalArgumentException. "Not a path!"))))
+  (reduce + (map e/length (path->edges (check-path path)))))
