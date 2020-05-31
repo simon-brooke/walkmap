@@ -122,19 +122,6 @@
       (> (minimaxd e1 :y max) (minimaxd e2 :y min))
       (< (minimaxd e1 :y min) (minimaxd e2 :y max)))))
 
-;; Don't think I need this.
-;; (defn orientation
-;;   "Determine whether the ordered sequence of vertices `p`, `q` and `r` run
-;;   clockwise, collinear or anticlockwise in the x,y plane."
-;;   [p q r]
-;;   (let [v (- (* (- (:y q) (:y p)) (- (:x r) (:x q)))
-;;             (* (- (:x q) (:x p)) (- (:y r) (:y q))))]
-;;     (cond
-;;       (zero? v) :collinear
-;;       (pos? v) :clockwise
-;;       :else
-;;       :anticlockwise)))
-
 (defn intersection2d
   "The probability of two lines intersecting in 3d space is low, and actually
   that is mostly not something we're interested in. We're interested in

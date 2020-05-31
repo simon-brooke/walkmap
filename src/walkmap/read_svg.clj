@@ -9,7 +9,6 @@
             [clojure.zip :as z]
             [taoensso.timbre :as l]
             [walkmap.path :refer [path]]
-;;            [walkmap.polygon :refer [polygon]]
             [walkmap.tag :refer [tag]]
             [walkmap.utils :refer [kind-type truncate]]
             [walkmap.vertex :refer [vertex vertex?]]))
@@ -59,7 +58,7 @@
   representing the line (`l`, `L`) and move (`m`, `M`) commands in
   that path."
   [elt]
-  (if (= (-> elt :tag) :path)
+  (if (= (:tag elt) :path)
     (let [vs (command-string->vertices (-> elt :attrs :d))
           p  (when-not (empty? vs) (apply path vs))]
       (if (and p (-> elt :attrs :class))

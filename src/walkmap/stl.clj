@@ -79,16 +79,21 @@
                    :facets (canonicalise (:facets o) map-kind))
      ;; if it has :vertices it's a polygon, but it may not yet conform to
      ;; `polygon?`
-     (:vertices o) (gradient
-                     (centre
-                       (tag
-                         (assoc o
-                           :walkmap.id/id (or
-                                            (:walkmap.id/id o)
-                                            (keyword (gensym "poly")))
-                           :kind :polygon
-                           :vertices (canonicalise (:vertices o) map-kind))
-                         :facet map-kind)))
+     (:vertices o) (let [f (gradient
+                             (centre
+                               (tag
+                                 (assoc o
+                                   :walkmap.id/id (or
+                                                    (:walkmap.id/id o)
+                                                    (keyword (gensym "poly")))
+                                   :kind :polygon
+                                   :vertices (canonicalise
+                                               (:vertices o)
+                                               map-kind))
+                                 :facet map-kind)))]
+                     (if (o/ocean? f)
+                       (tag f :ocean :no-traversal)
+                       f))
      ;; if it has a value for :x it's a vertex, but it may not yet conform
      ;; to `vertex?`; it should also be scaled using the scale-vertex, if any.
      (:x o) (let [c (v/canonicalise o)]
@@ -141,10 +146,10 @@
   (str
     (vect->str "facet normal" (:normal tri))
     "outer loop\n"
-    (apply str
-           (map
-             #(vect->str "vertex" %)
-             (:vertices tri)))
+    (s/join
+      (map
+        #(vect->str "vertex" %)
+        (:vertices tri)))
     "endloop\nendfacet\n"))
 
 (defn stl->ascii
@@ -157,8 +162,7 @@
      solidname
      (s/trim (:header stl))
      "\n"
-     (apply
-       str
+     (s/join
        (map
          facet2str
          (:facets stl)))

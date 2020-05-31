@@ -13,18 +13,17 @@
   1. `object` is not a map;
   2. any of `tags` is not a keyword."
   [object & tags]
-  (if
-    (map? object)
-    (if
-      (every? keyword? tags)
+  (when-not (map? object)
+    (throw (IllegalArgumentException.
+             (str "Must be a map: " (kind-type object)))))
+  (let [tags' (flatten tags)]
+    (when-not (every? keyword? tags')
+      (throw (IllegalArgumentException.
+               (str "Must be keywords: " (map kind-type tags')))))
       (let [ot (::tags object)]
         (and
           (set? ot)
-          (every? ot tags)))
-      (throw (IllegalArgumentException.
-               (str "Must be keyword(s): " (map kind-type tags)))))
-    (throw (IllegalArgumentException.
-             (str "Must be a map: " (kind-type object))))))
+          (every? ot tags')))))
 
 (defn tag
   "Return an object like this `object` but with these `tags` added to its tags,
@@ -38,16 +37,14 @@
   useful things like `(tag obj (map keyword some-strings))`."
   [object & tags]
   (l/debug "Tagging" (kind-type object) "with" tags)
+  (when-not (map? object)
+    (throw (IllegalArgumentException.
+             (str "Must be a map: " (kind-type object)))))
   (let [tags' (flatten tags)]
-    (if
-      (map? object)
-      (if
-        (every? keyword? tags')
-        (assoc object ::tags (union (set tags') (::tags object)))
-        (throw (IllegalArgumentException.
-                 (str "Must be keyword(s): " (map kind-type tags')))))
+    (when-not (every? keyword? tags')
       (throw (IllegalArgumentException.
-               (str "Must be a map: " (kind-type object)))))))
+               (str "Must be keywords: " (map kind-type tags')))))
+        (assoc object ::tags (union (set tags') (::tags object)))))
 
 (defmacro tags
   "Return the tags of this object, if any."
@@ -59,14 +56,13 @@
   tags, if present. It is an error (and an exception will be thrown) if
 
   1. `object` is not a map;
-  2. any of `tags` is not a keyword."
+  2. any of `tags` is not a keyword or sequence of keywords."
   [object & tags]
-  (if
-    (map? object)
-    (if
-      (every? keyword? tags)
-      (assoc object ::tags (difference (::tags object) (set tags)))
-      (throw (IllegalArgumentException.
-               (str "Must be keywords: " (map kind-type tags)))))
+  (when-not (map? object)
     (throw (IllegalArgumentException.
-             (str "Must be a map: " (kind-type object))))))
+             (str "Must be a map: " (kind-type object)))))
+  (let [tags' (flatten tags)]
+    (when-not (every? keyword? tags')
+      (throw (IllegalArgumentException.
+               (str "Must be keywords: " (map kind-type tags')))))
+    (assoc object ::tags (difference (::tags object) (set tags')))))
