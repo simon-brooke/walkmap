@@ -7,7 +7,7 @@
             [clojure.string :as s]
             [taoensso.timbre :as l]
             [walkmap.geometry :refer [=ish]]
-            [walkmap.utils :refer [truncate]]))
+            [walkmap.utils :refer [kind-type truncate]]))
 
 (defn vertex-key
   "Making sure we get the same key everytime we key a vertex with the same
@@ -133,3 +133,17 @@
         (throw
           (IllegalArgumentException.
             (truncate (str "Not a vertex: " (or o "nil")) 80)))))))
+
+(defn within-box?
+  "True if `target` is within the box defined by `minv` and `maxv`. All
+  arguments must be vertices; additionally, both `minv` and `maxv` must
+  have `:z` coordinates."
+  [target minv maxv]
+  (when-not (and (vertex? target) (vertex? minv) (vertex? maxv))
+    (throw (IllegalArgumentException.
+             (s/join " " ["Arguments to `within-box?` must be vertices:"
+                          (map kind-type [target minv maxv])]))))
+  (every?
+    (map
+      #(< (% minv) (or (% target) 0) (% maxv))
+      [:x :y :z])))

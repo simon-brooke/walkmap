@@ -4,7 +4,6 @@
             [taoensso.timbre :as l]
             [walkmap.path :as p]
             [walkmap.polygon :as q]
-            [walkmap.stl :as s]
             [walkmap.utils :as u]
             [walkmap.vertex :as v]))
 
@@ -166,3 +165,19 @@
      (u/deep-merge s (in-store-find-objects o) (index-vertices s o))
      (:walkmap.id/id o)
      (in-store-replace-with-keys o))))
+
+(defn search-vertices
+  "Search superstructure `s` for vertices within the box defined by vertices
+  `minv` and `maxv`. Every coordinate in `minv` must have a lower value than
+  the equivalent coordinate in `maxv`. If `d2?` is supplied and not false,
+  search only in the x,y projection."
+  ([s minv maxv]
+   (search-vertices s minv maxv false))
+  ([s minv maxv d2?]
+   (let [minv' (if d2? (assoc minv :z Double/NEGATIVE_INFINITY) minv)
+         maxv' (if d2? (assoc maxv :z Double/POSITIVE_INFINITY) maxv)]
+     (filter
+       #(v/within-box? % minv maxv)
+       (filter #(= (:kind %) :vertex) (vals s))))))
+
+

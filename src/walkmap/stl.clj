@@ -4,9 +4,10 @@
             [clojure.string :as s]
             [me.raynes.fs :as fs]
             [org.clojars.smee.binary.core :as b]
-            [taoensso.timbre :as l :refer [info error spy]]
+            [taoensso.timbre :as l]
             [walkmap.edge :as e]
-            [walkmap.polygon :refer [polygon?]]
+            [walkmap.polygon :refer [centre gradient polygon?]]
+            [walkmap.superstructure :refer [store]]
             [walkmap.tag :refer [tag]]
             [walkmap.utils :as u]
             [walkmap.vertex :as v])
@@ -54,25 +55,6 @@
    :count :uint-le
    :facets (b/repeated facet)))
 
-(defn centre
-  "Return a canonicalised `facet` (i.e. a triangular polygon) with an added
-  key `:centre` whose value represents the centre of this facet in 3
-  dimensions. This only works for triangles, so is here not in
-  `walkmap.polygon`. It is an error (although no exception is currently
-  thrown) if the object past is not a triangular polygon."
-  [facet]
-  (let [vs (:vertices facet)
-        v1 (first vs)
-        opposite (e/edge (nth vs 1) (nth vs 2))
-        oc (e/centre opposite)]
-    (assoc
-      facet
-      :centre
-      (v/vertex
-        (+ (:x v1) (* (- (:x oc) (:x v1)) 2/3))
-        (+ (:y v1) (* (- (:y oc) (:y v1)) 2/3))
-        (+ (:z v1) (* (- (:z oc) (:z v1)) 2/3))))))
-
 (defn canonicalise
   "Objects read in from STL won't have all the keys/values we need them to have.
   `o` may be a map (representing a facet or a vertex), or a sequence of such maps;
@@ -82,6 +64,8 @@
   `map-kind` is not a keyword."
   ([o] (canonicalise o :height))
   ([o map-kind]
+   (canonicalise o map-kind (v/vertex 1 1 1)))
+  ([o map-kind scale-vertex]
    (when-not
      (keyword? map-kind)
      (throw (IllegalArgumentException.
@@ -93,25 +77,42 @@
                    :kind :stl
                    :walkmap.id/id (or (:walkmap.id/id o) (keyword (gensym "stl")))
                    :facets (canonicalise (:facets o) map-kind))
-     ;; if it has :vertices it's a polygon, but it doesn't yet conform to `polygon?`
-     (:vertices o) (centre
-                     (tag
-                       (assoc o
-                         :walkmap.id/id (or (:walkmap.id/id o) (keyword (gensym "poly")))
-                         :kind :polygon
-                         :vertices (canonicalise (:vertices o) map-kind))
-                       :facet map-kind))
-     ;; if it has a value for :x it's a vertex, but it doesn't yet conform to `vertex?`
-     (:x o) (v/canonicalise o)
+     ;; if it has :vertices it's a polygon, but it may not yet conform to
+     ;; `polygon?`
+     (:vertices o) (gradient
+                     (centre
+                       (tag
+                         (assoc o
+                           :walkmap.id/id (or
+                                            (:walkmap.id/id o)
+                                            (keyword (gensym "poly")))
+                           :kind :polygon
+                           :vertices (canonicalise (:vertices o) map-kind))
+                         :facet map-kind)))
+     ;; if it has a value for :x it's a vertex, but it may not yet conform
+     ;; to `vertex?`; it should also be scaled using the scale-vertex, if any.
+     (:x o) (let [c (v/canonicalise o)]
+              (if scale-vertex
+                (v/vertex* c scale-vertex)
+                c))
      ;; shouldn't happen
      :else o)))
 
 (defn decode-binary-stl
   "Parse a binary STL file from this `filename` and return an STL structure
   representing its contents. `map-kind`, if passed, must be a keyword
-  indicating the value represented by the `z` axis (defaults to `:height`).
+  or sequence of keywords indicating the semantic value represented by the `z`
+  axis (defaults to `:height`).
+
+  If `superstructure` is supplied and is a map, the generated STL structure
+  will be stored in that superstructure, which will be returned.
+
+  If `scale-vertex` is supplied, it must be a three dimensional vertex (i.e.
+  the `:z` key must have a numeric value) representing the amount by which
+  each of the vertices read from the STL will be scaled.
+
   It is an error, and an exception will be thrown, if `map-kind` is not a
-  keyword.
+  keyword or sequence of keywords.
 
   **NOTE** that we've no way of verifying that the input file is binary STL
   data, if it is not this will run but will return garbage."
@@ -122,8 +123,16 @@
      (keyword? map-kind)
      (throw (IllegalArgumentException.
               (u/truncate (str "Must be a keyword: " (or map-kind "nil")) 80))))
-   (let [in (io/input-stream filename)]
-     (canonicalise (b/decode binary-stl in) map-kind))))
+   (decode-binary-stl filename map-kind nil))
+  ([filename mapkind superstucture]
+   (decode-binary-stl filename mapkind superstucture (v/vertex 1 1 1)))
+  ([filename map-kind superstructure scale-vertex]
+   (let [in (io/input-stream filename)
+         stl (canonicalise (b/decode binary-stl in) map-kind scale-vertex)]
+     (if
+       (map? superstructure)
+       (store stl superstructure)
+       stl))))
 
 (defn- vect->str [prefix v]
   (str prefix " " (:x v) " " (:y v) " " (:z v) "\n"))
