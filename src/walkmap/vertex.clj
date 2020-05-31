@@ -5,6 +5,7 @@
   two vertices, create an edge from them and use `walkmap.edge/length`."
   (:require [clojure.math.numeric-tower :as m]
             [clojure.string :as s]
+            [taoensso.timbre :as l]
             [walkmap.geometry :refer [=ish]]
             [walkmap.utils :refer [truncate]]))
 
@@ -54,6 +55,25 @@
   (every?
     #(=ish (% v1) (% v2))
     [:x :y :z]))
+
+(defn vertex*
+  "Return a vertex like `v1`, but with each of its coordinates multiplied
+  by the equivalent vertex in `v2`."
+  [v1 v2]
+  (if
+    (and (vertex? v1) (vertex? v2))
+    (let [f (fn [v1 v2 coord]
+              (* (or (coord v1) 0)
+                 ;; one here is deliberate!
+                 (or (coord v2) 1)))]
+      (assoc v1 :x (f v1 v2 :x)
+        :y (f v1 v2 :y)
+        :z (f v1 v2 :z)))
+    (do (l/warn
+          (s/join
+            " "
+            ["in `vertex-multiply`, both must be vectors. v1:" v1 "v2:" v2]))
+      v1)))
 
 (defn vertex
   "Make a vertex with this `x`, `y` and (if provided) `z` values. Returns a map

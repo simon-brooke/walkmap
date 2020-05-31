@@ -3,7 +3,6 @@
   An edge is a line segment having just a start and an end, with no intervening
   nodes."
   (:require [clojure.math.numeric-tower :as m]
-            [walkmap.polygon :refer [polygon?]]
             [walkmap.vertex :refer [ensure2d ensure3d vertex vertex= vertex?]]))
 
 (defn edge
