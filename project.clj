@@ -14,9 +14,6 @@
                  [dali "0.7.4"] ;; not currently used because performance issues.
                  [hiccup "1.0.5"]
                  [me.raynes/fs "1.4.6"]
-                 [mw-cli "0.1.6-SNAPSHOT"]
-                 [mw-engine "0.1.6-SNAPSHOT"]
-                 [mw-parser "0.1.6-SNAPSHOT"]
                  [smee/binary "0.5.5"]]
   :deploy-repositories [["releases" :clojars]
                         ["snapshots" :clojars]]

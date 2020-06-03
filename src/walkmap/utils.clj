@@ -1,6 +1,8 @@
 (ns walkmap.utils
   "Miscellaneous utility functions."
-  (:require [clojure.math.numeric-tower :as m]
+  (:require [clojure.edn :as edn :only [read]]
+            [clojure.java.io :as io]
+            [clojure.math.numeric-tower :as m]
             [clojure.string :as s]))
 
 (defn deep-merge

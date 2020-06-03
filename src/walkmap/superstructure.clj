@@ -181,7 +181,7 @@
        #(v/within-box? % minv maxv)
        (filter #(= (:kind %) :vertex) (vals s))))))
 
-(defn find-nearest
+(defn nearest
   "Search superstructure `s` for the nearest object matching `filter-fn` to
   the `target` vertex. Searches only with `radius` (slight misnomer, area
   actually searched is a cube). Returns one object, or `nil` if no matching
@@ -219,3 +219,21 @@
                          :walkmap.id/id
                          (search-vertices s minv maxv))))))))))))
 
+(defn neighbours
+  "Return a sequence of all those objects in superstructure `s` which share
+  at least one vertex with `target`, and which are matched by `filter-fn`
+  if supplied."
+  ([target s]
+   (neighbours identity s))
+  ([target filter-fn s]
+  ;; TODO: write it.
+  nil))
+
+(defn neighbour-ids
+  "Return a sequence of the ids all those objects in superstructure `s` which
+  share at least one vertex with `target`, and which are matched by
+  `filter-fn` if supplied."
+  ([target s]
+   (neighbour-ids target identity s))
+  ([target filter-fn s]
+   (map :walkmap.id/id (neighbours target filter-fn s))))

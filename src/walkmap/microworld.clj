@@ -5,40 +5,17 @@
   (:require [clojure.edn :as edn :only [read]]
             [clojure.java.io :as io]
             [clojure.string :as s]
-            [mw-cli.core :refer [process]]
-            [mw-engine.core :refer [run-world]]
-            [mw-engine.heightmap :as h]
-            [mw-engine.drainage :as d]
-            [mw-parser.bulk :as parser]
             [taoensso.timbre :as l]
             [walkmap.edge :as e]
-            [walkmap.polygon :as p :only [check-polygon polygon? rectangle]]
+            [walkmap.polygon :as p :only [rectangle]]
             [walkmap.superstructure :refer [store]]
-            [walkmap.tag :as t :only [tag tags]]
-            [walkmap.utils :as u :only [check-kind-type check-kind-type-seq kind-type truncate]]
-            [walkmap.vertex :as v :only [vertex vertex?]]))
-
-;; (def settlement-rules (parser/compile-file "resources/rules/settlement_rules.txt"))
-
-;; (def w0 (h/apply-heightmap "../the-great-game/resources/maps/heightmap.png"))
-;; (def w1 (d/rain-world (d/flood-hollows w0)))
-;; (def w2 (drainage/flow-world-nr w1))
-
-;; (def w3 (run-world w2 nil settlement-rules 100))
-
-;; (with-open [w (clojure.java.io/writer "settlement_1.edn")]
-;;   (binding [*out* w]
-;;     (pr
-;;       (run-world w0 nil settlement-rules 100))))
-
-;; (process
-;;   (h/apply-heightmap "resources/small_hill.png")
-;;   (parser/compile-file "resources/rules/settlement_rules.txt")
-;;   100
-;;   "small_hill.edn"
-;;   "small_hill.html")
+            [walkmap.tag :as t :only [tag]]
+            [walkmap.vertex :as v :only [check-vertex vertex vertex?]]))
 
 (defn cell->polygon
+  "From this MicroWorld `cell`, construct a walkmap polygon (specifically,
+  a rectangle. If `scale-vector` passed and is a vertex, scale all the vertices
+  in the cell by that vector."
   ([cell]
    (cell->polygon cell (v/vertex 1 1 1)))
   ([cell scale-vector]
@@ -46,7 +23,7 @@
      (assoc
        (merge
          cell
-         (let [w (* (:x cell) (:x scale-vector))
+         (let [w (* (:x cell) (:x (check-vertex scale-vector)))
                s (* (:y cell) (:y scale-vector))
                e (+ w (:x scale-vector))
                n (+ s (:y scale-vector))
