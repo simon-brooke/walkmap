@@ -166,185 +166,197 @@
 <span class="not-tracked" title="0 out of 0 forms covered">
                 054&nbsp;&nbsp;&nbsp;&nbsp;[&amp;&nbsp;vertices]
                 </span><br/>
-<span class="covered" title="30 out of 30 forms covered">
-                055&nbsp;&nbsp;&nbsp;&nbsp;{:vertices&nbsp;(check-vertices&nbsp;vertices)
+<span class="covered" title="1 out of 1 forms covered">
+                055&nbsp;&nbsp;&nbsp;&nbsp;(if
                 </span><br/>
-<span class="covered" title="5 out of 5 forms covered">
-                056&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:walkmap.id&#x2F;id&nbsp;(keyword&nbsp;(gensym&nbsp;&quot;poly&quot;))
+<span class="covered" title="6 out of 6 forms covered">
+                056&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&gt;&nbsp;(count&nbsp;vertices)&nbsp;2)
+                </span><br/>
+<span class="covered" title="30 out of 30 forms covered">
+                057&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:vertices&nbsp;(check-vertices&nbsp;vertices)
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                058&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:walkmap.id&#x2F;id&nbsp;(keyword&nbsp;(gensym&nbsp;&quot;poly&quot;))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                057&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:kind&nbsp;:polygon})
+                059&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:kind&nbsp;:polygon}
                 </span><br/>
-<span class="blank" title="1 out of 1 forms covered">
-                058&nbsp;&nbsp;
+<span class="covered" title="3 out of 3 forms covered">
+                060&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                061&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;A&nbsp;polygon&nbsp;must&nbsp;have&nbsp;at&nbsp;least&nbsp;3&nbsp;vertices.&quot;))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                062&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                059&nbsp;&nbsp;(defn&nbsp;rectangle
+                063&nbsp;&nbsp;(defn&nbsp;rectangle
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                060&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;rectangle,&nbsp;with&nbsp;edges&nbsp;aligned&nbsp;east-west&nbsp;and&nbsp;north-south,&nbsp;whose
+                064&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;rectangle,&nbsp;with&nbsp;edges&nbsp;aligned&nbsp;east-west&nbsp;and&nbsp;north-south,&nbsp;whose
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                061&nbsp;&nbsp;&nbsp;&nbsp;south-west&nbsp;corner&nbsp;is&nbsp;the&nbsp;vertex&nbsp;`vsw`&nbsp;and&nbsp;whose&nbsp;north-east&nbsp;corner&nbsp;is&nbsp;the
+                065&nbsp;&nbsp;&nbsp;&nbsp;south-west&nbsp;corner&nbsp;is&nbsp;the&nbsp;vertex&nbsp;`vsw`&nbsp;and&nbsp;whose&nbsp;north-east&nbsp;corner&nbsp;is&nbsp;the
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                062&nbsp;&nbsp;&nbsp;&nbsp;vertex&nbsp;`vne`.&quot;
+                066&nbsp;&nbsp;&nbsp;&nbsp;vertex&nbsp;`vne`.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                063&nbsp;&nbsp;&nbsp;&nbsp;[vsw&nbsp;vne]
+                067&nbsp;&nbsp;&nbsp;&nbsp;[vsw&nbsp;vne]
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                064&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;we&nbsp;can&nbsp;actually&nbsp;create&nbsp;any&nbsp;rectangle&nbsp;in&nbsp;the&nbsp;xy&nbsp;plane&nbsp;based&nbsp;on&nbsp;two&nbsp;opposite
+                068&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;we&nbsp;can&nbsp;actually&nbsp;create&nbsp;any&nbsp;rectangle&nbsp;in&nbsp;the&nbsp;xy&nbsp;plane&nbsp;based&nbsp;on&nbsp;two&nbsp;opposite
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                065&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;corners,&nbsp;but&nbsp;the&nbsp;maths&nbsp;are&nbsp;a&nbsp;bit&nbsp;to&nbsp;advanced&nbsp;for&nbsp;me&nbsp;today.&nbsp;TODO:&nbsp;do&nbsp;it!
+                069&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;corners,&nbsp;but&nbsp;the&nbsp;maths&nbsp;are&nbsp;a&nbsp;bit&nbsp;to&nbsp;advanced&nbsp;for&nbsp;me&nbsp;today.&nbsp;TODO:&nbsp;do&nbsp;it!
                 </span><br/>
-<span class="not-covered" title="0 out of 21 forms covered">
-                066&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[vnw&nbsp;(vertex&nbsp;(:x&nbsp;(check-vertex&nbsp;vsw))
+<span class="partial" title="9 out of 30 forms covered">
+                070&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[vnw&nbsp;(vertex&nbsp;(:x&nbsp;(check-vertex&nbsp;vsw))
                 </span><br/>
 <span class="not-covered" title="0 out of 18 forms covered">
-                067&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:y&nbsp;(check-vertex&nbsp;vne))
+                071&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:y&nbsp;(check-vertex&nbsp;vne))
                 </span><br/>
 <span class="not-covered" title="0 out of 20 forms covered">
-                068&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&#x2F;&nbsp;(reduce&nbsp;+&nbsp;(map&nbsp;#(or&nbsp;(:z&nbsp;%)&nbsp;0)&nbsp;[vsw&nbsp;vne]))&nbsp;2))
+                072&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&#x2F;&nbsp;(reduce&nbsp;+&nbsp;(map&nbsp;#(or&nbsp;(:z&nbsp;%)&nbsp;0)&nbsp;[vsw&nbsp;vne]))&nbsp;2))
                 </span><br/>
 <span class="not-covered" title="0 out of 5 forms covered">
-                069&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vse&nbsp;(vertex&nbsp;(:x&nbsp;vne)
+                073&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vse&nbsp;(vertex&nbsp;(:x&nbsp;vne)
                 </span><br/>
-<span class="partial" title="9 out of 12 forms covered">
-                070&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:y&nbsp;vsw)
+<span class="not-covered" title="0 out of 3 forms covered">
+                074&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:y&nbsp;vsw)
                 </span><br/>
 <span class="not-covered" title="0 out of 20 forms covered">
-                071&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&#x2F;&nbsp;(reduce&nbsp;+&nbsp;(map&nbsp;#(or&nbsp;(:z&nbsp;%)&nbsp;0)&nbsp;[vsw&nbsp;vne]))&nbsp;2))]
+                075&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&#x2F;&nbsp;(reduce&nbsp;+&nbsp;(map&nbsp;#(or&nbsp;(:z&nbsp;%)&nbsp;0)&nbsp;[vsw&nbsp;vne]))&nbsp;2))]
                 </span><br/>
 <span class="not-covered" title="0 out of 9 forms covered">
-                072&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(t&#x2F;tag&nbsp;(polygon&nbsp;vsw&nbsp;vnw&nbsp;vne&nbsp;vse)&nbsp;:rectangle)))
+                076&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(t&#x2F;tag&nbsp;(polygon&nbsp;vsw&nbsp;vnw&nbsp;vne&nbsp;vse)&nbsp;:rectangle)))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                073&nbsp;&nbsp;
+                077&nbsp;&nbsp;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                074&nbsp;&nbsp;;;&nbsp;(rectangle&nbsp;(vertex&nbsp;1&nbsp;2&nbsp;3)&nbsp;(vertex&nbsp;7&nbsp;9&nbsp;4))
+                078&nbsp;&nbsp;;;&nbsp;(rectangle&nbsp;(vertex&nbsp;1&nbsp;2&nbsp;3)&nbsp;(vertex&nbsp;7&nbsp;9&nbsp;4))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                075&nbsp;&nbsp;
+                079&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                076&nbsp;&nbsp;(defn&nbsp;gradient
+                080&nbsp;&nbsp;(defn&nbsp;gradient
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                077&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;polygon&nbsp;like&nbsp;`triangle`&nbsp;but&nbsp;with&nbsp;a&nbsp;key&nbsp;`:gradient`&nbsp;whose&nbsp;value&nbsp;is&nbsp;a
+                081&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;polygon&nbsp;like&nbsp;`triangle`&nbsp;but&nbsp;with&nbsp;a&nbsp;key&nbsp;`:gradient`&nbsp;whose&nbsp;value&nbsp;is&nbsp;a
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                078&nbsp;&nbsp;&nbsp;&nbsp;unit&nbsp;vector&nbsp;representing&nbsp;the&nbsp;gradient&nbsp;across&nbsp;`triangle`.&quot;
+                082&nbsp;&nbsp;&nbsp;&nbsp;unit&nbsp;vector&nbsp;representing&nbsp;the&nbsp;gradient&nbsp;across&nbsp;`triangle`.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                079&nbsp;&nbsp;&nbsp;&nbsp;[triangle]
+                083&nbsp;&nbsp;&nbsp;&nbsp;[triangle]
                 </span><br/>
 <span class="covered" title="12 out of 12 forms covered">
-                080&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[order&nbsp;(sort&nbsp;#(max&nbsp;(:z&nbsp;%1)&nbsp;(:z&nbsp;%2))
+                084&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[order&nbsp;(sort&nbsp;#(max&nbsp;(:z&nbsp;%1)&nbsp;(:z&nbsp;%2))
                 </span><br/>
 <span class="partial" title="8 out of 18 forms covered">
-                081&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:vertices&nbsp;(check-triangle&nbsp;triangle)))
+                085&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:vertices&nbsp;(check-triangle&nbsp;triangle)))
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                082&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;highest&nbsp;(first&nbsp;order)
+                086&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;highest&nbsp;(first&nbsp;order)
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                083&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lowest&nbsp;(last&nbsp;order)]
+                087&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lowest&nbsp;(last&nbsp;order)]
                 </span><br/>
 <span class="covered" title="10 out of 10 forms covered">
-                084&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;triangle&nbsp;:gradient&nbsp;(e&#x2F;unit-vector&nbsp;(e&#x2F;edge&nbsp;lowest&nbsp;highest)))))
+                088&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;triangle&nbsp;:gradient&nbsp;(e&#x2F;unit-vector&nbsp;(e&#x2F;edge&nbsp;lowest&nbsp;highest)))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                085&nbsp;&nbsp;
+                089&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                086&nbsp;&nbsp;(defn&nbsp;triangle-centre
+                090&nbsp;&nbsp;(defn&nbsp;triangle-centre
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                087&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;canonicalised&nbsp;`facet`&nbsp;(i.e.&nbsp;a&nbsp;triangular&nbsp;polygon)&nbsp;with&nbsp;an&nbsp;added
+                091&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;canonicalised&nbsp;`facet`&nbsp;(i.e.&nbsp;a&nbsp;triangular&nbsp;polygon)&nbsp;with&nbsp;an&nbsp;added
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                088&nbsp;&nbsp;&nbsp;&nbsp;key&nbsp;`:centre`&nbsp;whose&nbsp;value&nbsp;represents&nbsp;the&nbsp;centre&nbsp;of&nbsp;this&nbsp;facet&nbsp;in&nbsp;3
+                092&nbsp;&nbsp;&nbsp;&nbsp;key&nbsp;`:centre`&nbsp;whose&nbsp;value&nbsp;represents&nbsp;the&nbsp;centre&nbsp;of&nbsp;this&nbsp;facet&nbsp;in&nbsp;3
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                089&nbsp;&nbsp;&nbsp;&nbsp;dimensions.&nbsp;This&nbsp;only&nbsp;works&nbsp;for&nbsp;triangles,&nbsp;so&nbsp;is&nbsp;here&nbsp;not&nbsp;in
+                093&nbsp;&nbsp;&nbsp;&nbsp;dimensions.&nbsp;This&nbsp;only&nbsp;works&nbsp;for&nbsp;triangles,&nbsp;so&nbsp;is&nbsp;here&nbsp;not&nbsp;in
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                090&nbsp;&nbsp;&nbsp;&nbsp;`walkmap.polygon`.&nbsp;It&nbsp;is&nbsp;an&nbsp;error&nbsp;(although&nbsp;no&nbsp;exception&nbsp;is&nbsp;currently
+                094&nbsp;&nbsp;&nbsp;&nbsp;`walkmap.polygon`.&nbsp;It&nbsp;is&nbsp;an&nbsp;error&nbsp;(although&nbsp;no&nbsp;exception&nbsp;is&nbsp;currently
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                091&nbsp;&nbsp;&nbsp;&nbsp;thrown)&nbsp;if&nbsp;the&nbsp;object&nbsp;past&nbsp;is&nbsp;not&nbsp;a&nbsp;triangular&nbsp;polygon.&quot;
+                095&nbsp;&nbsp;&nbsp;&nbsp;thrown)&nbsp;if&nbsp;the&nbsp;object&nbsp;past&nbsp;is&nbsp;not&nbsp;a&nbsp;triangular&nbsp;polygon.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                092&nbsp;&nbsp;&nbsp;&nbsp;[facet]
+                096&nbsp;&nbsp;&nbsp;&nbsp;[facet]
                 </span><br/>
 <span class="partial" title="9 out of 19 forms covered">
-                093&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[vs&nbsp;(:vertices&nbsp;(check-triangle&nbsp;facet))
+                097&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[vs&nbsp;(:vertices&nbsp;(check-triangle&nbsp;facet))
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                094&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v1&nbsp;(first&nbsp;vs)
+                098&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v1&nbsp;(first&nbsp;vs)
                 </span><br/>
 <span class="covered" title="10 out of 10 forms covered">
-                095&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;opposite&nbsp;(e&#x2F;edge&nbsp;(nth&nbsp;vs&nbsp;1)&nbsp;(nth&nbsp;vs&nbsp;2))
+                099&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;opposite&nbsp;(e&#x2F;edge&nbsp;(nth&nbsp;vs&nbsp;1)&nbsp;(nth&nbsp;vs&nbsp;2))
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                096&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oc&nbsp;(e&#x2F;centre&nbsp;opposite)]
+                100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oc&nbsp;(e&#x2F;centre&nbsp;opposite)]
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                097&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc
+                101&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                098&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;facet
+                102&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;facet
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                099&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:centre
+                103&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:centre
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(vertex
+                104&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(vertex
                 </span><br/>
 <span class="covered" title="16 out of 16 forms covered">
-                101&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+&nbsp;(:x&nbsp;v1)&nbsp;(*&nbsp;(-&nbsp;(:x&nbsp;oc)&nbsp;(:x&nbsp;v1))&nbsp;2&#x2F;3))
+                105&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+&nbsp;(:x&nbsp;v1)&nbsp;(*&nbsp;(-&nbsp;(:x&nbsp;oc)&nbsp;(:x&nbsp;v1))&nbsp;2&#x2F;3))
                 </span><br/>
 <span class="covered" title="16 out of 16 forms covered">
-                102&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+&nbsp;(:y&nbsp;v1)&nbsp;(*&nbsp;(-&nbsp;(:y&nbsp;oc)&nbsp;(:y&nbsp;v1))&nbsp;2&#x2F;3))
+                106&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+&nbsp;(:y&nbsp;v1)&nbsp;(*&nbsp;(-&nbsp;(:y&nbsp;oc)&nbsp;(:y&nbsp;v1))&nbsp;2&#x2F;3))
                 </span><br/>
 <span class="covered" title="16 out of 16 forms covered">
-                103&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+&nbsp;(:z&nbsp;v1)&nbsp;(*&nbsp;(-&nbsp;(:z&nbsp;oc)&nbsp;(:z&nbsp;v1))&nbsp;2&#x2F;3))))))
+                107&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+&nbsp;(:z&nbsp;v1)&nbsp;(*&nbsp;(-&nbsp;(:z&nbsp;oc)&nbsp;(:z&nbsp;v1))&nbsp;2&#x2F;3))))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                104&nbsp;&nbsp;
+                108&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                105&nbsp;&nbsp;(defn&nbsp;centre
+                109&nbsp;&nbsp;(defn&nbsp;centre
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                106&nbsp;&nbsp;&nbsp;&nbsp;[poly]
+                110&nbsp;&nbsp;&nbsp;&nbsp;[poly]
                 </span><br/>
 <span class="covered" title="22 out of 22 forms covered">
-                107&nbsp;&nbsp;&nbsp;&nbsp;(case&nbsp;(count&nbsp;(:vertices&nbsp;(check-polygon&nbsp;poly)))
+                111&nbsp;&nbsp;&nbsp;&nbsp;(case&nbsp;(count&nbsp;(:vertices&nbsp;(check-polygon&nbsp;poly)))
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                108&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;(triangle-centre&nbsp;poly)
+                112&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;(triangle-centre&nbsp;poly)
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                109&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;else
+                113&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;else
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                110&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw
+                114&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                111&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(UnsupportedOperationException.
+                115&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(UnsupportedOperationException.
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                112&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;The&nbsp;general&nbsp;case&nbsp;of&nbsp;centre&nbsp;for&nbsp;polygons&nbsp;is&nbsp;not&nbsp;yet&nbsp;implemented.&quot;))))
+                116&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;The&nbsp;general&nbsp;case&nbsp;of&nbsp;centre&nbsp;for&nbsp;polygons&nbsp;is&nbsp;not&nbsp;yet&nbsp;implemented.&quot;))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                113&nbsp;&nbsp;
+                117&nbsp;&nbsp;
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                114&nbsp;&nbsp;
+                118&nbsp;&nbsp;
                 </span><br/>
  </body>
 </html>

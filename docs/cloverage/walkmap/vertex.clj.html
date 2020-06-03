@@ -130,7 +130,7 @@
 <span class="not-tracked" title="0 out of 0 forms covered">
                 042&nbsp;&nbsp;&nbsp;&nbsp;[o]
                 </span><br/>
-<span class="partial" title="23 out of 26 forms covered">
+<span class="partial" title="24 out of 26 forms covered">
                 043&nbsp;&nbsp;&nbsp;&nbsp;(and
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
@@ -139,7 +139,7 @@
 <span class="covered" title="3 out of 3 forms covered">
                 045&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:walkmap.id&#x2F;id&nbsp;o)
                 </span><br/>
-<span class="partial" title="13 out of 17 forms covered">
+<span class="partial" title="11 out of 17 forms covered">
                 046&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(number?&nbsp;(:x&nbsp;o))
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
@@ -205,13 +205,13 @@
 <span class="not-tracked" title="0 out of 0 forms covered">
                 067&nbsp;&nbsp;&nbsp;&nbsp;[v1&nbsp;v2]
                 </span><br/>
-<span class="covered" title="16 out of 16 forms covered">
+<span class="partial" title="6 out of 16 forms covered">
                 068&nbsp;&nbsp;&nbsp;&nbsp;(check-vertex&nbsp;v1)
                 </span><br/>
 <span class="covered" title="16 out of 16 forms covered">
                 069&nbsp;&nbsp;&nbsp;&nbsp;(check-vertex&nbsp;v2)
                 </span><br/>
-<span class="partial" title="5 out of 12 forms covered">
+<span class="covered" title="12 out of 12 forms covered">
                 070&nbsp;&nbsp;&nbsp;&nbsp;(every?
                 </span><br/>
 <span class="covered" title="8 out of 8 forms covered">
@@ -430,29 +430,32 @@
 <span class="not-tracked" title="0 out of 0 forms covered">
                 142&nbsp;&nbsp;&nbsp;&nbsp;[target&nbsp;minv&nbsp;maxv]
                 </span><br/>
-<span class="partial" title="14 out of 34 forms covered">
-                143&nbsp;&nbsp;&nbsp;&nbsp;(check-vertices&nbsp;[target&nbsp;minv&nbsp;maxv])
+<span class="covered" title="1 out of 1 forms covered">
+                143&nbsp;&nbsp;&nbsp;&nbsp;(do
+                </span><br/>
+<span class="covered" title="34 out of 34 forms covered">
+                144&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(check-vertices&nbsp;[target&nbsp;minv&nbsp;maxv])
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                144&nbsp;&nbsp;&nbsp;&nbsp;(every?
+                145&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(every?
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                145&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;true?
+                146&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;true?
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                146&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
+                147&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                147&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(if&nbsp;(%&nbsp;target)
+                148&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(if&nbsp;(%&nbsp;target)
                 </span><br/>
 <span class="covered" title="11 out of 11 forms covered">
-                148&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;=&nbsp;(%&nbsp;minv)&nbsp;(%&nbsp;target)&nbsp;(%&nbsp;maxv))
+                149&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;=&nbsp;(%&nbsp;minv)&nbsp;(%&nbsp;target)&nbsp;(%&nbsp;maxv))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                149&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;true)
+                150&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;true)
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                150&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[:x&nbsp;:y&nbsp;:z])))
+                151&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[:x&nbsp;:y&nbsp;:z]))))
                 </span><br/>
  </body>
 </html>

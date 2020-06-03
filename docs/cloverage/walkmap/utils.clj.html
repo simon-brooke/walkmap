@@ -61,7 +61,7 @@
 <span class="not-tracked" title="0 out of 0 forms covered">
                 019&nbsp;&nbsp;&nbsp;&nbsp;[s&nbsp;n]
                 </span><br/>
-<span class="partial" title="19 out of 21 forms covered">
+<span class="partial" title="20 out of 21 forms covered">
                 020&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(and&nbsp;(string?&nbsp;s)&nbsp;(number?&nbsp;n)&nbsp;(&gt;&nbsp;(count&nbsp;s)&nbsp;n))
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
@@ -91,7 +91,7 @@
 <span class="not-tracked" title="0 out of 0 forms covered">
                 029&nbsp;&nbsp;&nbsp;&nbsp;[object]
                 </span><br/>
-<span class="partial" title="14 out of 15 forms covered">
+<span class="covered" title="15 out of 15 forms covered">
                 030&nbsp;&nbsp;&nbsp;&nbsp;(or&nbsp;(:kind&nbsp;object)&nbsp;(type&nbsp;object)&nbsp;&quot;nil&quot;))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
@@ -104,7 +104,7 @@
                 033&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;numbers&nbsp;`n1`,&nbsp;`n2`&nbsp;are&nbsp;roughly&nbsp;equal;&nbsp;that&nbsp;is&nbsp;to&nbsp;say,&nbsp;equal&nbsp;to
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                034&nbsp;&nbsp;&nbsp;&nbsp;within&nbsp;`tolerance`&nbsp;(defaults&nbsp;to&nbsp;one&nbsp;part&nbsp;in&nbsp;a&nbsp;million).&quot;
+                034&nbsp;&nbsp;&nbsp;&nbsp;within&nbsp;`tolerance`&nbsp;(defaults&nbsp;to&nbsp;one&nbsp;part&nbsp;in&nbsp;one&nbsp;hundred&nbsp;thousand).&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
                 035&nbsp;&nbsp;&nbsp;&nbsp;([n1&nbsp;n2]
@@ -116,7 +116,7 @@
                 037&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[m&nbsp;(m&#x2F;abs&nbsp;(min&nbsp;n1&nbsp;n2))
                 </span><br/>
 <span class="covered" title="9 out of 9 forms covered">
-                038&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t&nbsp;(if&nbsp;(zero?&nbsp;m)&nbsp;0.000001&nbsp;(*&nbsp;0.000001&nbsp;m))]
+                038&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t&nbsp;(if&nbsp;(zero?&nbsp;m)&nbsp;0.00001&nbsp;(*&nbsp;0.00001&nbsp;m))]
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
                 039&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=ish&nbsp;n1&nbsp;n2&nbsp;t))
@@ -139,7 +139,7 @@
 <span class="blank" title="0 out of 0 forms covered">
                 045&nbsp;&nbsp;
                 </span><br/>
-<span class="partial" title="94 out of 198 forms covered">
+<span class="covered" title="198 out of 198 forms covered">
                 046&nbsp;&nbsp;(defmacro&nbsp;check-kind-type
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
@@ -163,7 +163,7 @@
 <span class="not-tracked" title="0 out of 0 forms covered">
                 053&nbsp;&nbsp;&nbsp;&nbsp;([object&nbsp;expected]
                 </span><br/>
-<span class="not-covered" title="0 out of 2 forms covered">
+<span class="covered" title="2 out of 2 forms covered">
                 054&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`(if-not&nbsp;(=&nbsp;(kind-type&nbsp;~object)&nbsp;~expected)
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
@@ -178,10 +178,10 @@
 <span class="not-tracked" title="0 out of 0 forms covered">
                 058&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;&nbsp;&quot;
                 </span><br/>
-<span class="not-covered" title="0 out of 2 forms covered">
+<span class="covered" title="2 out of 2 forms covered">
                 059&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&quot;Expected&quot;&nbsp;~expected&nbsp;&quot;but&nbsp;found&quot;&nbsp;(kind-type&nbsp;~object)])))
                 </span><br/>
-<span class="not-covered" title="0 out of 1 forms covered">
+<span class="covered" title="1 out of 1 forms covered">
                 060&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~object))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
@@ -211,7 +211,7 @@
 <span class="blank" title="0 out of 0 forms covered">
                 069&nbsp;&nbsp;
                 </span><br/>
-<span class="partial" title="203 out of 416 forms covered">
+<span class="covered" title="416 out of 416 forms covered">
                 070&nbsp;&nbsp;(defmacro&nbsp;check-kind-type-seq
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
@@ -235,7 +235,7 @@
 <span class="not-tracked" title="0 out of 0 forms covered">
                 077&nbsp;&nbsp;&nbsp;&nbsp;([s&nbsp;expected]
                 </span><br/>
-<span class="not-covered" title="0 out of 2 forms covered">
+<span class="covered" title="2 out of 2 forms covered">
                 078&nbsp;&nbsp;&nbsp;&nbsp;`(if-not&nbsp;(every?&nbsp;#(=&nbsp;(kind-type&nbsp;%)&nbsp;~expected)&nbsp;~s)
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
@@ -253,19 +253,19 @@
 <span class="not-tracked" title="0 out of 0 forms covered">
                 083&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&quot;Expected&nbsp;sequence&nbsp;of&quot;
                 </span><br/>
-<span class="not-covered" title="0 out of 1 forms covered">
+<span class="covered" title="1 out of 1 forms covered">
                 084&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~expected
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
                 085&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;but&nbsp;found&nbsp;(&quot;
                 </span><br/>
-<span class="not-covered" title="0 out of 2 forms covered">
+<span class="covered" title="2 out of 2 forms covered">
                 086&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(s&#x2F;join&nbsp;&quot;,&nbsp;&quot;&nbsp;(remove&nbsp;#(=&nbsp;~expected&nbsp;%)&nbsp;(map&nbsp;kind-type&nbsp;~s)))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
                 087&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;)&quot;])))
                 </span><br/>
-<span class="not-covered" title="0 out of 1 forms covered">
+<span class="covered" title="1 out of 1 forms covered">
                 088&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~s))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
