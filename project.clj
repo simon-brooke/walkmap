@@ -5,6 +5,7 @@
           :output-path "docs/codox"
           :source-uri "https://github.com/simon-brooke/walkmap/blob/master/{filepath}#L{line}"}
   :dependencies [[org.clojure/algo.generic "0.1.3"]
+                 [org.clojure/core.memoize "1.0.236"]
                  [org.clojure/clojure "1.8.0"]
                  [org.clojure/data.zip "1.0.0"]
                  [org.clojure/math.numeric-tower "0.0.4"]

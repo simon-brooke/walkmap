@@ -73,7 +73,14 @@
         vse (vertex (:x vne)
                     (:y vsw)
                     (/ (reduce + (map #(or (:z %) 0) [vsw vne])) 2))]
-    (t/tag (polygon vsw vnw vne vse) :rectangle)))
+    (t/tag
+      (assoc
+        (polygon vsw vnw vne vse)
+        :centre
+        (vertex (+ (:x vsw) (/ (- (:x vne) (:x vsw)) 2))
+                (+ (:x vsw) (/ (- (:y vne) (:y vsw)) 2))
+                (:z vse)))
+      :rectangle)))
 
 ;; (rectangle (vertex 1 2 3) (vertex 7 9 4))
 

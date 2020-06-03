@@ -2,6 +2,7 @@
   "single indexing structure for walkmap objects"
   (:require [clojure.walk :refer [postwalk]]
             [taoensso.timbre :as l]
+            [walkmap.edge :refer [edge length]]
             [walkmap.path :as p]
             [walkmap.polygon :as q]
             [walkmap.utils :as u]
@@ -180,4 +181,41 @@
        #(v/within-box? % minv maxv)
        (filter #(= (:kind %) :vertex) (vals s))))))
 
+(defn find-nearest
+  "Search superstructure `s` for the nearest object matching `filter-fn` to
+  the `target` vertex. Searches only with `radius` (slight misnomer, area
+  actually searched is a cube). Returns one object, or `nil` if no matching
+  object found.
+
+  WARNING: currently only returns objects which have a defined `:centre`
+  (but most of the significant objects we have do)."
+  [s target filter-fn radius]
+  (let [minv (v/vertex
+               (- (:x (v/check-vertex target)) radius)
+               (- (:y target) radius) (- (or (:z target) 0) radius))
+        maxv (v/vertex
+               (+ (:x target) 0.5) (+ (:y target) 0.5)
+               (+ (or (:z target) 0) 0.5))]
+    ;; filter those objects with the filter function, then sort that list
+    ;; by the edge distance from the target to the `:centre` of the object
+    ;; and take the first
+    (first
+      (sort-by
+        #(length (edge target (:centre %)))
+        (filter
+          :centre
+          (map #(retrieve % s)
+               ;; for each vertex id in vids, get the objects associated with that id
+               ;; in the vertex index as a single flat list
+               (reduce
+                 concat
+                 (remove
+                   nil?
+                   (map
+                     #(-> s ::vertex-index % keys)
+                     ;; get all the vertex ids within radius of the target
+                     (set
+                       (map
+                         :walkmap.id/id
+                         (search-vertices s minv maxv))))))))))))
 
