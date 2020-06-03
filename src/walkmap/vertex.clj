@@ -76,13 +76,11 @@
   by the equivalent vertex in `v2`. It is an error, and an exception will
   be thrown, if either `v1` or `v2` is not a vertex."
   [v1 v2]
-  (check-vertex v1)
-  (check-vertex v2)
   (let [f (fn [v1 v2 coord]
             (* (or (coord v1) 0)
                ;; one here is deliberate!
                (or (coord v2) 1)))]
-    (assoc v1 :x (f v1 v2 :x)
+    (assoc v1 :x (f (check-vertex v1) (check-vertex v2) :x)
       :y (f v1 v2 :y)
       :z (f v1 v2 :z))))
 
@@ -142,8 +140,12 @@
   arguments must be vertices; additionally, both `minv` and `maxv` must
   have `:z` coordinates."
   [target minv maxv]
-  (check-vertices [target minv maxv])
-  (every?
-    (map
-      #(< (% minv) (or (% target) 0) (% maxv))
-      [:x :y :z])))
+  (do
+    (check-vertices [target minv maxv])
+    (every?
+      true?
+      (map
+        #(if (% target)
+           (<= (% minv) (% target) (% maxv))
+           true)
+        [:x :y :z]))))

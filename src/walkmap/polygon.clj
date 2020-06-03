@@ -4,7 +4,7 @@
             [walkmap.edge :as e]
             [walkmap.tag :as t]
             [walkmap.utils :refer [check-kind-type check-kind-type-seq kind-type]]
-            [walkmap.vertex :refer [check-vertices vertex vertex?]]))
+            [walkmap.vertex :refer [check-vertex check-vertices vertex vertex?]]))
 
 (defn polygon?
   "True if `o` satisfies the conditions for a polygon. A polygon shall be a
@@ -52,9 +52,30 @@
 (defn polygon
   "Return a polygon constructed from these `vertices`."
   [& vertices]
-  {:vertices (check-vertices vertices)
-   :walkmap.id/id (keyword (gensym "poly"))
-   :kind :polygon})
+  (if
+    (> (count vertices) 2)
+    {:vertices (check-vertices vertices)
+     :walkmap.id/id (keyword (gensym "poly"))
+     :kind :polygon}
+    (throw (IllegalArgumentException.
+             "A polygon must have at least 3 vertices."))))
+
+(defn rectangle
+  "Return a rectangle, with edges aligned east-west and north-south, whose
+  south-west corner is the vertex `vsw` and whose north-east corner is the
+  vertex `vne`."
+  [vsw vne]
+  ;; we can actually create any rectangle in the xy plane based on two opposite
+  ;; corners, but the maths are a bit to advanced for me today. TODO: do it!
+  (let [vnw (vertex (:x (check-vertex vsw))
+                    (:y (check-vertex vne))
+                    (/ (reduce + (map #(or (:z %) 0) [vsw vne])) 2))
+        vse (vertex (:x vne)
+                    (:y vsw)
+                    (/ (reduce + (map #(or (:z %) 0) [vsw vne])) 2))]
+    (t/tag (polygon vsw vnw vne vse) :rectangle)))
+
+;; (rectangle (vertex 1 2 3) (vertex 7 9 4))
 
 (defn gradient
   "Return a polygon like `triangle` but with a key `:gradient` whose value is a

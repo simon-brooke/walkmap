@@ -1,0 +1,293 @@
+<html>
+ <head>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" href="../coverage.css"/>  <title> walkmap/microworld.clj </title>
+ </head>
+ <body>
+<span class="covered" title="1 out of 1 forms covered">
+                001&nbsp;&nbsp;(ns&nbsp;walkmap.microworld
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                002&nbsp;&nbsp;&nbsp;&nbsp;&quot;An&nbsp;interface&nbsp;between&nbsp;walkmap&nbsp;and&nbsp;microworld,&nbsp;to&nbsp;allow&nbsp;use&nbsp;of&nbsp;microworld
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                003&nbsp;&nbsp;&nbsp;&nbsp;functionality&nbsp;to&nbsp;model&nbsp;things&nbsp;like&nbsp;rainfall,&nbsp;soil&nbsp;fertility,&nbsp;settlement
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                004&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;so&nbsp;on.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                005&nbsp;&nbsp;&nbsp;&nbsp;(:require&nbsp;[clojure.edn&nbsp;:as&nbsp;edn&nbsp;:only&nbsp;[read]]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                006&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[clojure.java.io&nbsp;:as&nbsp;io]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[clojure.string&nbsp;:as&nbsp;s]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                008&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[mw-cli.core&nbsp;:refer&nbsp;[process]]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                009&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[mw-engine.core&nbsp;:refer&nbsp;[run-world]]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[mw-engine.heightmap&nbsp;:as&nbsp;h]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                011&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[mw-engine.drainage&nbsp;:as&nbsp;d]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                012&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[mw-parser.bulk&nbsp;:as&nbsp;parser]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                013&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[taoensso.timbre&nbsp;:as&nbsp;l]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                014&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.edge&nbsp;:as&nbsp;e]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                015&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.polygon&nbsp;:as&nbsp;p&nbsp;:only&nbsp;[check-polygon&nbsp;polygon?&nbsp;rectangle]]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                016&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.superstructure&nbsp;:refer&nbsp;[store]]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                017&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.tag&nbsp;:as&nbsp;t&nbsp;:only&nbsp;[tag&nbsp;tags]]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                018&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.utils&nbsp;:as&nbsp;u&nbsp;:only&nbsp;[check-kind-type&nbsp;check-kind-type-seq&nbsp;kind-type&nbsp;truncate]]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.vertex&nbsp;:as&nbsp;v&nbsp;:only&nbsp;[vertex&nbsp;vertex?]]))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                020&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                021&nbsp;&nbsp;;;&nbsp;(def&nbsp;settlement-rules&nbsp;(parser&#x2F;compile-file&nbsp;&quot;resources&#x2F;rules&#x2F;settlement_rules.txt&quot;))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                022&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                023&nbsp;&nbsp;;;&nbsp;(def&nbsp;w0&nbsp;(h&#x2F;apply-heightmap&nbsp;&quot;..&#x2F;the-great-game&#x2F;resources&#x2F;maps&#x2F;heightmap.png&quot;))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                024&nbsp;&nbsp;;;&nbsp;(def&nbsp;w1&nbsp;(d&#x2F;rain-world&nbsp;(d&#x2F;flood-hollows&nbsp;w0)))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                025&nbsp;&nbsp;;;&nbsp;(def&nbsp;w2&nbsp;(drainage&#x2F;flow-world-nr&nbsp;w1))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                026&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                027&nbsp;&nbsp;;;&nbsp;(def&nbsp;w3&nbsp;(run-world&nbsp;w2&nbsp;nil&nbsp;settlement-rules&nbsp;100))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                028&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                029&nbsp;&nbsp;;;&nbsp;(with-open&nbsp;[w&nbsp;(clojure.java.io&#x2F;writer&nbsp;&quot;settlement_1.edn&quot;)]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                030&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;(binding&nbsp;[*out*&nbsp;w]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                031&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(pr
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                032&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(run-world&nbsp;w0&nbsp;nil&nbsp;settlement-rules&nbsp;100))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                033&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                034&nbsp;&nbsp;;;&nbsp;(process
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                035&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;(h&#x2F;apply-heightmap&nbsp;&quot;resources&#x2F;small_hill.png&quot;)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                036&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;(parser&#x2F;compile-file&nbsp;&quot;resources&#x2F;rules&#x2F;settlement_rules.txt&quot;)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                037&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;100
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                038&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&quot;small_hill.edn&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                039&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&quot;small_hill.html&quot;)
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                040&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                041&nbsp;&nbsp;(defn&nbsp;cell-&gt;polygon
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                042&nbsp;&nbsp;&nbsp;&nbsp;([cell]
+                </span><br/>
+<span class="not-covered" title="0 out of 8 forms covered">
+                043&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cell-&gt;polygon&nbsp;cell&nbsp;(v&#x2F;vertex&nbsp;1&nbsp;1&nbsp;1)))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                044&nbsp;&nbsp;&nbsp;&nbsp;([cell&nbsp;scale-vector]
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                045&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(t&#x2F;tag
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                046&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                047&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(merge
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                048&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cell
+                </span><br/>
+<span class="not-covered" title="0 out of 9 forms covered">
+                049&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[w&nbsp;(*&nbsp;(:x&nbsp;cell)&nbsp;(:x&nbsp;scale-vector))
+                </span><br/>
+<span class="not-covered" title="0 out of 8 forms covered">
+                050&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s&nbsp;(*&nbsp;(:y&nbsp;cell)&nbsp;(:y&nbsp;scale-vector))
+                </span><br/>
+<span class="not-covered" title="0 out of 6 forms covered">
+                051&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e&nbsp;(+&nbsp;w&nbsp;(:x&nbsp;scale-vector))
+                </span><br/>
+<span class="not-covered" title="0 out of 6 forms covered">
+                052&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n&nbsp;(+&nbsp;s&nbsp;(:y&nbsp;scale-vector))
+                </span><br/>
+<span class="not-covered" title="0 out of 8 forms covered">
+                053&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;z&nbsp;(*&nbsp;(:altitude&nbsp;cell)&nbsp;(:z&nbsp;scale-vector))]
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                054&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(p&#x2F;rectangle
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                055&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(v&#x2F;vertex&nbsp;s&nbsp;w&nbsp;z)
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                056&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(v&#x2F;vertex&nbsp;n&nbsp;e&nbsp;z))))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                057&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:walkmap.id&#x2F;id
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                058&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(keyword&nbsp;(gensym&nbsp;&quot;mw-cell&quot;)))
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                059&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:state&nbsp;cell))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                060&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                061&nbsp;&nbsp;(defn&nbsp;load-microworld-edn
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                062&nbsp;&nbsp;&nbsp;&nbsp;&quot;While&nbsp;it&nbsp;would&nbsp;be&nbsp;possible&nbsp;to&nbsp;call&nbsp;MicroWorld&nbsp;functions&nbsp;directly&nbsp;from
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                063&nbsp;&nbsp;&nbsp;&nbsp;Walkmap,&nbsp;the&nbsp;fact&nbsp;is&nbsp;that&nbsp;running&nbsp;MicroWorld&nbsp;is&nbsp;so&nbsp;phenomenally
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                064&nbsp;&nbsp;&nbsp;&nbsp;compute-heavy&nbsp;that&nbsp;it&#x27;s&nbsp;much&nbsp;more&nbsp;sensible&nbsp;to&nbsp;do&nbsp;it&nbsp;in&nbsp;batch&nbsp;mode.&nbsp;So&nbsp;the
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                065&nbsp;&nbsp;&nbsp;&nbsp;better&nbsp;plan&nbsp;is&nbsp;to&nbsp;be&nbsp;able&nbsp;to&nbsp;pull&nbsp;the&nbsp;output&nbsp;from&nbsp;MicroWorld&nbsp;-&nbsp;as&nbsp;an&nbsp;EDN
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                066&nbsp;&nbsp;&nbsp;&nbsp;structure&nbsp;-&nbsp;into&nbsp;a&nbsp;walkmap&nbsp;superstructure.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                067&nbsp;&nbsp;&nbsp;&nbsp;([filename]
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                068&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(load-microworld-edn&nbsp;filename&nbsp;:mw))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                069&nbsp;&nbsp;&nbsp;&nbsp;([filename&nbsp;map-kind]
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                070&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(when-not
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                071&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(keyword?&nbsp;map-kind)
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                072&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                073&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(u&#x2F;truncate
+                </span><br/>
+<span class="not-covered" title="0 out of 9 forms covered">
+                074&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str&nbsp;&quot;Must&nbsp;be&nbsp;a&nbsp;keyword:&nbsp;&quot;&nbsp;(or&nbsp;map-kind&nbsp;&quot;nil&quot;))&nbsp;80))))
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                075&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(load-microworld-edn&nbsp;filename&nbsp;map-kind&nbsp;nil))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                076&nbsp;&nbsp;&nbsp;&nbsp;([filename&nbsp;mapkind&nbsp;superstucture]
+                </span><br/>
+<span class="not-covered" title="0 out of 10 forms covered">
+                077&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(load-microworld-edn&nbsp;filename&nbsp;mapkind&nbsp;superstucture&nbsp;(v&#x2F;vertex&nbsp;1&nbsp;1&nbsp;1)))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                078&nbsp;&nbsp;&nbsp;&nbsp;([filename&nbsp;map-kind&nbsp;superstructure&nbsp;scale-vertex]
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                079&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[mw&nbsp;(try
+                </span><br/>
+<span class="not-covered" title="0 out of 7 forms covered">
+                080&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(with-open&nbsp;[r&nbsp;(io&#x2F;reader&nbsp;filename)]
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                081&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(edn&#x2F;read&nbsp;(java.io.PushbackReader.&nbsp;r)))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                082&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(catch&nbsp;RuntimeException&nbsp;e
+                </span><br/>
+<span class="not-covered" title="0 out of 15 forms covered">
+                083&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(l&#x2F;error&nbsp;&quot;Error&nbsp;parsing&nbsp;edn&nbsp;file&nbsp;&#x27;%s&#x27;:&nbsp;%s\n&quot;
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                084&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;filename&nbsp;(.getMessage&nbsp;e))))
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                085&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;polys&nbsp;(reduce
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                086&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;concat
+                </span><br/>
+<span class="not-covered" title="0 out of 8 forms covered">
+                087&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map&nbsp;(fn&nbsp;[row]&nbsp;(map&nbsp;cell-&gt;polygon&nbsp;row))&nbsp;mw))]
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                088&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(map?&nbsp;superstructure)
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                089&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(reduce
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                090&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(store&nbsp;%2&nbsp;%1)
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                091&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;superstructure
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                092&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;polys)
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                093&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;polys))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                094&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                095&nbsp;&nbsp;;;&nbsp;(load-microworld-edn&nbsp;&quot;..&#x2F;MicroWorld&#x2F;mw-cli&#x2F;isle_of_man.edn&quot;&nbsp;nil&nbsp;{})
+                </span><br/>
+ </body>
+</html>

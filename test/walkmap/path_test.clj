@@ -19,7 +19,7 @@
           (check-path
             (update-in
               (path (vertex 0 0 0) (vertex 1 1 1))
-              :vertices
+              [:vertices]
               conj
               "Not a vertex")))
         "Checking an invalid path should throw an exception.")
@@ -42,10 +42,10 @@
     (let [poly (polygon (vertex 0 0 0) (vertex 1 0 0) (vertex 1 1 0) (vertex 0 1 0))
           p (polygon->path poly)]
       (is (path? p) "Should be a path.")
-      (is (vertex= (first p) (last p))
+      (is (vertex= (first (:vertices p)) (last (:vertices p)))
           "First and last vertices of the generated path should be equal to
           one another.")
-      (is (= (count (:vertices path)) (inc (count (:vertices poly))))
+      (is (= (count (:vertices p)) (inc (count (:vertices poly))))
           "The generated path should have one more vertex than the polygon.")
       (map
         #(is (vertex= (nth (:vertices poly) %) (nth (:vertices p) %))
@@ -58,21 +58,23 @@
           "Every returned edge should be an edge.")
       (is (= (count (:vertices poly)) (count edges))
           "There should be the same number of edges as the vertices of the polygon")
-      (map
-        #(is
-           (vertex= (nth (:vertices poly) %) (:start (nth edges %)))
-           (str
-             "Each edge should start from the same place as the corresponding
-             vertex: " %))
-        (range (count (:vertices poly))))
-       (map
-        #(is
-           (vertex= (nth (:vertices poly) (mod (inc %) (count (:vertices poly))))
-                    (:end (nth edges %)))
-           (str
-             "Each edge should end at the same place as the subsequent
-             vertex: " %))
-        (range (count (:vertices poly)))))
+      (doall
+        (map
+          #(is
+             (vertex= (nth (:vertices poly) %) (:start (nth edges %)))
+             (str
+               "Each edge should start from the same place as the corresponding
+               vertex: " %))
+          (range (count (:vertices poly)))))
+      (doall
+        (map
+          #(is
+             (vertex= (nth (:vertices poly) (mod (inc %) (count (:vertices poly))))
+                      (:end (nth edges %)))
+             (str
+               "Each edge should end at the same place as the subsequent
+               vertex: " %))
+          (range (count (:vertices poly))))))
     (is (thrown? IllegalArgumentException
                  (path->edges "Not a legal argument.")))))
 

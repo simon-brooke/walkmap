@@ -65,4 +65,4 @@
     (when-not (every? keyword? tags')
       (throw (IllegalArgumentException.
                (str "Must be keywords: " (map kind-type tags')))))
-    (assoc object ::tags (difference (::tags object) (set tags')))))
+    (update-in object [:walkmap.tag/tags] difference (set tags'))))

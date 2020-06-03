@@ -139,7 +139,7 @@
 <span class="covered" title="3 out of 3 forms covered">
                 045&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:walkmap.id&#x2F;id&nbsp;o)
                 </span><br/>
-<span class="partial" title="7 out of 17 forms covered">
+<span class="partial" title="13 out of 17 forms covered">
                 046&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(number?&nbsp;(:x&nbsp;o))
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
@@ -175,7 +175,7 @@
 <span class="blank" title="0 out of 0 forms covered">
                 057&nbsp;&nbsp;
                 </span><br/>
-<span class="partial" title="21 out of 22 forms covered">
+<span class="covered" title="22 out of 22 forms covered">
                 058&nbsp;&nbsp;(defmacro&nbsp;check-vertices
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
@@ -208,10 +208,10 @@
 <span class="covered" title="16 out of 16 forms covered">
                 068&nbsp;&nbsp;&nbsp;&nbsp;(check-vertex&nbsp;v1)
                 </span><br/>
-<span class="partial" title="6 out of 16 forms covered">
+<span class="covered" title="16 out of 16 forms covered">
                 069&nbsp;&nbsp;&nbsp;&nbsp;(check-vertex&nbsp;v2)
                 </span><br/>
-<span class="partial" title="3 out of 12 forms covered">
+<span class="partial" title="5 out of 12 forms covered">
                 070&nbsp;&nbsp;&nbsp;&nbsp;(every?
                 </span><br/>
 <span class="covered" title="8 out of 8 forms covered">
@@ -238,218 +238,221 @@
 <span class="not-tracked" title="0 out of 0 forms covered">
                 078&nbsp;&nbsp;&nbsp;&nbsp;[v1&nbsp;v2]
                 </span><br/>
-<span class="partial" title="6 out of 16 forms covered">
-                079&nbsp;&nbsp;&nbsp;&nbsp;(check-vertex&nbsp;v1)
-                </span><br/>
-<span class="partial" title="6 out of 16 forms covered">
-                080&nbsp;&nbsp;&nbsp;&nbsp;(check-vertex&nbsp;v2)
-                </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                081&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[f&nbsp;(fn&nbsp;[v1&nbsp;v2&nbsp;coord]
-                </span><br/>
-<span class="partial" title="9 out of 10 forms covered">
-                082&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*&nbsp;(or&nbsp;(coord&nbsp;v1)&nbsp;0)
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                083&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;one&nbsp;here&nbsp;is&nbsp;deliberate!
-                </span><br/>
-<span class="partial" title="7 out of 8 forms covered">
-                084&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or&nbsp;(coord&nbsp;v2)&nbsp;1)))]
-                </span><br/>
-<span class="covered" title="11 out of 11 forms covered">
-                085&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;v1&nbsp;:x&nbsp;(f&nbsp;v1&nbsp;v2&nbsp;:x)
-                </span><br/>
-<span class="covered" title="5 out of 5 forms covered">
-                086&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:y&nbsp;(f&nbsp;v1&nbsp;v2&nbsp;:y)
-                </span><br/>
-<span class="covered" title="5 out of 5 forms covered">
-                087&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:z&nbsp;(f&nbsp;v1&nbsp;v2&nbsp;:z))))
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                088&nbsp;&nbsp;
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                089&nbsp;&nbsp;(defn&nbsp;vertex
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                090&nbsp;&nbsp;&nbsp;&nbsp;&quot;Make&nbsp;a&nbsp;vertex&nbsp;with&nbsp;this&nbsp;`x`,&nbsp;`y`&nbsp;and&nbsp;(if&nbsp;provided)&nbsp;`z`&nbsp;values.&nbsp;Returns&nbsp;a&nbsp;map
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                091&nbsp;&nbsp;&nbsp;&nbsp;with&nbsp;those&nbsp;values,&nbsp;plus&nbsp;a&nbsp;unique&nbsp;`:walkmap.id&#x2F;id`&nbsp;value,&nbsp;and&nbsp;`:kind`&nbsp;set&nbsp;to&nbsp;`:vertex`.
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                092&nbsp;&nbsp;&nbsp;&nbsp;It&#x27;s&nbsp;not&nbsp;necessary&nbsp;to&nbsp;use&nbsp;this&nbsp;function&nbsp;to&nbsp;create&nbsp;a&nbsp;vertex,&nbsp;but&nbsp;the&nbsp;`:walkmap.id&#x2F;id`
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                093&nbsp;&nbsp;&nbsp;&nbsp;must&nbsp;be&nbsp;present&nbsp;and&nbsp;must&nbsp;be&nbsp;unique.&quot;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                094&nbsp;&nbsp;&nbsp;&nbsp;([x&nbsp;y]
-                </span><br/>
-<span class="covered" title="8 out of 8 forms covered">
-                095&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[v&nbsp;{:x&nbsp;x&nbsp;:y&nbsp;y&nbsp;:kind&nbsp;:vertex}]
-                </span><br/>
-<span class="covered" title="7 out of 7 forms covered">
-                096&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;v&nbsp;:walkmap.id&#x2F;id&nbsp;(vertex-key&nbsp;v))))
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                097&nbsp;&nbsp;&nbsp;&nbsp;([x&nbsp;y&nbsp;z]
+                079&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[f&nbsp;(fn&nbsp;[v1&nbsp;v2&nbsp;coord]
                 </span><br/>
 <span class="covered" title="10 out of 10 forms covered">
-                098&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[v&nbsp;{:x&nbsp;x&nbsp;:y&nbsp;y&nbsp;:z&nbsp;z&nbsp;:kind&nbsp;:vertex}]
+                080&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*&nbsp;(or&nbsp;(coord&nbsp;v1)&nbsp;0)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                081&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;one&nbsp;here&nbsp;is&nbsp;deliberate!
+                </span><br/>
+<span class="covered" title="8 out of 8 forms covered">
+                082&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or&nbsp;(coord&nbsp;v2)&nbsp;1)))]
+                </span><br/>
+<span class="covered" title="41 out of 41 forms covered">
+                083&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;v1&nbsp;:x&nbsp;(f&nbsp;(check-vertex&nbsp;v1)&nbsp;(check-vertex&nbsp;v2)&nbsp;:x)
+                </span><br/>
+<span class="covered" title="5 out of 5 forms covered">
+                084&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:y&nbsp;(f&nbsp;v1&nbsp;v2&nbsp;:y)
+                </span><br/>
+<span class="covered" title="5 out of 5 forms covered">
+                085&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:z&nbsp;(f&nbsp;v1&nbsp;v2&nbsp;:z))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                086&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                087&nbsp;&nbsp;(defn&nbsp;vertex
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                088&nbsp;&nbsp;&nbsp;&nbsp;&quot;Make&nbsp;a&nbsp;vertex&nbsp;with&nbsp;this&nbsp;`x`,&nbsp;`y`&nbsp;and&nbsp;(if&nbsp;provided)&nbsp;`z`&nbsp;values.&nbsp;Returns&nbsp;a&nbsp;map
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                089&nbsp;&nbsp;&nbsp;&nbsp;with&nbsp;those&nbsp;values,&nbsp;plus&nbsp;a&nbsp;unique&nbsp;`:walkmap.id&#x2F;id`&nbsp;value,&nbsp;and&nbsp;`:kind`&nbsp;set&nbsp;to&nbsp;`:vertex`.
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                090&nbsp;&nbsp;&nbsp;&nbsp;It&#x27;s&nbsp;not&nbsp;necessary&nbsp;to&nbsp;use&nbsp;this&nbsp;function&nbsp;to&nbsp;create&nbsp;a&nbsp;vertex,&nbsp;but&nbsp;the&nbsp;`:walkmap.id&#x2F;id`
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                091&nbsp;&nbsp;&nbsp;&nbsp;must&nbsp;be&nbsp;present&nbsp;and&nbsp;must&nbsp;be&nbsp;unique.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                092&nbsp;&nbsp;&nbsp;&nbsp;([x&nbsp;y]
+                </span><br/>
+<span class="covered" title="8 out of 8 forms covered">
+                093&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[v&nbsp;{:x&nbsp;x&nbsp;:y&nbsp;y&nbsp;:kind&nbsp;:vertex}]
                 </span><br/>
 <span class="covered" title="7 out of 7 forms covered">
-                099&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;v&nbsp;:walkmap.id&#x2F;id&nbsp;(vertex-key&nbsp;v)))))
+                094&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;v&nbsp;:walkmap.id&#x2F;id&nbsp;(vertex-key&nbsp;v))))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                095&nbsp;&nbsp;&nbsp;&nbsp;([x&nbsp;y&nbsp;z]
+                </span><br/>
+<span class="covered" title="10 out of 10 forms covered">
+                096&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[v&nbsp;{:x&nbsp;x&nbsp;:y&nbsp;y&nbsp;:z&nbsp;z&nbsp;:kind&nbsp;:vertex}]
+                </span><br/>
+<span class="covered" title="7 out of 7 forms covered">
+                097&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;v&nbsp;:walkmap.id&#x2F;id&nbsp;(vertex-key&nbsp;v)))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                100&nbsp;&nbsp;
+                098&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                101&nbsp;&nbsp;(defn&nbsp;canonicalise
+                099&nbsp;&nbsp;(defn&nbsp;canonicalise
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                102&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;`o`&nbsp;is&nbsp;a&nbsp;map&nbsp;with&nbsp;numeric&nbsp;values&nbsp;for&nbsp;`:x`,&nbsp;`:y`&nbsp;and&nbsp;optionally&nbsp;`:z`,
+                100&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;`o`&nbsp;is&nbsp;a&nbsp;map&nbsp;with&nbsp;numeric&nbsp;values&nbsp;for&nbsp;`:x`,&nbsp;`:y`&nbsp;and&nbsp;optionally&nbsp;`:z`,
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                103&nbsp;&nbsp;&nbsp;&nbsp;upgrade&nbsp;it&nbsp;to&nbsp;something&nbsp;we&nbsp;will&nbsp;recognise&nbsp;as&nbsp;a&nbsp;vertex.&quot;
+                101&nbsp;&nbsp;&nbsp;&nbsp;upgrade&nbsp;it&nbsp;to&nbsp;something&nbsp;we&nbsp;will&nbsp;recognise&nbsp;as&nbsp;a&nbsp;vertex.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                104&nbsp;&nbsp;&nbsp;&nbsp;[o]
+                102&nbsp;&nbsp;&nbsp;&nbsp;[o]
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                105&nbsp;&nbsp;&nbsp;&nbsp;(if
+                103&nbsp;&nbsp;&nbsp;&nbsp;(if
                 </span><br/>
-<span class="partial" title="13 out of 17 forms covered">
-                106&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and
+<span class="partial" title="16 out of 17 forms covered">
+                104&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and
                 </span><br/>
 <span class="covered" title="3 out of 3 forms covered">
-                107&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map?&nbsp;o)
+                105&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map?&nbsp;o)
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                108&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(number?&nbsp;(:x&nbsp;o))
+                106&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(number?&nbsp;(:x&nbsp;o))
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                109&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(number?&nbsp;(:y&nbsp;o))
+                107&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(number?&nbsp;(:y&nbsp;o))
                 </span><br/>
 <span class="covered" title="9 out of 9 forms covered">
-                110&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or&nbsp;(nil?&nbsp;(:z&nbsp;o))&nbsp;(number?&nbsp;(:z&nbsp;o))))
+                108&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or&nbsp;(nil?&nbsp;(:z&nbsp;o))&nbsp;(number?&nbsp;(:z&nbsp;o))))
                 </span><br/>
 <span class="covered" title="9 out of 9 forms covered">
-                111&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;o&nbsp;:kind&nbsp;:vertex&nbsp;:walkmap.id&#x2F;id&nbsp;(vertex-key&nbsp;o))
-                </span><br/>
-<span class="not-covered" title="0 out of 1 forms covered">
-                112&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw
-                </span><br/>
-<span class="not-covered" title="0 out of 1 forms covered">
-                113&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(IllegalArgumentException.
-                </span><br/>
-<span class="not-covered" title="0 out of 3 forms covered">
-                114&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(truncate
-                </span><br/>
-<span class="not-covered" title="0 out of 3 forms covered">
-                115&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str&nbsp;&quot;Not&nbsp;a&nbsp;proto-vertex:&nbsp;must&nbsp;have&nbsp;numeric&nbsp;`:x`&nbsp;and&nbsp;`:y`:&nbsp;&quot;
-                </span><br/>
-<span class="not-covered" title="0 out of 6 forms covered">
-                116&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or&nbsp;o&nbsp;&quot;nil&quot;))
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                117&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;80)))))
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                118&nbsp;&nbsp;
+                109&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;o&nbsp;:kind&nbsp;:vertex&nbsp;:walkmap.id&#x2F;id&nbsp;(vertex-key&nbsp;o))
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                119&nbsp;&nbsp;(def&nbsp;ensure3d
+                110&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                111&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(IllegalArgumentException.
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                112&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(truncate
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                113&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str&nbsp;&quot;Not&nbsp;a&nbsp;proto-vertex:&nbsp;must&nbsp;have&nbsp;numeric&nbsp;`:x`&nbsp;and&nbsp;`:y`:&nbsp;&quot;
+                </span><br/>
+<span class="partial" title="5 out of 6 forms covered">
+                114&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or&nbsp;o&nbsp;&quot;nil&quot;))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                120&nbsp;&nbsp;&nbsp;&nbsp;&quot;Given&nbsp;a&nbsp;vertex&nbsp;`o`,&nbsp;if&nbsp;`o`&nbsp;has&nbsp;a&nbsp;`:z`&nbsp;value,&nbsp;just&nbsp;return&nbsp;`o`;&nbsp;otherwise
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                121&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;a&nbsp;vertex&nbsp;like&nbsp;`o`&nbsp;but&nbsp;having&nbsp;this&nbsp;`dflt`&nbsp;value&nbsp;as&nbsp;the&nbsp;value&nbsp;of&nbsp;its
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                122&nbsp;&nbsp;&nbsp;&nbsp;`:z`&nbsp;key,&nbsp;or&nbsp;zero&nbsp;as&nbsp;the&nbsp;value&nbsp;of&nbsp;its&nbsp;`:z`&nbsp;key&nbsp;if&nbsp;`dflt`&nbsp;is&nbsp;not&nbsp;specified.
+                115&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;80)))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                123&nbsp;&nbsp;
+                116&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                117&nbsp;&nbsp;(def&nbsp;ensure3d
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                124&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;`o`&nbsp;is&nbsp;not&nbsp;a&nbsp;vertex,&nbsp;throws&nbsp;an&nbsp;exception.&quot;
+                118&nbsp;&nbsp;&nbsp;&nbsp;&quot;Given&nbsp;a&nbsp;vertex&nbsp;`o`,&nbsp;if&nbsp;`o`&nbsp;has&nbsp;a&nbsp;`:z`&nbsp;value,&nbsp;just&nbsp;return&nbsp;`o`;&nbsp;otherwise
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                119&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;a&nbsp;vertex&nbsp;like&nbsp;`o`&nbsp;but&nbsp;having&nbsp;this&nbsp;`dflt`&nbsp;value&nbsp;as&nbsp;the&nbsp;value&nbsp;of&nbsp;its
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                120&nbsp;&nbsp;&nbsp;&nbsp;`:z`&nbsp;key,&nbsp;or&nbsp;zero&nbsp;as&nbsp;the&nbsp;value&nbsp;of&nbsp;its&nbsp;`:z`&nbsp;key&nbsp;if&nbsp;`dflt`&nbsp;is&nbsp;not&nbsp;specified.
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                121&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                122&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;`o`&nbsp;is&nbsp;not&nbsp;a&nbsp;vertex,&nbsp;throws&nbsp;an&nbsp;exception.&quot;
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                125&nbsp;&nbsp;&nbsp;&nbsp;(memoize
+                123&nbsp;&nbsp;&nbsp;&nbsp;(memoize
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                126&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(fn
+                124&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(fn
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                127&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;([o]
+                125&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;([o]
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                128&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ensure3d&nbsp;o&nbsp;0.0))
+                126&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ensure3d&nbsp;o&nbsp;0.0))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                129&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;([o&nbsp;dflt]
+                127&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;([o&nbsp;dflt]
                 </span><br/>
 <span class="partial" title="9 out of 19 forms covered">
-                130&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(:z&nbsp;(check-vertex&nbsp;o))
+                128&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(:z&nbsp;(check-vertex&nbsp;o))
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                131&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;o
+                129&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;o
                 </span><br/>
 <span class="covered" title="5 out of 5 forms covered">
-                132&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;o&nbsp;:z&nbsp;dflt))))))
+                130&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;o&nbsp;:z&nbsp;dflt))))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                133&nbsp;&nbsp;
+                131&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                134&nbsp;&nbsp;(def&nbsp;ensure2d
+                132&nbsp;&nbsp;(def&nbsp;ensure2d
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                135&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;`o`&nbsp;is&nbsp;a&nbsp;vertex,&nbsp;set&nbsp;its&nbsp;`:z`&nbsp;value&nbsp;to&nbsp;zero;&nbsp;else&nbsp;throw&nbsp;an&nbsp;exception.&quot;
+                133&nbsp;&nbsp;&nbsp;&nbsp;&quot;If&nbsp;`o`&nbsp;is&nbsp;a&nbsp;vertex,&nbsp;set&nbsp;its&nbsp;`:z`&nbsp;value&nbsp;to&nbsp;zero;&nbsp;else&nbsp;throw&nbsp;an&nbsp;exception.&quot;
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                136&nbsp;&nbsp;&nbsp;&nbsp;(memoize
+                134&nbsp;&nbsp;&nbsp;&nbsp;(memoize
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                137&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(fn&nbsp;[o]
+                135&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(fn&nbsp;[o]
                 </span><br/>
 <span class="partial" title="10 out of 20 forms covered">
-                138&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;(check-vertex&nbsp;o)&nbsp;:z&nbsp;0.0))))
+                136&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;(check-vertex&nbsp;o)&nbsp;:z&nbsp;0.0))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                139&nbsp;&nbsp;
+                137&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="1 out of 1 forms covered">
-                140&nbsp;&nbsp;(defn&nbsp;within-box?
+                138&nbsp;&nbsp;(defn&nbsp;within-box?
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                141&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;`target`&nbsp;is&nbsp;within&nbsp;the&nbsp;box&nbsp;defined&nbsp;by&nbsp;`minv`&nbsp;and&nbsp;`maxv`.&nbsp;All
+                139&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;`target`&nbsp;is&nbsp;within&nbsp;the&nbsp;box&nbsp;defined&nbsp;by&nbsp;`minv`&nbsp;and&nbsp;`maxv`.&nbsp;All
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                142&nbsp;&nbsp;&nbsp;&nbsp;arguments&nbsp;must&nbsp;be&nbsp;vertices;&nbsp;additionally,&nbsp;both&nbsp;`minv`&nbsp;and&nbsp;`maxv`&nbsp;must
+                140&nbsp;&nbsp;&nbsp;&nbsp;arguments&nbsp;must&nbsp;be&nbsp;vertices;&nbsp;additionally,&nbsp;both&nbsp;`minv`&nbsp;and&nbsp;`maxv`&nbsp;must
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                143&nbsp;&nbsp;&nbsp;&nbsp;have&nbsp;`:z`&nbsp;coordinates.&quot;
+                141&nbsp;&nbsp;&nbsp;&nbsp;have&nbsp;`:z`&nbsp;coordinates.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                144&nbsp;&nbsp;&nbsp;&nbsp;[target&nbsp;minv&nbsp;maxv]
+                142&nbsp;&nbsp;&nbsp;&nbsp;[target&nbsp;minv&nbsp;maxv]
                 </span><br/>
-<span class="not-covered" title="0 out of 34 forms covered">
-                145&nbsp;&nbsp;&nbsp;&nbsp;(check-vertices&nbsp;[target&nbsp;minv&nbsp;maxv])
+<span class="partial" title="14 out of 34 forms covered">
+                143&nbsp;&nbsp;&nbsp;&nbsp;(check-vertices&nbsp;[target&nbsp;minv&nbsp;maxv])
                 </span><br/>
-<span class="not-covered" title="0 out of 2 forms covered">
-                146&nbsp;&nbsp;&nbsp;&nbsp;(every?
+<span class="covered" title="2 out of 2 forms covered">
+                144&nbsp;&nbsp;&nbsp;&nbsp;(every?
                 </span><br/>
-<span class="not-covered" title="0 out of 3 forms covered">
-                147&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
+<span class="covered" title="1 out of 1 forms covered">
+                145&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;true?
                 </span><br/>
-<span class="not-covered" title="0 out of 16 forms covered">
-                148&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(&lt;&nbsp;(%&nbsp;minv)&nbsp;(or&nbsp;(%&nbsp;target)&nbsp;0)&nbsp;(%&nbsp;maxv))
+<span class="covered" title="3 out of 3 forms covered">
+                146&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
                 </span><br/>
-<span class="not-covered" title="0 out of 4 forms covered">
-                149&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[:x&nbsp;:y&nbsp;:z])))
+<span class="covered" title="5 out of 5 forms covered">
+                147&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(if&nbsp;(%&nbsp;target)
+                </span><br/>
+<span class="covered" title="11 out of 11 forms covered">
+                148&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;=&nbsp;(%&nbsp;minv)&nbsp;(%&nbsp;target)&nbsp;(%&nbsp;maxv))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                149&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;true)
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                150&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[:x&nbsp;:y&nbsp;:z])))
                 </span><br/>
  </body>
 </html>
