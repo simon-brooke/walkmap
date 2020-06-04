@@ -10,7 +10,8 @@
             [walkmap.polygon :as p :only [rectangle]]
             [walkmap.superstructure :refer [store]]
             [walkmap.tag :as t :only [tag]]
-            [walkmap.vertex :as v :only [check-vertex vertex vertex?]]))
+            [walkmap.vertex :as v :only [check-vertex vertex vertex?]]
+            [walkmap.utils :as u :only [truncate]]))
 
 (defn cell->polygon
   "From this MicroWorld `cell`, construct a walkmap polygon (specifically,
@@ -23,7 +24,7 @@
      (assoc
        (merge
          cell
-         (let [w (* (:x cell) (:x (check-vertex scale-vector)))
+         (let [w (* (:x cell) (:x (v/check-vertex scale-vector)))
                s (* (:y cell) (:y scale-vector))
                e (+ w (:x scale-vector))
                n (+ s (:y scale-vector))

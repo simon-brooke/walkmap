@@ -29,10 +29,21 @@
 (defn vertices
   "If `o` is an object with vertices, return those vertices, else nil."
   [o]
-  (cond
-    (v/vertex? o) (list o)
-    (q/polygon? o) (:vertices o)
-    (p/path? o) (:vertices o)))
+  (when (map? o)
+    (reduce
+      concat
+      (remove
+        nil?
+        (map
+          #(cond
+             (v/vertex? %) (list %)
+             (and (coll? %) (every? v/vertex? %)) %)
+          (vals o))))))
+;;   (cond
+;;     (v/vertex? o) (list o)
+;;     (q/polygon? o) (:vertices o)
+;;     (p/path? o) (:vertices o))
+;;   )
 
 (defn index-vertex
   "Return a superstructure like `s` in which object `o` is indexed by vertex
@@ -171,7 +182,12 @@
   "Search superstructure `s` for vertices within the box defined by vertices
   `minv` and `maxv`. Every coordinate in `minv` must have a lower value than
   the equivalent coordinate in `maxv`. If `d2?` is supplied and not false,
-  search only in the x,y projection."
+  search only in the x,y projection.
+
+  **NOTE THAT** this depends on the fact that vertices do not currently
+  have properties which will be denormalised by `store`, and therefore do not
+  have to restored with `retrieve`. If properties are added to vertices
+  whose values are objects, then this will have to be rewritten."
   ([s minv maxv]
    (search-vertices s minv maxv false))
   ([s minv maxv d2?]
@@ -219,6 +235,18 @@
                          :walkmap.id/id
                          (search-vertices s minv maxv))))))))))))
 
+(defn touching
+  "Return a sequence of all objects in superstructure `s` which are
+  indexed as touching the vertex `v`."
+  ([vertex s]
+   (map
+     #(retrieve % s)
+     (set (-> s :vertex-index (:walkmap.id/id (v/check-vertex vertex)) keys))))
+  ([vertex filter-fn s]
+   (filter
+     filter-fn
+     (touching vertex s))))
+
 (defn neighbours
   "Return a sequence of all those objects in superstructure `s` which share
   at least one vertex with `target`, and which are matched by `filter-fn`
@@ -226,8 +254,13 @@
   ([target s]
    (neighbours identity s))
   ([target filter-fn s]
-  ;; TODO: write it.
-  nil))
+   (remove
+     #(= target %)
+     (reduce
+       concat
+       (remove
+         nil?
+         (map #(touching % filter-fn s) (vertices target)))))))
 
 (defn neighbour-ids
   "Return a sequence of the ids all those objects in superstructure `s` which

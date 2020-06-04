@@ -4,15 +4,15 @@
   nodes."
   (:require [clojure.math.numeric-tower :as m]
             [walkmap.utils :as u]
-            [walkmap.vertex :refer [canonicalise ensure2d ensure3d vertex vertex= vertex?]]))
+            [walkmap.vertex :refer [canonicalise check-vertex ensure2d ensure3d vertex vertex= vertex?]]))
 
 (defn edge
   "Return an edge between vertices `v1` and `v2`."
   [v1 v2]
-  (if
-    (and (vertex? v1) (vertex? v2))
-    {:kind :edge :walkmap.id/id (keyword (gensym "edge")) :start v1 :end v2}
-    (throw (IllegalArgumentException. "Must be vertices."))))
+  {:kind :edge
+   :walkmap.id/id (keyword (gensym "edge"))
+   :start (check-vertex v1)
+   :end (check-vertex v2)})
 
 (defn edge?
   "True if `o` satisfies the conditions for a edge. An edge shall be a map

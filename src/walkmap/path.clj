@@ -7,7 +7,7 @@
             [walkmap.polygon :refer [check-polygon polygon?]]
             [walkmap.tag :refer [tag tags]]
             [walkmap.utils :refer [check-kind-type check-kind-type-seq kind-type]]
-            [walkmap.vertex :refer [vertex?]]))
+            [walkmap.vertex :refer [check-vertices vertex?]]))
 
 (defn path?
   "True if `o` satisfies the conditions for a path. A path shall be a map
@@ -26,9 +26,8 @@
 (defn path
   "Return a path constructed from these `vertices`."
   [& vertices]
-  (check-kind-type-seq vertices vertex? :vertex)
   (if
-    (> (count vertices) 1)
+    (> (count (check-vertices vertices)) 1)
     {:vertices vertices :walkmap.id/id (keyword (gensym "path")) :kind :path}
     (throw (IllegalArgumentException. "Path must have more than one vertex."))))
 

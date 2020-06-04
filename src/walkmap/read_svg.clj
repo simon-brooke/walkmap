@@ -95,3 +95,6 @@
     (let [xml (x/parse (io/file file-name))
           paths (progeny xml #(= (:tag %) :path))]
       (remove nil? (map path-elt->path paths)))))
+
+;; (read-svg "resources/iom/manual_roads.svg")
+

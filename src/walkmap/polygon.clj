@@ -3,7 +3,10 @@
   (:require [clojure.string :as s]
             [walkmap.edge :as e]
             [walkmap.tag :as t]
-            [walkmap.utils :refer [check-kind-type check-kind-type-seq kind-type]]
+            [walkmap.utils :refer [check-kind-type
+                                   check-kind-type-seq
+                                   kind-type
+                                   not-yet-implemented]]
             [walkmap.vertex :refer [check-vertex check-vertices vertex vertex?]]))
 
 (defn polygon?
@@ -72,10 +75,13 @@
                     (/ (reduce + (map #(or (:z %) 0) [vsw vne])) 2))
         vse (vertex (:x vne)
                     (:y vsw)
-                    (/ (reduce + (map #(or (:z %) 0) [vsw vne])) 2))]
+                    (/ (reduce + (map #(or (:z %) 0) [vsw vne])) 2))
+        height-order (sort-by :z [vsw vne])]
     (t/tag
       (assoc
         (polygon vsw vnw vne vse)
+        :gradient
+        (e/unit-vector (e/edge (first height-order) (last height-order)))
         :centre
         (vertex (+ (:x vsw) (/ (- (:x vne) (:x vsw)) 2))
                 (+ (:x vsw) (/ (- (:y vne) (:y vsw)) 2))
@@ -122,4 +128,28 @@
       (UnsupportedOperationException.
         "The general case of centre for polygons is not yet implemented."))))
 
+(defmacro on2dtriangle?
+  "Is the projection of this `vertex` on the x, y plane within the
+  projection of this triangle on that plane?"
+  [vertex poly]
+  `(not-yet-implemented "on2d? for triangles."))
 
+(defn on2drectangle?
+  "Is the projection of this `vertex` on the x, y plane within the
+  projection of this rectangle on that plane?"
+  [vertex rectangle]
+  (let [xo (sort-by :x (:vertices rectangle))
+        yo (sort-by :x (:vertices rectangle))]
+    (and
+      (< (:x (first xo)) (:x vertex) (:x (last xo)))
+      (< (:y (first yo)) (:y vertex) (:y (last yo))))))
+
+(defmacro on2d?
+  "Is the projection of this `vertex` on the x, y plane within the
+  projection of this polygon `poly` on that plane?"
+  [vertex poly]
+  `(cond
+    (rectangle? ~poly) (on2drectangle? ~vertex ~poly)
+    (triangle? ~poly) (on2dtriangle? ~vertex ~poly)
+    :else
+    (not-yet-implemented "general case of on2d? for polygons.")))

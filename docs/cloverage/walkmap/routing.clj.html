@@ -11,52 +11,601 @@
                 002&nbsp;&nbsp;&nbsp;&nbsp;&quot;Finding&nbsp;optimal&nbsp;routes&nbsp;to&nbsp;traverse&nbsp;a&nbsp;map.&quot;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                003&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:require&nbsp;[walkmap.path&nbsp;:as&nbsp;p]
+                003&nbsp;&nbsp;&nbsp;&nbsp;(:require&nbsp;[clojure.math.numeric-tower&nbsp;:as&nbsp;m&nbsp;:only&nbsp;[expt]]
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                004&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.polygon&nbsp;:as&nbsp;q]
+                004&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[clojure.set&nbsp;:refer&nbsp;[intersection]]
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                005&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.stl&nbsp;:as&nbsp;s]
+                005&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.edge&nbsp;:as&nbsp;e]
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                006&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.utils&nbsp;:as&nbsp;u]
+                006&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.path&nbsp;:as&nbsp;p]
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.vertex&nbsp;:as&nbsp;v]))
+                007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.polygon&nbsp;:as&nbsp;q]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                008&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.superstructure&nbsp;:as&nbsp;s]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                009&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.tag&nbsp;:as&nbsp;t]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.utils&nbsp;:as&nbsp;u]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                011&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[walkmap.vertex&nbsp;:as&nbsp;v]))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                008&nbsp;&nbsp;
+                012&nbsp;&nbsp;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                009&nbsp;&nbsp;;;&nbsp;Breadth&nbsp;first&nbsp;search&nbsp;is&nbsp;a&nbsp;good&nbsp;algorithm&nbsp;for&nbsp;terrain&nbsp;in&nbsp;which&nbsp;all&nbsp;steps&nbsp;have
+                013&nbsp;&nbsp;;;&nbsp;Breadth&nbsp;first&nbsp;search&nbsp;is&nbsp;a&nbsp;good&nbsp;algorithm&nbsp;for&nbsp;terrain&nbsp;in&nbsp;which&nbsp;all&nbsp;steps&nbsp;have
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                010&nbsp;&nbsp;;;&nbsp;equal,&nbsp;but&nbsp;in&nbsp;our&nbsp;world&nbsp;(like&nbsp;the&nbsp;real&nbsp;world),&nbsp;they&nbsp;don&#x27;t.
+                014&nbsp;&nbsp;;;&nbsp;equal,&nbsp;but&nbsp;in&nbsp;our&nbsp;world&nbsp;(like&nbsp;the&nbsp;real&nbsp;world),&nbsp;they&nbsp;don&#x27;t.
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                011&nbsp;&nbsp;
+                015&nbsp;&nbsp;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                012&nbsp;&nbsp;;;&nbsp;Reading&nbsp;list:
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                013&nbsp;&nbsp;;;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                014&nbsp;&nbsp;;;&nbsp;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;A*_search_algorithm
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                015&nbsp;&nbsp;;;&nbsp;https:&#x2F;&#x2F;www.redblobgames.com&#x2F;pathfinding&#x2F;a-star&#x2F;introduction.html
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                016&nbsp;&nbsp;;;&nbsp;https:&#x2F;&#x2F;faculty.nps.edu&#x2F;ncrowe&#x2F;opmpaper2.htm
+                016&nbsp;&nbsp;;;&nbsp;Reading&nbsp;list:
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
                 017&nbsp;&nbsp;;;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                018&nbsp;&nbsp;;;&nbsp;See&nbsp;https:&#x2F;&#x2F;simon-brooke.github.io&#x2F;the-great-game&#x2F;codox&#x2F;Pathmaking.html
+                018&nbsp;&nbsp;;;&nbsp;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;A*_search_algorithm
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                019&nbsp;&nbsp;;;&nbsp;https:&#x2F;&#x2F;www.redblobgames.com&#x2F;pathfinding&#x2F;a-star&#x2F;introduction.html
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                020&nbsp;&nbsp;;;&nbsp;https:&#x2F;&#x2F;faculty.nps.edu&#x2F;ncrowe&#x2F;opmpaper2.htm
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                021&nbsp;&nbsp;;;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                022&nbsp;&nbsp;;;&nbsp;See&nbsp;https:&#x2F;&#x2F;simon-brooke.github.io&#x2F;the-great-game&#x2F;codox&#x2F;Pathmaking.html
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                023&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="2 out of 2 forms covered">
+                024&nbsp;&nbsp;(def&nbsp;^:dynamic&nbsp;*gradient-exponent*
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                025&nbsp;&nbsp;&nbsp;&nbsp;&quot;The&nbsp;exponent&nbsp;to&nbsp;be&nbsp;applied&nbsp;to&nbsp;`(inc&nbsp;(:z&nbsp;(unit-vector&nbsp;from&nbsp;to)))`
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                026&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;a&nbsp;path&nbsp;segment&nbsp;to&nbsp;calculate&nbsp;the&nbsp;gradient-related&nbsp;part&nbsp;of&nbsp;the
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                027&nbsp;&nbsp;&nbsp;&nbsp;cost&nbsp;of&nbsp;traversal.&nbsp;Dynamic,&nbsp;because&nbsp;we&nbsp;will&nbsp;want&nbsp;to&nbsp;tune&nbsp;this.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                028&nbsp;&nbsp;&nbsp;&nbsp;2)
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                029&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="2 out of 2 forms covered">
+                030&nbsp;&nbsp;(def&nbsp;^:dynamic&nbsp;*traversals-exponent*
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                031&nbsp;&nbsp;&nbsp;&nbsp;&quot;The&nbsp;(expected&nbsp;to&nbsp;be&nbsp;negative)&nbsp;exponent&nbsp;to&nbsp;be&nbsp;applied&nbsp;to&nbsp;the&nbsp;number
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                032&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;traversals&nbsp;of&nbsp;a&nbsp;path&nbsp;to&nbsp;compute&nbsp;the&nbsp;road&nbsp;bonus.&nbsp;Paths&nbsp;more&nbsp;travelled&nbsp;by
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                033&nbsp;&nbsp;&nbsp;&nbsp;should&nbsp;have&nbsp;larger&nbsp;bonuses,&nbsp;but&nbsp;not&nbsp;dramatically&nbsp;so&nbsp;-&nbsp;so&nbsp;the&nbsp;increase&nbsp;in
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                034&nbsp;&nbsp;&nbsp;&nbsp;bonus&nbsp;needs&nbsp;to&nbsp;scale&nbsp;significantly&nbsp;less&nbsp;than&nbsp;linearly&nbsp;with&nbsp;the&nbsp;number
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                035&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;traversals.&nbsp;Dynamic,&nbsp;because&nbsp;we&nbsp;will&nbsp;want&nbsp;to&nbsp;tune&nbsp;this.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                036&nbsp;&nbsp;&nbsp;&nbsp;-2)
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                037&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                038&nbsp;&nbsp;(defn&nbsp;traversable?
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                039&nbsp;&nbsp;&nbsp;&nbsp;&quot;True&nbsp;if&nbsp;this&nbsp;object&nbsp;can&nbsp;be&nbsp;considered&nbsp;as&nbsp;part&nbsp;of&nbsp;the&nbsp;walkmap.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                040&nbsp;&nbsp;&nbsp;&nbsp;[object]
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                041&nbsp;&nbsp;&nbsp;&nbsp;(and
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                042&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or
+                </span><br/>
+<span class="not-covered" title="0 out of 6 forms covered">
+                043&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                044&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(q&#x2F;polygon?&nbsp;object)
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                045&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:centre&nbsp;object))
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                046&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(p&#x2F;path?&nbsp;object))
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                047&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(not&nbsp;(t&#x2F;tagged?&nbsp;object&nbsp;:no-traversal))))
+                </span><br/>
+<span class="blank" title="0 out of 2 forms covered">
+                048&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="2 out of 2 forms covered">
+                049&nbsp;&nbsp;(declare&nbsp;traversal-cost)
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                050&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                051&nbsp;&nbsp;(defn&nbsp;vertices-traversal-cost
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                052&nbsp;&nbsp;&nbsp;&nbsp;[vertices&nbsp;s]
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                053&nbsp;&nbsp;&nbsp;&nbsp;(reduce
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                054&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                055&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                056&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(traversal-cost&nbsp;%1&nbsp;%2&nbsp;s)
+                </span><br/>
+<span class="not-covered" title="0 out of 25 forms covered">
+                057&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(v&#x2F;check-vertices&nbsp;vertices)
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                058&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(rest&nbsp;vertices))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                059&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                060&nbsp;&nbsp;(defn&nbsp;path-traversal-cost
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                061&nbsp;&nbsp;&nbsp;&nbsp;[path&nbsp;s]
+                </span><br/>
+<span class="not-covered" title="0 out of 21 forms covered">
+                062&nbsp;&nbsp;&nbsp;&nbsp;(vertices-traversal-cost&nbsp;(:vertices&nbsp;(p&#x2F;check-path&nbsp;path))&nbsp;s))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                063&nbsp;&nbsp;
+                </span><br/>
+<span class="partial" title="1 out of 2 forms covered">
+                064&nbsp;&nbsp;(defn&nbsp;barriers-crossed
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                065&nbsp;&nbsp;&nbsp;&nbsp;&quot;Search&nbsp;superstructure&nbsp;`s`&nbsp;and&nbsp;return&nbsp;a&nbsp;sequence&nbsp;of&nbsp;barriers,&nbsp;if&nbsp;any,&nbsp;which
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                066&nbsp;&nbsp;&nbsp;&nbsp;obstruct&nbsp;traversal&nbsp;from&nbsp;vertex&nbsp;`from`&nbsp;to&nbsp;vertex&nbsp;`to`.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                067&nbsp;&nbsp;&nbsp;&nbsp;[from&nbsp;to&nbsp;s]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                068&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;TODO:&nbsp;implement
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                069&nbsp;&nbsp;&nbsp;&nbsp;&#x27;())
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                070&nbsp;&nbsp;
+                </span><br/>
+<span class="partial" title="1 out of 2 forms covered">
+                071&nbsp;&nbsp;(defn&nbsp;crossing-penalty
+                </span><br/>
+<span class="not-covered" title="0 out of 9 forms covered">
+                072&nbsp;&nbsp;&nbsp;&nbsp;&quot;TODO:&nbsp;should&nbsp;return&nbsp;the&nbsp;cost&nbsp;of&nbsp;crossing&nbsp;this&nbsp;`barrier`,&nbsp;initially&nbsp;mainly
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                073&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;watercourse,&nbsp;on&nbsp;the&nbsp;axis&nbsp;from&nbsp;vertex&nbsp;`from`&nbsp;to&nbsp;vertex&nbsp;`to`.&nbsp;in&nbsp;the&nbsp;context
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                074&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;superstructure&nbsp;`s`.&nbsp;If&nbsp;there&#x27;s&nbsp;a&nbsp;bridge,&nbsp;ferry&nbsp;or&nbsp;other&nbsp;crossing&nbsp;mechanism
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                075&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;`s`&nbsp;at&nbsp;the&nbsp;intersection&nbsp;of&nbsp;the&nbsp;vertex&nbsp;and&nbsp;the&nbsp;barrier,&nbsp;then&nbsp;the&nbsp;penalty
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                076&nbsp;&nbsp;&nbsp;&nbsp;should&nbsp;be&nbsp;substantially&nbsp;less&nbsp;than&nbsp;it&nbsp;would&nbsp;otherwise&nbsp;be.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                077&nbsp;&nbsp;&nbsp;&nbsp;[barrier&nbsp;from&nbsp;to&nbsp;s]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                078&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;TODO:&nbsp;implement
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                079&nbsp;&nbsp;&nbsp;&nbsp;0)
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                080&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                081&nbsp;&nbsp;(defn&nbsp;gradient-cost
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                082&nbsp;&nbsp;&nbsp;&nbsp;&quot;Compute&nbsp;the&nbsp;per-unit-distance&nbsp;cost&nbsp;of&nbsp;traversing&nbsp;this&nbsp;`edge`.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                083&nbsp;&nbsp;&nbsp;&nbsp;[edge]
+                </span><br/>
+<span class="not-covered" title="0 out of 6 forms covered">
+                084&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[g&nbsp;(:z&nbsp;(e&#x2F;unit-vector&nbsp;edge))]
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                085&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(pos?&nbsp;g)
+                </span><br/>
+<span class="not-covered" title="0 out of 6 forms covered">
+                086&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(m&#x2F;expt&nbsp;(inc&nbsp;g)&nbsp;*gradient-exponent*)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                087&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1)))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                088&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                089&nbsp;&nbsp;;;&nbsp;(gradient-cost&nbsp;(e&#x2F;edge&nbsp;(v&#x2F;vertex&nbsp;0&nbsp;0&nbsp;0)&nbsp;(v&#x2F;vertex&nbsp;0&nbsp;1&nbsp;0)))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                090&nbsp;&nbsp;;;&nbsp;(gradient-cost&nbsp;(e&#x2F;edge&nbsp;(v&#x2F;vertex&nbsp;0&nbsp;0&nbsp;0)&nbsp;(v&#x2F;vertex&nbsp;0&nbsp;2&nbsp;0)))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                091&nbsp;&nbsp;;;&nbsp;(gradient-cost&nbsp;(e&#x2F;edge&nbsp;(v&#x2F;vertex&nbsp;0&nbsp;0&nbsp;0)&nbsp;(v&#x2F;vertex&nbsp;0&nbsp;1&nbsp;1)))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                092&nbsp;&nbsp;;;&nbsp;(gradient-cost&nbsp;(e&#x2F;edge&nbsp;(v&#x2F;vertex&nbsp;0&nbsp;0&nbsp;0)&nbsp;(v&#x2F;vertex&nbsp;0&nbsp;2&nbsp;1)))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                093&nbsp;&nbsp;;;&nbsp;(gradient-cost&nbsp;(e&#x2F;edge&nbsp;(v&#x2F;vertex&nbsp;0&nbsp;0&nbsp;0)&nbsp;(v&#x2F;vertex&nbsp;0&nbsp;1&nbsp;0.0001)))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                094&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                095&nbsp;&nbsp;(defn&nbsp;best-road
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                096&nbsp;&nbsp;&nbsp;&nbsp;&quot;Find&nbsp;the&nbsp;best&nbsp;traversable&nbsp;path&nbsp;which&nbsp;links&nbsp;the&nbsp;vertices&nbsp;`from`&nbsp;and&nbsp;`to`
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                097&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;this&nbsp;superstructure&nbsp;`s`,&nbsp;or&nbsp;nil&nbsp;if&nbsp;there&nbsp;are&nbsp;none.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                098&nbsp;&nbsp;&nbsp;&nbsp;[from&nbsp;to&nbsp;s]
+                </span><br/>
+<span class="not-covered" title="0 out of 9 forms covered">
+                099&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[f&nbsp;(fn&nbsp;[v]&nbsp;(set&nbsp;(s&#x2F;touching&nbsp;v&nbsp;p&#x2F;path?&nbsp;s)))]
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(first
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                101&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(sort-by
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                102&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;;&nbsp;I...&nbsp;chose&nbsp;the&nbsp;path&nbsp;more&nbsp;travelled&nbsp;by.
+                </span><br/>
+<span class="not-covered" title="0 out of 8 forms covered">
+                103&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(or&nbsp;(:traversals&nbsp;%)&nbsp;0)
+                </span><br/>
+<span class="not-covered" title="0 out of 11 forms covered">
+                104&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(filter&nbsp;traversable?&nbsp;(intersection&nbsp;(f&nbsp;from)&nbsp;(f&nbsp;to)))))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                105&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                106&nbsp;&nbsp;(defn&nbsp;road-bonus
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                107&nbsp;&nbsp;&nbsp;&nbsp;&quot;Calculate&nbsp;the&nbsp;road&nbsp;bonus&nbsp;of&nbsp;the&nbsp;edge&nbsp;represented&nbsp;by&nbsp;the&nbsp;vertices&nbsp;`from`,
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                108&nbsp;&nbsp;&nbsp;&nbsp;`to`,&nbsp;in&nbsp;the&nbsp;context&nbsp;of&nbsp;the&nbsp;superstructure&nbsp;`s`.&nbsp;Obviously&nbsp;there&nbsp;only&nbsp;is
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                109&nbsp;&nbsp;&nbsp;&nbsp;such&nbsp;a&nbsp;bonus&nbsp;if&nbsp;there&nbsp;actually&nbsp;is&nbsp;an&nbsp;existing&nbsp;thoroughfare&nbsp;to&nbsp;use.&nbsp;Road
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                110&nbsp;&nbsp;&nbsp;&nbsp;bonuses&nbsp;scale&nbsp;with&nbsp;some&nbsp;fractional&nbsp;exponent&nbsp;of&nbsp;the&nbsp;number&nbsp;of&nbsp;traversals
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                111&nbsp;&nbsp;&nbsp;&nbsp;which&nbsp;have&nbsp;been&nbsp;made&nbsp;of&nbsp;the&nbsp;road&nbsp;segment&nbsp;in&nbsp;question.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                112&nbsp;&nbsp;&nbsp;&nbsp;[from&nbsp;to&nbsp;s]
+                </span><br/>
+<span class="not-covered" title="0 out of 6 forms covered">
+                113&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[best&nbsp;(best-road&nbsp;from&nbsp;to&nbsp;s)]
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                114&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(when&nbsp;(:traversals&nbsp;best)
+                </span><br/>
+<span class="not-covered" title="0 out of 6 forms covered">
+                115&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(m&#x2F;expt&nbsp;(:traversals&nbsp;best)&nbsp;*traversals-exponent*))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                116&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                117&nbsp;&nbsp;(defn&nbsp;traversal-cost
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                118&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;the&nbsp;traversal&nbsp;cost&nbsp;of&nbsp;the&nbsp;edge&nbsp;represented&nbsp;by&nbsp;the&nbsp;vertices&nbsp;`from`,
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                119&nbsp;&nbsp;&nbsp;&nbsp;`to`,&nbsp;in&nbsp;the&nbsp;context&nbsp;of&nbsp;the&nbsp;superstructure&nbsp;`s`.&nbsp;It&nbsp;is&nbsp;legitimate&nbsp;to&nbsp;pass
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                120&nbsp;&nbsp;&nbsp;&nbsp;`nil`&nbsp;as&nbsp;the&nbsp;`to`&nbsp;argument,&nbsp;in&nbsp;which&nbsp;case&nbsp;the&nbsp;result&nbsp;will&nbsp;be&nbsp;zero,&nbsp;in&nbsp;order
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                121&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;allow&nbsp;`reduce`&nbsp;to&nbsp;be&nbsp;used&nbsp;to&nbsp;compute&nbsp;total&nbsp;path&nbsp;costs.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                122&nbsp;&nbsp;&nbsp;&nbsp;[from&nbsp;to&nbsp;s]
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                123&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(nil?&nbsp;to)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                124&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                125&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[edge&nbsp;(e&#x2F;edge&nbsp;from&nbsp;to)
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                126&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;distance&nbsp;(e&#x2F;length&nbsp;edge)]
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                127&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&#x2F;
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                128&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                129&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*&nbsp;distance
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                130&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(gradient-cost&nbsp;edge))
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                131&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(reduce&nbsp;+
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                132&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
+                </span><br/>
+<span class="not-covered" title="0 out of 7 forms covered">
+                133&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(crossing-penalty&nbsp;[%&nbsp;from&nbsp;to&nbsp;s])
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                134&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(barriers-crossed&nbsp;from&nbsp;to&nbsp;s))))
+                </span><br/>
+<span class="not-covered" title="0 out of 10 forms covered">
+                135&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(or&nbsp;(road-bonus&nbsp;from&nbsp;to&nbsp;s)&nbsp;1)))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                136&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                137&nbsp;&nbsp;;;&nbsp;(def&nbsp;p&nbsp;&#x27;({:x&nbsp;1.40625,&nbsp;:y&nbsp;0,&nbsp;:kind&nbsp;:vertex,&nbsp;:walkmap.id&#x2F;id&nbsp;:vert_1-40625_0}
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                138&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:x&nbsp;1.40625,&nbsp;:y&nbsp;-10.703125,&nbsp;:kind&nbsp;:vertex,&nbsp;:walkmap.id&#x2F;id&nbsp;:vert_1-40625_-10-703125}
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                139&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:x&nbsp;7.578125,&nbsp;:y&nbsp;-10.703125,&nbsp;:kind&nbsp;:vertex,&nbsp;:walkmap.id&#x2F;id&nbsp;:vert_7-578125_-10-703125}
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                140&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:x&nbsp;7.578125,&nbsp;:y&nbsp;0,&nbsp;:kind&nbsp;:vertex,&nbsp;:walkmap.id&#x2F;id&nbsp;:vert_7-578125_0}
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                141&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:x&nbsp;2.171875,&nbsp;:y&nbsp;-0.765625,&nbsp;:kind&nbsp;:vertex,&nbsp;:walkmap.id&#x2F;id&nbsp;:vert_2-171875_-0-765625}
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                142&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:x&nbsp;6.8125,&nbsp;:y&nbsp;-0.765625,&nbsp;:kind&nbsp;:vertex,&nbsp;:walkmap.id&#x2F;id&nbsp;:vert_6-8125_-0-765625}))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                143&nbsp;&nbsp;;;&nbsp;(v&#x2F;check-vertices&nbsp;p)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                144&nbsp;&nbsp;;;&nbsp;(def&nbsp;p&#x27;&nbsp;(p&#x2F;path&nbsp;p))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                145&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                146&nbsp;&nbsp;;;&nbsp;(traversal-cost&nbsp;(first&nbsp;p)&nbsp;(nth&nbsp;p&nbsp;1)&nbsp;{})
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                147&nbsp;&nbsp;;;&nbsp;(vertices-traversal-cost&nbsp;p&nbsp;{})
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                148&nbsp;&nbsp;;;&nbsp;(path-traversal-cost&nbsp;(p&#x2F;path&nbsp;p))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                149&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                150&nbsp;&nbsp;(defn&nbsp;extend-frontier
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                151&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;sequence&nbsp;like&nbsp;`frontier`&nbsp;with&nbsp;all&nbsp;of&nbsp;these&nbsp;`candidates`&nbsp;which&nbsp;are
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                152&nbsp;&nbsp;&nbsp;&nbsp;not&nbsp;already&nbsp;members&nbsp;either&nbsp;of&nbsp;`frontier`&nbsp;or&nbsp;of&nbsp;`rejects`&nbsp;appended.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                153&nbsp;&nbsp;&nbsp;&nbsp;([frontier&nbsp;candidates]
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                154&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(extend-frontier&nbsp;frontier&nbsp;candidates&nbsp;nil))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                155&nbsp;&nbsp;&nbsp;&nbsp;([frontier&nbsp;candidates&nbsp;rejects]
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                156&nbsp;&nbsp;&nbsp;&nbsp;(if
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                157&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(empty?&nbsp;frontier)
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                158&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;candidates
+                </span><br/>
+<span class="not-covered" title="0 out of 7 forms covered">
+                159&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[fs&nbsp;(set&nbsp;(concat&nbsp;frontier&nbsp;rejects))]
+                </span><br/>
+<span class="not-covered" title="0 out of 7 forms covered">
+                160&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(concat&nbsp;frontier&nbsp;(remove&nbsp;fs&nbsp;candidates))))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                161&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                162&nbsp;&nbsp;;;&nbsp;(extend-frontier&nbsp;&#x27;(1&nbsp;2&nbsp;3&nbsp;4&nbsp;5)&nbsp;&#x27;(7&nbsp;3&nbsp;6&nbsp;2&nbsp;9&nbsp;8)&nbsp;&#x27;(6&nbsp;8))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                163&nbsp;&nbsp;;;&nbsp;(extend-frontier&nbsp;&#x27;(1&nbsp;2&nbsp;3&nbsp;4&nbsp;5)&nbsp;&#x27;(7&nbsp;3&nbsp;6&nbsp;2&nbsp;9&nbsp;8))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                164&nbsp;&nbsp;;;&nbsp;(extend-frontier&nbsp;&#x27;(1&nbsp;2&nbsp;3&nbsp;4&nbsp;5)&nbsp;&#x27;())
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                165&nbsp;&nbsp;;;&nbsp;(extend-frontier&nbsp;&#x27;(1&nbsp;2&nbsp;3&nbsp;4&nbsp;5)&nbsp;nil)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                166&nbsp;&nbsp;;;&nbsp;(extend-frontier&nbsp;nil&nbsp;&#x27;(1&nbsp;2&nbsp;3&nbsp;4&nbsp;5))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                167&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                168&nbsp;&nbsp;(defn&nbsp;route
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                169&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;NOT&nbsp;YET&nbsp;GOOD&nbsp;ENOUGH!&nbsp;Simple&nbsp;breadth&nbsp;first,&nbsp;and&nbsp;although&nbsp;it&nbsp;will
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                170&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;reach&nbsp;the&nbsp;goal
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                171&nbsp;&nbsp;&nbsp;&nbsp;([from&nbsp;to&nbsp;s&nbsp;search-radius]
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                172&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(loop&nbsp;[f&nbsp;from
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                173&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t&nbsp;to
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                174&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frontier&nbsp;(extend-frontier
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                175&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nil
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                176&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(s&#x2F;neighbour-ids
+                </span><br/>
+<span class="not-covered" title="0 out of 6 forms covered">
+                177&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(s&#x2F;nearest&nbsp;s&nbsp;from&nbsp;:centre&nbsp;search-radius)
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                178&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traversable?
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                179&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                180&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;visited&nbsp;nil
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                181&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;track&nbsp;nil]
+                </span><br/>
+<span class="not-covered" title="0 out of 7 forms covered">
+                182&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[here&nbsp;(s&#x2F;retrieve&nbsp;(first&nbsp;frontier)&nbsp;s)]
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                183&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cond
+                </span><br/>
+<span class="not-covered" title="0 out of 11 forms covered">
+                184&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;&nbsp;(e&#x2F;length&nbsp;(e&#x2F;edge&nbsp;(:centre&nbsp;here))&nbsp;to)&nbsp;search-radius)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                185&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;close&nbsp;enough
+                </span><br/>
+<span class="not-covered" title="0 out of 9 forms covered">
+                186&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply&nbsp;p&#x2F;path&nbsp;(cons&nbsp;(:centre&nbsp;here)&nbsp;track))
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                187&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(empty?&nbsp;(rest&nbsp;frontier))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                188&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;failed
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                189&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nil
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                190&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                191&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(recur
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                192&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                193&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                194&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(extend-frontier
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                195&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(rest&nbsp;frontier)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                196&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(s&#x2F;neighbour-ids&nbsp;here&nbsp;traversable?&nbsp;s)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                197&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;visited)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                198&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cons&nbsp;here&nbsp;visited)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                199&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;this&nbsp;is&nbsp;going&nbsp;to&nbsp;be&nbsp;wrong,&nbsp;and&nbsp;I&nbsp;need&nbsp;to&nbsp;think&nbsp;about&nbsp;how&nbsp;to&nbsp;fix.
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                200&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cons&nbsp;here&nbsp;track)))))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                201&nbsp;&nbsp;
                 </span><br/>
  </body>
 </html>

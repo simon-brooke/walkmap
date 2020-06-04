@@ -97,575 +97,728 @@
 <span class="not-tracked" title="0 out of 0 forms covered">
                 031&nbsp;&nbsp;&nbsp;&nbsp;[o]
                 </span><br/>
-<span class="not-covered" title="0 out of 4 forms covered">
-                032&nbsp;&nbsp;&nbsp;&nbsp;(cond
-                </span><br/>
-<span class="not-covered" title="0 out of 6 forms covered">
-                033&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(v&#x2F;vertex?&nbsp;o)&nbsp;(list&nbsp;o)
-                </span><br/>
-<span class="not-covered" title="0 out of 6 forms covered">
-                034&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(q&#x2F;polygon?&nbsp;o)&nbsp;(:vertices&nbsp;o)
-                </span><br/>
-<span class="not-covered" title="0 out of 6 forms covered">
-                035&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(p&#x2F;path?&nbsp;o)&nbsp;(:vertices&nbsp;o)))
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                036&nbsp;&nbsp;
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                037&nbsp;&nbsp;(defn&nbsp;index-vertex
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                038&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;superstructure&nbsp;like&nbsp;`s`&nbsp;in&nbsp;which&nbsp;object&nbsp;`o`&nbsp;is&nbsp;indexed&nbsp;by&nbsp;vertex
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                039&nbsp;&nbsp;&nbsp;&nbsp;`v`.&nbsp;It&nbsp;is&nbsp;an&nbsp;error&nbsp;(and&nbsp;an&nbsp;exception&nbsp;may&nbsp;be&nbsp;thrown)&nbsp;if
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                040&nbsp;&nbsp;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                041&nbsp;&nbsp;&nbsp;&nbsp;1.&nbsp;`s`&nbsp;is&nbsp;not&nbsp;a&nbsp;map;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                042&nbsp;&nbsp;&nbsp;&nbsp;2.&nbsp;`o`&nbsp;is&nbsp;not&nbsp;a&nbsp;map;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                043&nbsp;&nbsp;&nbsp;&nbsp;3.&nbsp;`o`&nbsp;does&nbsp;not&nbsp;have&nbsp;a&nbsp;value&nbsp;for&nbsp;the&nbsp;key&nbsp;`:walkmap.id&#x2F;id`;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                044&nbsp;&nbsp;&nbsp;&nbsp;4.&nbsp;`v`&nbsp;is&nbsp;not&nbsp;a&nbsp;vertex.&quot;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                045&nbsp;&nbsp;&nbsp;&nbsp;[s&nbsp;o&nbsp;v]
-                </span><br/>
-<span class="covered" title="6 out of 6 forms covered">
-                046&nbsp;&nbsp;&nbsp;&nbsp;(if-not&nbsp;(v&#x2F;vertex?&nbsp;o)
-                </span><br/>
-<span class="covered" title="4 out of 4 forms covered">
-                047&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(:walkmap.id&#x2F;id&nbsp;o)
-                </span><br/>
-<span class="partial" title="4 out of 6 forms covered">
-                048&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(v&#x2F;vertex?&nbsp;v)
-                </span><br/>
-<span class="covered" title="9 out of 9 forms covered">
-                049&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[vi&nbsp;(or&nbsp;(::vertex-index&nbsp;s)&nbsp;{})
-                </span><br/>
-<span class="partial" title="9 out of 10 forms covered">
-                050&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;current&nbsp;(or&nbsp;(vi&nbsp;(:walkmap.id&#x2F;id&nbsp;v))&nbsp;{})]
-                </span><br/>
-<span class="not-covered" title="0 out of 1 forms covered">
-                051&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;deep-merge&nbsp;doesn&#x27;t&nbsp;merge&nbsp;sets,&nbsp;only&nbsp;maps;&nbsp;so&nbsp;at&nbsp;this
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                052&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;stage&nbsp;we&nbsp;need&nbsp;to&nbsp;build&nbsp;a&nbsp;map.
-                </span><br/>
-<span class="covered" title="15 out of 15 forms covered">
-                053&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;vi&nbsp;(:walkmap.id&#x2F;id&nbsp;v)&nbsp;(assoc&nbsp;current&nbsp;(:walkmap.id&#x2F;id&nbsp;o)&nbsp;(:walkmap.id&#x2F;id&nbsp;v))))
-                </span><br/>
-<span class="not-covered" title="0 out of 4 forms covered">
-                054&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;&quot;Not&nbsp;a&nbsp;vertex:&nbsp;&quot;&nbsp;v)))
-                </span><br/>
-<span class="not-covered" title="0 out of 9 forms covered">
-                055&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;(u&#x2F;truncate&nbsp;(str&nbsp;&quot;No&nbsp;`:walkmap.id&#x2F;id`&nbsp;value:&nbsp;&quot;&nbsp;o)&nbsp;80))))
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                056&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;it&nbsp;shouldn&#x27;t&nbsp;actually&nbsp;be&nbsp;an&nbsp;error&nbsp;to&nbsp;try&nbsp;to&nbsp;index&nbsp;a&nbsp;vertex,&nbsp;but&nbsp;it
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                057&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;also&nbsp;isn&#x27;t&nbsp;useful&nbsp;to&nbsp;do&nbsp;so,&nbsp;so&nbsp;I&#x27;d&nbsp;be&nbsp;inclined&nbsp;to&nbsp;ignore&nbsp;it.
-                </span><br/>
-<span class="not-covered" title="0 out of 3 forms covered">
-                058&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(::vertex-index&nbsp;s)))
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                059&nbsp;&nbsp;
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                060&nbsp;&nbsp;(defn&nbsp;index-vertices
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                061&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;superstructure&nbsp;like&nbsp;`s`&nbsp;in&nbsp;which&nbsp;object&nbsp;`o`&nbsp;is&nbsp;indexed&nbsp;by&nbsp;its
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                062&nbsp;&nbsp;&nbsp;&nbsp;vertices.&nbsp;It&nbsp;is&nbsp;an&nbsp;error&nbsp;(and&nbsp;an&nbsp;exception&nbsp;may&nbsp;be&nbsp;thrown)&nbsp;if
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                063&nbsp;&nbsp;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                064&nbsp;&nbsp;&nbsp;&nbsp;1.&nbsp;`s`&nbsp;is&nbsp;not&nbsp;a&nbsp;map;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                065&nbsp;&nbsp;&nbsp;&nbsp;2.&nbsp;`o`&nbsp;is&nbsp;not&nbsp;a&nbsp;map;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                066&nbsp;&nbsp;&nbsp;&nbsp;3.&nbsp;`o`&nbsp;does&nbsp;not&nbsp;have&nbsp;a&nbsp;value&nbsp;for&nbsp;the&nbsp;key&nbsp;`:walkmap.id&#x2F;id`.&quot;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                067&nbsp;&nbsp;&nbsp;&nbsp;[s&nbsp;o]
-                </span><br/>
-<span class="covered" title="2 out of 2 forms covered">
-                068&nbsp;&nbsp;&nbsp;&nbsp;(u&#x2F;deep-merge
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                069&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s
-                </span><br/>
-<span class="covered" title="2 out of 2 forms covered">
-                070&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{::vertex-index
-                </span><br/>
-<span class="covered" title="2 out of 2 forms covered">
-                071&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(reduce
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                072&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;u&#x2F;deep-merge
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                073&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{}
-                </span><br/>
-<span class="covered" title="3 out of 3 forms covered">
-                074&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
-                </span><br/>
-<span class="covered" title="5 out of 5 forms covered">
-                075&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(index-vertex&nbsp;s&nbsp;o&nbsp;%)
-                </span><br/>
-<span class="covered" title="3 out of 3 forms covered">
-                076&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:vertices&nbsp;o)))}))
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                077&nbsp;&nbsp;
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                078&nbsp;&nbsp;(defn&nbsp;in-retrieve
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                079&nbsp;&nbsp;&nbsp;&nbsp;&quot;Internal&nbsp;guts&nbsp;of&nbsp;`retrieve`,&nbsp;q.v.&nbsp;`x`&nbsp;can&nbsp;be&nbsp;anything;&nbsp;`s`&nbsp;must&nbsp;be&nbsp;a
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                080&nbsp;&nbsp;&nbsp;&nbsp;walkmap&nbsp;superstructure.&nbsp;TODO:&nbsp;recursive,&nbsp;quite&nbsp;likely&nbsp;to&nbsp;blow&nbsp;the&nbsp;fragile
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                081&nbsp;&nbsp;&nbsp;&nbsp;Clojure&nbsp;stack.&nbsp;Probably&nbsp;better&nbsp;to&nbsp;do&nbsp;this&nbsp;with&nbsp;`walk`,&nbsp;but&nbsp;I&nbsp;don&#x27;t&nbsp;yet
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                082&nbsp;&nbsp;&nbsp;&nbsp;understand&nbsp;that.&quot;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                083&nbsp;&nbsp;&nbsp;&nbsp;[x&nbsp;s]
-                </span><br/>
-<span class="covered" title="5 out of 5 forms covered">
-                084&nbsp;&nbsp;&nbsp;&nbsp;(cond
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                085&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;if&nbsp;it&#x27;s&nbsp;a&nbsp;keyword&nbsp;identifying&nbsp;something&nbsp;in&nbsp;s,&nbsp;retrieve&nbsp;that&nbsp;something.
-                </span><br/>
-<span class="covered" title="7 out of 7 forms covered">
-                086&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(keyword?&nbsp;x)&nbsp;(if&nbsp;(s&nbsp;x)
-                </span><br/>
-<span class="covered" title="6 out of 6 forms covered">
-                087&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(in-retrieve&nbsp;(s&nbsp;x)&nbsp;s)
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                088&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x)
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                089&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;if&nbsp;it&#x27;s&nbsp;a&nbsp;map,&nbsp;for&nbsp;every&nbsp;key&nbsp;which&nbsp;is&nbsp;not&nbsp;`:walkmap.id&#x2F;id`,&nbsp;recurse.
-                </span><br/>
-<span class="covered" title="6 out of 6 forms covered">
-                090&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map?&nbsp;x)&nbsp;(let&nbsp;[v&nbsp;(reduce
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                091&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(fn&nbsp;[m&nbsp;k]
-                </span><br/>
-<span class="covered" title="10 out of 10 forms covered">
-                092&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;m&nbsp;k&nbsp;(in-retrieve&nbsp;(x&nbsp;k)&nbsp;s)))
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                093&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{}
-                </span><br/>
-<span class="covered" title="6 out of 6 forms covered">
-                094&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(keys&nbsp;(dissoc&nbsp;x&nbsp;:walkmap.id&#x2F;id)))
-                </span><br/>
-<span class="covered" title="3 out of 3 forms covered">
-                095&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id&nbsp;(:walkmap.id&#x2F;id&nbsp;x)]
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                096&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;if&nbsp;it&nbsp;has&nbsp;an&nbsp;id,&nbsp;bind&nbsp;it&nbsp;to&nbsp;that&nbsp;id&nbsp;in&nbsp;the&nbsp;returned&nbsp;value.
-                </span><br/>
-<span class="covered" title="2 out of 2 forms covered">
-                097&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;id
-                </span><br/>
-<span class="covered" title="3 out of 3 forms covered">
-                098&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                099&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:walkmap.id&#x2F;id
-                </span><br/>
-<span class="covered" title="3 out of 3 forms covered">
-                101&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:walkmap.id&#x2F;id&nbsp;x))
-                </span><br/>
-<span class="not-covered" title="0 out of 1 forms covered">
-                102&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v))
-                </span><br/>
-<span class="covered" title="4 out of 4 forms covered">
-                103&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(set?&nbsp;x)&nbsp;x&nbsp;;;&nbsp;TODO:&nbsp;should&nbsp;I&nbsp;search&nbsp;in&nbsp;sets&nbsp;for&nbsp;objects&nbsp;when&nbsp;storing?
-                </span><br/>
-<span class="covered" title="11 out of 11 forms covered">
-                104&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(coll?&nbsp;x)&nbsp;(map&nbsp;#(in-retrieve&nbsp;%&nbsp;s)&nbsp;x)
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                105&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else&nbsp;x))
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                106&nbsp;&nbsp;
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                107&nbsp;&nbsp;(defn&nbsp;retrieve
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                108&nbsp;&nbsp;&nbsp;&nbsp;&quot;Retrieve&nbsp;the&nbsp;canonical&nbsp;representation&nbsp;of&nbsp;the&nbsp;object&nbsp;with&nbsp;this&nbsp;`id`&nbsp;from&nbsp;the
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                109&nbsp;&nbsp;&nbsp;&nbsp;superstructure&nbsp;`s`.&quot;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                110&nbsp;&nbsp;&nbsp;&nbsp;[id&nbsp;s]
-                </span><br/>
-<span class="covered" title="6 out of 6 forms covered">
-                111&nbsp;&nbsp;&nbsp;&nbsp;(in-retrieve&nbsp;(id&nbsp;s)&nbsp;s))
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                112&nbsp;&nbsp;
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                113&nbsp;&nbsp;(defn&nbsp;in-store-find-objects
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                114&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;an&nbsp;id&nbsp;-&gt;&nbsp;object&nbsp;map&nbsp;of&nbsp;every&nbsp;object&nbsp;within&nbsp;`o`.&nbsp;Internal&nbsp;to
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                115&nbsp;&nbsp;&nbsp;&nbsp;`in-store`,&nbsp;q.v.&nbsp;Use&nbsp;at&nbsp;your&nbsp;own&nbsp;peril.&quot;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                116&nbsp;&nbsp;&nbsp;&nbsp;([o]
-                </span><br/>
-<span class="covered" title="4 out of 4 forms covered">
-                117&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(in-store-find-objects&nbsp;o&nbsp;{}))
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                118&nbsp;&nbsp;&nbsp;&nbsp;([o&nbsp;s]
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                119&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(l&#x2F;debug&nbsp;&quot;Finding&nbsp;objects&nbsp;in:&quot;&nbsp;o)
-                </span><br/>
-<span class="covered" title="4 out of 4 forms covered">
-                120&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cond
-                </span><br/>
-<span class="covered" title="4 out of 4 forms covered">
-                121&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(set?&nbsp;o)&nbsp;s&nbsp;;;&nbsp;TODO:&nbsp;should&nbsp;I&nbsp;search&nbsp;in&nbsp;sets&nbsp;for&nbsp;objects&nbsp;when&nbsp;storing?
-                </span><br/>
-<span class="covered" title="7 out of 7 forms covered">
-                122&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map?&nbsp;o)&nbsp;(if&nbsp;(:walkmap.id&#x2F;id&nbsp;o)
-                </span><br/>
-<span class="covered" title="2 out of 2 forms covered">
-                123&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc
-                </span><br/>
-<span class="covered" title="6 out of 6 forms covered">
-                124&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(in-store-find-objects&nbsp;(vals&nbsp;o)&nbsp;s)
-                </span><br/>
-<span class="covered" title="3 out of 3 forms covered">
-                125&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:walkmap.id&#x2F;id&nbsp;o)
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                126&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;o)
-                </span><br/>
-<span class="not-covered" title="0 out of 6 forms covered">
-                127&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(in-store-find-objects&nbsp;(vals&nbsp;o)&nbsp;s))
-                </span><br/>
-<span class="covered" title="15 out of 15 forms covered">
-                128&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(coll?&nbsp;o)&nbsp;(reduce&nbsp;merge&nbsp;s&nbsp;(map&nbsp;#(in-store-find-objects&nbsp;%&nbsp;s)&nbsp;o))
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                129&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else&nbsp;s)))
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                130&nbsp;&nbsp;
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                131&nbsp;&nbsp;(defn&nbsp;in-store-replace-with-keys
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                132&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;`o`&nbsp;in&nbsp;which&nbsp;each&nbsp;reified&nbsp;walkmap&nbsp;object&nbsp;within&nbsp;`o`&nbsp;has
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                133&nbsp;&nbsp;&nbsp;&nbsp;been&nbsp;replaced&nbsp;with&nbsp;the&nbsp;`:walkmap.id&#x2F;id`&nbsp;of&nbsp;that&nbsp;object.&nbsp;Internal&nbsp;to
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                134&nbsp;&nbsp;&nbsp;&nbsp;`in-store`,&nbsp;q.v.&nbsp;Use&nbsp;at&nbsp;your&nbsp;own&nbsp;peril.&quot;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                135&nbsp;&nbsp;&nbsp;&nbsp;[o]
-                </span><br/>
-<span class="covered" title="3 out of 3 forms covered">
-                136&nbsp;&nbsp;&nbsp;&nbsp;(assoc
-                </span><br/>
-<span class="covered" title="15 out of 15 forms covered">
-                137&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(postwalk&nbsp;#(or&nbsp;(:walkmap.id&#x2F;id&nbsp;%)&nbsp;%)&nbsp;(dissoc&nbsp;o&nbsp;:walkmap.id&#x2F;id))
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                138&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:walkmap.id&#x2F;id
-                </span><br/>
-<span class="covered" title="3 out of 3 forms covered">
-                139&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:walkmap.id&#x2F;id&nbsp;o)))
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                140&nbsp;&nbsp;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                141&nbsp;&nbsp;;;&nbsp;(in-store-replace-with-keys&nbsp;(p&#x2F;path&nbsp;(v&#x2F;vertex&nbsp;0&nbsp;0&nbsp;0)&nbsp;(v&#x2F;vertex&nbsp;0&nbsp;1&nbsp;2)&nbsp;(v&#x2F;vertex&nbsp;3&nbsp;3&nbsp;3)))
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                142&nbsp;&nbsp;;;&nbsp;(in-store-find-objects&nbsp;(p&#x2F;path&nbsp;(v&#x2F;vertex&nbsp;0&nbsp;0&nbsp;0)&nbsp;(v&#x2F;vertex&nbsp;0&nbsp;1&nbsp;2)&nbsp;(v&#x2F;vertex&nbsp;3&nbsp;3&nbsp;3)))
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                143&nbsp;&nbsp;
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                144&nbsp;&nbsp;(defn&nbsp;store
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                145&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;superstructure&nbsp;like&nbsp;`s`&nbsp;with&nbsp;object&nbsp;`o`&nbsp;added.&nbsp;If&nbsp;only&nbsp;one
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                146&nbsp;&nbsp;&nbsp;&nbsp;argument&nbsp;is&nbsp;supplied&nbsp;it&nbsp;will&nbsp;be&nbsp;assumed&nbsp;to&nbsp;represent&nbsp;`o`&nbsp;and&nbsp;a&nbsp;new
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                147&nbsp;&nbsp;&nbsp;&nbsp;superstructure&nbsp;will&nbsp;be&nbsp;returned.
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                148&nbsp;&nbsp;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                149&nbsp;&nbsp;&nbsp;&nbsp;It&nbsp;is&nbsp;an&nbsp;error&nbsp;(and&nbsp;an&nbsp;exception&nbsp;may&nbsp;be&nbsp;thrown)&nbsp;if
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                150&nbsp;&nbsp;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                151&nbsp;&nbsp;&nbsp;&nbsp;1.&nbsp;`s`&nbsp;is&nbsp;not&nbsp;a&nbsp;map;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                152&nbsp;&nbsp;&nbsp;&nbsp;2.&nbsp;`o`&nbsp;is&nbsp;not&nbsp;a&nbsp;recognisable&nbsp;walkmap&nbsp;object&quot;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                153&nbsp;&nbsp;&nbsp;&nbsp;([o]
-                </span><br/>
-<span class="covered" title="4 out of 4 forms covered">
-                154&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(store&nbsp;o&nbsp;{}))
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                155&nbsp;&nbsp;&nbsp;&nbsp;([o&nbsp;s]
-                </span><br/>
-<span class="partial" title="5 out of 6 forms covered">
-                156&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(when-not&nbsp;(:walkmap.id&#x2F;id&nbsp;o)
-                </span><br/>
-<span class="not-covered" title="0 out of 1 forms covered">
-                157&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw
-                </span><br/>
-<span class="not-covered" title="0 out of 1 forms covered">
-                158&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(IllegalArgumentException.
-                </span><br/>
-<span class="not-covered" title="0 out of 3 forms covered">
-                159&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str&nbsp;&quot;Not&nbsp;a&nbsp;walkmap&nbsp;object:&nbsp;no&nbsp;value&nbsp;for&nbsp;`:walkmap.id&#x2F;id`:&nbsp;&quot;
-                </span><br/>
-<span class="not-covered" title="0 out of 3 forms covered">
-                160&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(u&#x2F;kind-type&nbsp;o)))))
-                </span><br/>
-<span class="partial" title="5 out of 6 forms covered">
-                161&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(when-not&nbsp;(map?&nbsp;s)
-                </span><br/>
-<span class="not-covered" title="0 out of 1 forms covered">
-                162&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw
-                </span><br/>
-<span class="not-covered" title="0 out of 1 forms covered">
-                163&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(IllegalArgumentException.
-                </span><br/>
-<span class="not-covered" title="0 out of 6 forms covered">
-                164&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str&nbsp;&quot;Superstructure&nbsp;must&nbsp;be&nbsp;a&nbsp;map:&nbsp;&quot;&nbsp;(u&#x2F;kind-type&nbsp;s)))))
-                </span><br/>
-<span class="covered" title="2 out of 2 forms covered">
-                165&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc
-                </span><br/>
-<span class="covered" title="10 out of 10 forms covered">
-                166&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(u&#x2F;deep-merge&nbsp;s&nbsp;(in-store-find-objects&nbsp;o)&nbsp;(index-vertices&nbsp;s&nbsp;o))
-                </span><br/>
-<span class="covered" title="3 out of 3 forms covered">
-                167&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:walkmap.id&#x2F;id&nbsp;o)
-                </span><br/>
-<span class="covered" title="3 out of 3 forms covered">
-                168&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(in-store-replace-with-keys&nbsp;o))))
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                169&nbsp;&nbsp;
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                170&nbsp;&nbsp;(defn&nbsp;search-vertices
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                171&nbsp;&nbsp;&nbsp;&nbsp;&quot;Search&nbsp;superstructure&nbsp;`s`&nbsp;for&nbsp;vertices&nbsp;within&nbsp;the&nbsp;box&nbsp;defined&nbsp;by&nbsp;vertices
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                172&nbsp;&nbsp;&nbsp;&nbsp;`minv`&nbsp;and&nbsp;`maxv`.&nbsp;Every&nbsp;coordinate&nbsp;in&nbsp;`minv`&nbsp;must&nbsp;have&nbsp;a&nbsp;lower&nbsp;value&nbsp;than
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                173&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;equivalent&nbsp;coordinate&nbsp;in&nbsp;`maxv`.&nbsp;If&nbsp;`d2?`&nbsp;is&nbsp;supplied&nbsp;and&nbsp;not&nbsp;false,
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                174&nbsp;&nbsp;&nbsp;&nbsp;search&nbsp;only&nbsp;in&nbsp;the&nbsp;x,y&nbsp;projection.&quot;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                175&nbsp;&nbsp;&nbsp;&nbsp;([s&nbsp;minv&nbsp;maxv]
-                </span><br/>
-<span class="not-covered" title="0 out of 6 forms covered">
-                176&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(search-vertices&nbsp;s&nbsp;minv&nbsp;maxv&nbsp;false))
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                177&nbsp;&nbsp;&nbsp;&nbsp;([s&nbsp;minv&nbsp;maxv&nbsp;d2?]
-                </span><br/>
-<span class="not-covered" title="0 out of 9 forms covered">
-                178&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[minv&#x27;&nbsp;(if&nbsp;d2?&nbsp;(assoc&nbsp;minv&nbsp;:z&nbsp;Double&#x2F;NEGATIVE_INFINITY)&nbsp;minv)
-                </span><br/>
-<span class="not-covered" title="0 out of 8 forms covered">
-                179&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maxv&#x27;&nbsp;(if&nbsp;d2?&nbsp;(assoc&nbsp;maxv&nbsp;:z&nbsp;Double&#x2F;POSITIVE_INFINITY)&nbsp;maxv)]
-                </span><br/>
-<span class="not-covered" title="0 out of 3 forms covered">
-                180&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(filter
-                </span><br/>
 <span class="not-covered" title="0 out of 5 forms covered">
-                181&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(v&#x2F;within-box?&nbsp;%&nbsp;minv&nbsp;maxv)
-                </span><br/>
-<span class="not-covered" title="0 out of 12 forms covered">
-                182&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(filter&nbsp;#(=&nbsp;(:kind&nbsp;%)&nbsp;:vertex)&nbsp;(vals&nbsp;s))))))
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                183&nbsp;&nbsp;
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                184&nbsp;&nbsp;(defn&nbsp;find-nearest
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                185&nbsp;&nbsp;&nbsp;&nbsp;&quot;Search&nbsp;superstructure&nbsp;`s`&nbsp;for&nbsp;the&nbsp;nearest&nbsp;object&nbsp;matching&nbsp;`filter-fn`&nbsp;to
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                186&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;`target`&nbsp;vertex.&nbsp;Searches&nbsp;only&nbsp;with&nbsp;`radius`&nbsp;(slight&nbsp;misnomer,&nbsp;area
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                187&nbsp;&nbsp;&nbsp;&nbsp;actually&nbsp;searched&nbsp;is&nbsp;a&nbsp;cube).&nbsp;Returns&nbsp;one&nbsp;object,&nbsp;or&nbsp;`nil`&nbsp;if&nbsp;no&nbsp;matching
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                188&nbsp;&nbsp;&nbsp;&nbsp;object&nbsp;found.
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                189&nbsp;&nbsp;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                190&nbsp;&nbsp;&nbsp;&nbsp;WARNING:&nbsp;currently&nbsp;only&nbsp;returns&nbsp;objects&nbsp;which&nbsp;have&nbsp;a&nbsp;defined&nbsp;`:centre`
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                191&nbsp;&nbsp;&nbsp;&nbsp;(but&nbsp;most&nbsp;of&nbsp;the&nbsp;significant&nbsp;objects&nbsp;we&nbsp;have&nbsp;do).&quot;
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                192&nbsp;&nbsp;&nbsp;&nbsp;[s&nbsp;target&nbsp;filter-fn&nbsp;radius]
-                </span><br/>
-<span class="not-covered" title="0 out of 3 forms covered">
-                193&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[minv&nbsp;(v&#x2F;vertex
-                </span><br/>
-<span class="not-covered" title="0 out of 21 forms covered">
-                194&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(-&nbsp;(:x&nbsp;(v&#x2F;check-vertex&nbsp;target))&nbsp;radius)
-                </span><br/>
-<span class="not-covered" title="0 out of 17 forms covered">
-                195&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(-&nbsp;(:y&nbsp;target)&nbsp;radius)&nbsp;(-&nbsp;(or&nbsp;(:z&nbsp;target)&nbsp;0)&nbsp;radius))
+                032&nbsp;&nbsp;&nbsp;&nbsp;(when&nbsp;(map?&nbsp;o)
                 </span><br/>
 <span class="not-covered" title="0 out of 2 forms covered">
-                196&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maxv&nbsp;(v&#x2F;vertex
+                033&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(reduce
                 </span><br/>
-<span class="not-covered" title="0 out of 12 forms covered">
-                197&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+&nbsp;(:x&nbsp;target)&nbsp;0.5)&nbsp;(+&nbsp;(:y&nbsp;target)&nbsp;0.5)
+<span class="not-covered" title="0 out of 1 forms covered">
+                034&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;concat
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                035&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(remove
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                036&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nil?
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                037&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                038&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(cond
+                </span><br/>
+<span class="not-covered" title="0 out of 6 forms covered">
+                039&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(v&#x2F;vertex?&nbsp;%)&nbsp;(list&nbsp;%)
                 </span><br/>
 <span class="not-covered" title="0 out of 11 forms covered">
-                198&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+&nbsp;(or&nbsp;(:z&nbsp;target)&nbsp;0)&nbsp;0.5))]
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                199&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;filter&nbsp;those&nbsp;objects&nbsp;with&nbsp;the&nbsp;filter&nbsp;function,&nbsp;then&nbsp;sort&nbsp;that&nbsp;list
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                200&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;by&nbsp;the&nbsp;edge&nbsp;distance&nbsp;from&nbsp;the&nbsp;target&nbsp;to&nbsp;the&nbsp;`:centre`&nbsp;of&nbsp;the&nbsp;object
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                201&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;and&nbsp;take&nbsp;the&nbsp;first
-                </span><br/>
-<span class="not-covered" title="0 out of 2 forms covered">
-                202&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(first
+                040&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(and&nbsp;(coll?&nbsp;%)&nbsp;(every?&nbsp;v&#x2F;vertex?&nbsp;%))&nbsp;%)
                 </span><br/>
 <span class="not-covered" title="0 out of 3 forms covered">
-                203&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(sort-by
-                </span><br/>
-<span class="not-covered" title="0 out of 8 forms covered">
-                204&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(length&nbsp;(edge&nbsp;target&nbsp;(:centre&nbsp;%)))
-                </span><br/>
-<span class="not-covered" title="0 out of 3 forms covered">
-                205&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(filter
+                041&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(vals&nbsp;o))))))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                206&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:centre
-                </span><br/>
-<span class="not-covered" title="0 out of 7 forms covered">
-                207&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map&nbsp;#(retrieve&nbsp;%&nbsp;s)
+                042&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;(cond
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                208&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;for&nbsp;each&nbsp;vertex&nbsp;id&nbsp;in&nbsp;vids,&nbsp;get&nbsp;the&nbsp;objects&nbsp;associated&nbsp;with&nbsp;that&nbsp;id
+                043&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(v&#x2F;vertex?&nbsp;o)&nbsp;(list&nbsp;o)
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                209&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;in&nbsp;the&nbsp;vertex&nbsp;index&nbsp;as&nbsp;a&nbsp;single&nbsp;flat&nbsp;list
-                </span><br/>
-<span class="not-covered" title="0 out of 2 forms covered">
-                210&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(reduce
-                </span><br/>
-<span class="not-covered" title="0 out of 1 forms covered">
-                211&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;concat
-                </span><br/>
-<span class="not-covered" title="0 out of 2 forms covered">
-                212&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(remove
-                </span><br/>
-<span class="not-covered" title="0 out of 1 forms covered">
-                213&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nil?
-                </span><br/>
-<span class="not-covered" title="0 out of 3 forms covered">
-                214&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
-                </span><br/>
-<span class="not-covered" title="0 out of 7 forms covered">
-                215&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(-&gt;&nbsp;s&nbsp;::vertex-index&nbsp;%&nbsp;keys)
+                044&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(q&#x2F;polygon?&nbsp;o)&nbsp;(:vertices&nbsp;o)
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                216&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;get&nbsp;all&nbsp;the&nbsp;vertex&nbsp;ids&nbsp;within&nbsp;radius&nbsp;of&nbsp;the&nbsp;target
-                </span><br/>
-<span class="not-covered" title="0 out of 2 forms covered">
-                217&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(set
-                </span><br/>
-<span class="not-covered" title="0 out of 3 forms covered">
-                218&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
+                045&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(p&#x2F;path?&nbsp;o)&nbsp;(:vertices&nbsp;o))
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                219&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:walkmap.id&#x2F;id
-                </span><br/>
-<span class="not-covered" title="0 out of 5 forms covered">
-                220&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(search-vertices&nbsp;s&nbsp;minv&nbsp;maxv))))))))))))
+                046&nbsp;&nbsp;;;&nbsp;&nbsp;&nbsp;)
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                221&nbsp;&nbsp;
+                047&nbsp;&nbsp;
+                </span><br/>
+<span class="partial" title="1 out of 5 forms covered">
+                048&nbsp;&nbsp;(defn&nbsp;index-vertex
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                049&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;superstructure&nbsp;like&nbsp;`s`&nbsp;in&nbsp;which&nbsp;object&nbsp;`o`&nbsp;is&nbsp;indexed&nbsp;by&nbsp;vertex
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                050&nbsp;&nbsp;&nbsp;&nbsp;`v`.&nbsp;It&nbsp;is&nbsp;an&nbsp;error&nbsp;(and&nbsp;an&nbsp;exception&nbsp;may&nbsp;be&nbsp;thrown)&nbsp;if
+                </span><br/>
+<span class="blank" title="0 out of 2 forms covered">
+                051&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                052&nbsp;&nbsp;&nbsp;&nbsp;1.&nbsp;`s`&nbsp;is&nbsp;not&nbsp;a&nbsp;map;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                053&nbsp;&nbsp;&nbsp;&nbsp;2.&nbsp;`o`&nbsp;is&nbsp;not&nbsp;a&nbsp;map;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                054&nbsp;&nbsp;&nbsp;&nbsp;3.&nbsp;`o`&nbsp;does&nbsp;not&nbsp;have&nbsp;a&nbsp;value&nbsp;for&nbsp;the&nbsp;key&nbsp;`:walkmap.id&#x2F;id`;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                055&nbsp;&nbsp;&nbsp;&nbsp;4.&nbsp;`v`&nbsp;is&nbsp;not&nbsp;a&nbsp;vertex.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                056&nbsp;&nbsp;&nbsp;&nbsp;[s&nbsp;o&nbsp;v]
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                057&nbsp;&nbsp;&nbsp;&nbsp;(if-not&nbsp;(v&#x2F;vertex?&nbsp;o)
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                058&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(:walkmap.id&#x2F;id&nbsp;o)
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                059&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(v&#x2F;vertex?&nbsp;v)
+                </span><br/>
+<span class="covered" title="9 out of 9 forms covered">
+                060&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[vi&nbsp;(or&nbsp;(::vertex-index&nbsp;s)&nbsp;{})
+                </span><br/>
+<span class="partial" title="9 out of 10 forms covered">
+                061&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;current&nbsp;(or&nbsp;(vi&nbsp;(:walkmap.id&#x2F;id&nbsp;v))&nbsp;{})]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                062&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;deep-merge&nbsp;doesn&#x27;t&nbsp;merge&nbsp;sets,&nbsp;only&nbsp;maps;&nbsp;so&nbsp;at&nbsp;this
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                063&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;stage&nbsp;we&nbsp;need&nbsp;to&nbsp;build&nbsp;a&nbsp;map.
+                </span><br/>
+<span class="covered" title="15 out of 15 forms covered">
+                064&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;vi&nbsp;(:walkmap.id&#x2F;id&nbsp;v)&nbsp;(assoc&nbsp;current&nbsp;(:walkmap.id&#x2F;id&nbsp;o)&nbsp;(:walkmap.id&#x2F;id&nbsp;v))))
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                065&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;&quot;Not&nbsp;a&nbsp;vertex:&nbsp;&quot;&nbsp;v)))
+                </span><br/>
+<span class="not-covered" title="0 out of 9 forms covered">
+                066&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw&nbsp;(IllegalArgumentException.&nbsp;(u&#x2F;truncate&nbsp;(str&nbsp;&quot;No&nbsp;`:walkmap.id&#x2F;id`&nbsp;value:&nbsp;&quot;&nbsp;o)&nbsp;80))))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                067&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;it&nbsp;shouldn&#x27;t&nbsp;actually&nbsp;be&nbsp;an&nbsp;error&nbsp;to&nbsp;try&nbsp;to&nbsp;index&nbsp;a&nbsp;vertex,&nbsp;but&nbsp;it
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                068&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;also&nbsp;isn&#x27;t&nbsp;useful&nbsp;to&nbsp;do&nbsp;so,&nbsp;so&nbsp;I&#x27;d&nbsp;be&nbsp;inclined&nbsp;to&nbsp;ignore&nbsp;it.
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                069&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(::vertex-index&nbsp;s)))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                070&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                071&nbsp;&nbsp;(defn&nbsp;index-vertices
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                072&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;superstructure&nbsp;like&nbsp;`s`&nbsp;in&nbsp;which&nbsp;object&nbsp;`o`&nbsp;is&nbsp;indexed&nbsp;by&nbsp;its
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                073&nbsp;&nbsp;&nbsp;&nbsp;vertices.&nbsp;It&nbsp;is&nbsp;an&nbsp;error&nbsp;(and&nbsp;an&nbsp;exception&nbsp;may&nbsp;be&nbsp;thrown)&nbsp;if
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                074&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                075&nbsp;&nbsp;&nbsp;&nbsp;1.&nbsp;`s`&nbsp;is&nbsp;not&nbsp;a&nbsp;map;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                076&nbsp;&nbsp;&nbsp;&nbsp;2.&nbsp;`o`&nbsp;is&nbsp;not&nbsp;a&nbsp;map;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                077&nbsp;&nbsp;&nbsp;&nbsp;3.&nbsp;`o`&nbsp;does&nbsp;not&nbsp;have&nbsp;a&nbsp;value&nbsp;for&nbsp;the&nbsp;key&nbsp;`:walkmap.id&#x2F;id`.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                078&nbsp;&nbsp;&nbsp;&nbsp;[s&nbsp;o]
+                </span><br/>
+<span class="covered" title="2 out of 2 forms covered">
+                079&nbsp;&nbsp;&nbsp;&nbsp;(u&#x2F;deep-merge
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                080&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s
+                </span><br/>
+<span class="covered" title="2 out of 2 forms covered">
+                081&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{::vertex-index
+                </span><br/>
+<span class="covered" title="2 out of 2 forms covered">
+                082&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(reduce
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                083&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;u&#x2F;deep-merge
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                084&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{}
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                085&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
+                </span><br/>
+<span class="covered" title="5 out of 5 forms covered">
+                086&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(index-vertex&nbsp;s&nbsp;o&nbsp;%)
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                087&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:vertices&nbsp;o)))}))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                088&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                089&nbsp;&nbsp;(defn&nbsp;in-retrieve
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                090&nbsp;&nbsp;&nbsp;&nbsp;&quot;Internal&nbsp;guts&nbsp;of&nbsp;`retrieve`,&nbsp;q.v.&nbsp;`x`&nbsp;can&nbsp;be&nbsp;anything;&nbsp;`s`&nbsp;must&nbsp;be&nbsp;a
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                091&nbsp;&nbsp;&nbsp;&nbsp;walkmap&nbsp;superstructure.&nbsp;TODO:&nbsp;recursive,&nbsp;quite&nbsp;likely&nbsp;to&nbsp;blow&nbsp;the&nbsp;fragile
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                092&nbsp;&nbsp;&nbsp;&nbsp;Clojure&nbsp;stack.&nbsp;Probably&nbsp;better&nbsp;to&nbsp;do&nbsp;this&nbsp;with&nbsp;`walk`,&nbsp;but&nbsp;I&nbsp;don&#x27;t&nbsp;yet
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                093&nbsp;&nbsp;&nbsp;&nbsp;understand&nbsp;that.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                094&nbsp;&nbsp;&nbsp;&nbsp;[x&nbsp;s]
+                </span><br/>
+<span class="covered" title="5 out of 5 forms covered">
+                095&nbsp;&nbsp;&nbsp;&nbsp;(cond
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                096&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;if&nbsp;it&#x27;s&nbsp;a&nbsp;keyword&nbsp;identifying&nbsp;something&nbsp;in&nbsp;s,&nbsp;retrieve&nbsp;that&nbsp;something.
+                </span><br/>
+<span class="covered" title="7 out of 7 forms covered">
+                097&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(keyword?&nbsp;x)&nbsp;(if&nbsp;(s&nbsp;x)
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                098&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(in-retrieve&nbsp;(s&nbsp;x)&nbsp;s)
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                099&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;if&nbsp;it&#x27;s&nbsp;a&nbsp;map,&nbsp;for&nbsp;every&nbsp;key&nbsp;which&nbsp;is&nbsp;not&nbsp;`:walkmap.id&#x2F;id`,&nbsp;recurse.
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                101&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map?&nbsp;x)&nbsp;(let&nbsp;[v&nbsp;(reduce
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                102&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(fn&nbsp;[m&nbsp;k]
+                </span><br/>
+<span class="covered" title="10 out of 10 forms covered">
+                103&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;m&nbsp;k&nbsp;(in-retrieve&nbsp;(x&nbsp;k)&nbsp;s)))
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                104&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{}
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                105&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(keys&nbsp;(dissoc&nbsp;x&nbsp;:walkmap.id&#x2F;id)))
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                106&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id&nbsp;(:walkmap.id&#x2F;id&nbsp;x)]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                107&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;if&nbsp;it&nbsp;has&nbsp;an&nbsp;id,&nbsp;bind&nbsp;it&nbsp;to&nbsp;that&nbsp;id&nbsp;in&nbsp;the&nbsp;returned&nbsp;value.
+                </span><br/>
+<span class="covered" title="2 out of 2 forms covered">
+                108&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;id
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                109&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                110&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                111&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:walkmap.id&#x2F;id
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                112&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:walkmap.id&#x2F;id&nbsp;x))
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                113&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v))
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                114&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(set?&nbsp;x)&nbsp;x&nbsp;;;&nbsp;TODO:&nbsp;should&nbsp;I&nbsp;search&nbsp;in&nbsp;sets&nbsp;for&nbsp;objects&nbsp;when&nbsp;storing?
+                </span><br/>
+<span class="covered" title="11 out of 11 forms covered">
+                115&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(coll?&nbsp;x)&nbsp;(map&nbsp;#(in-retrieve&nbsp;%&nbsp;s)&nbsp;x)
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                116&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else&nbsp;x))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                117&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                118&nbsp;&nbsp;(defn&nbsp;retrieve
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                119&nbsp;&nbsp;&nbsp;&nbsp;&quot;Retrieve&nbsp;the&nbsp;canonical&nbsp;representation&nbsp;of&nbsp;the&nbsp;object&nbsp;with&nbsp;this&nbsp;`id`&nbsp;from&nbsp;the
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                120&nbsp;&nbsp;&nbsp;&nbsp;superstructure&nbsp;`s`.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                121&nbsp;&nbsp;&nbsp;&nbsp;[id&nbsp;s]
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                122&nbsp;&nbsp;&nbsp;&nbsp;(in-retrieve&nbsp;(id&nbsp;s)&nbsp;s))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                123&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                124&nbsp;&nbsp;(defn&nbsp;in-store-find-objects
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                125&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;an&nbsp;id&nbsp;-&gt;&nbsp;object&nbsp;map&nbsp;of&nbsp;every&nbsp;object&nbsp;within&nbsp;`o`.&nbsp;Internal&nbsp;to
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                126&nbsp;&nbsp;&nbsp;&nbsp;`in-store`,&nbsp;q.v.&nbsp;Use&nbsp;at&nbsp;your&nbsp;own&nbsp;peril.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                127&nbsp;&nbsp;&nbsp;&nbsp;([o]
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                128&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(in-store-find-objects&nbsp;o&nbsp;{}))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                129&nbsp;&nbsp;&nbsp;&nbsp;([o&nbsp;s]
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                130&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(l&#x2F;debug&nbsp;&quot;Finding&nbsp;objects&nbsp;in:&quot;&nbsp;o)
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                131&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cond
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                132&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(set?&nbsp;o)&nbsp;s&nbsp;;;&nbsp;TODO:&nbsp;should&nbsp;I&nbsp;search&nbsp;in&nbsp;sets&nbsp;for&nbsp;objects&nbsp;when&nbsp;storing?
+                </span><br/>
+<span class="covered" title="7 out of 7 forms covered">
+                133&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map?&nbsp;o)&nbsp;(if&nbsp;(:walkmap.id&#x2F;id&nbsp;o)
+                </span><br/>
+<span class="covered" title="2 out of 2 forms covered">
+                134&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                135&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(in-store-find-objects&nbsp;(vals&nbsp;o)&nbsp;s)
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                136&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:walkmap.id&#x2F;id&nbsp;o)
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                137&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;o)
+                </span><br/>
+<span class="not-covered" title="0 out of 6 forms covered">
+                138&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(in-store-find-objects&nbsp;(vals&nbsp;o)&nbsp;s))
+                </span><br/>
+<span class="covered" title="15 out of 15 forms covered">
+                139&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(coll?&nbsp;o)&nbsp;(reduce&nbsp;merge&nbsp;s&nbsp;(map&nbsp;#(in-store-find-objects&nbsp;%&nbsp;s)&nbsp;o))
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                140&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:else&nbsp;s)))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                141&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                142&nbsp;&nbsp;(defn&nbsp;in-store-replace-with-keys
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                143&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;`o`&nbsp;in&nbsp;which&nbsp;each&nbsp;reified&nbsp;walkmap&nbsp;object&nbsp;within&nbsp;`o`&nbsp;has
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                144&nbsp;&nbsp;&nbsp;&nbsp;been&nbsp;replaced&nbsp;with&nbsp;the&nbsp;`:walkmap.id&#x2F;id`&nbsp;of&nbsp;that&nbsp;object.&nbsp;Internal&nbsp;to
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                145&nbsp;&nbsp;&nbsp;&nbsp;`in-store`,&nbsp;q.v.&nbsp;Use&nbsp;at&nbsp;your&nbsp;own&nbsp;peril.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                146&nbsp;&nbsp;&nbsp;&nbsp;[o]
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                147&nbsp;&nbsp;&nbsp;&nbsp;(assoc
+                </span><br/>
+<span class="covered" title="15 out of 15 forms covered">
+                148&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(postwalk&nbsp;#(or&nbsp;(:walkmap.id&#x2F;id&nbsp;%)&nbsp;%)&nbsp;(dissoc&nbsp;o&nbsp;:walkmap.id&#x2F;id))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                149&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:walkmap.id&#x2F;id
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                150&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:walkmap.id&#x2F;id&nbsp;o)))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                151&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                152&nbsp;&nbsp;;;&nbsp;(in-store-replace-with-keys&nbsp;(p&#x2F;path&nbsp;(v&#x2F;vertex&nbsp;0&nbsp;0&nbsp;0)&nbsp;(v&#x2F;vertex&nbsp;0&nbsp;1&nbsp;2)&nbsp;(v&#x2F;vertex&nbsp;3&nbsp;3&nbsp;3)))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                153&nbsp;&nbsp;;;&nbsp;(in-store-find-objects&nbsp;(p&#x2F;path&nbsp;(v&#x2F;vertex&nbsp;0&nbsp;0&nbsp;0)&nbsp;(v&#x2F;vertex&nbsp;0&nbsp;1&nbsp;2)&nbsp;(v&#x2F;vertex&nbsp;3&nbsp;3&nbsp;3)))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                154&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                155&nbsp;&nbsp;(defn&nbsp;store
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                156&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;superstructure&nbsp;like&nbsp;`s`&nbsp;with&nbsp;object&nbsp;`o`&nbsp;added.&nbsp;If&nbsp;only&nbsp;one
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                157&nbsp;&nbsp;&nbsp;&nbsp;argument&nbsp;is&nbsp;supplied&nbsp;it&nbsp;will&nbsp;be&nbsp;assumed&nbsp;to&nbsp;represent&nbsp;`o`&nbsp;and&nbsp;a&nbsp;new
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                158&nbsp;&nbsp;&nbsp;&nbsp;superstructure&nbsp;will&nbsp;be&nbsp;returned.
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                159&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                160&nbsp;&nbsp;&nbsp;&nbsp;It&nbsp;is&nbsp;an&nbsp;error&nbsp;(and&nbsp;an&nbsp;exception&nbsp;may&nbsp;be&nbsp;thrown)&nbsp;if
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                161&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                162&nbsp;&nbsp;&nbsp;&nbsp;1.&nbsp;`s`&nbsp;is&nbsp;not&nbsp;a&nbsp;map;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                163&nbsp;&nbsp;&nbsp;&nbsp;2.&nbsp;`o`&nbsp;is&nbsp;not&nbsp;a&nbsp;recognisable&nbsp;walkmap&nbsp;object&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                164&nbsp;&nbsp;&nbsp;&nbsp;([o]
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                165&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(store&nbsp;o&nbsp;{}))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                166&nbsp;&nbsp;&nbsp;&nbsp;([o&nbsp;s]
+                </span><br/>
+<span class="partial" title="5 out of 6 forms covered">
+                167&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(when-not&nbsp;(:walkmap.id&#x2F;id&nbsp;o)
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                168&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                169&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(IllegalArgumentException.
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                170&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str&nbsp;&quot;Not&nbsp;a&nbsp;walkmap&nbsp;object:&nbsp;no&nbsp;value&nbsp;for&nbsp;`:walkmap.id&#x2F;id`:&nbsp;&quot;
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                171&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(u&#x2F;kind-type&nbsp;o)))))
+                </span><br/>
+<span class="partial" title="5 out of 6 forms covered">
+                172&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(when-not&nbsp;(map?&nbsp;s)
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                173&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(throw
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                174&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(IllegalArgumentException.
+                </span><br/>
+<span class="not-covered" title="0 out of 6 forms covered">
+                175&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(str&nbsp;&quot;Superstructure&nbsp;must&nbsp;be&nbsp;a&nbsp;map:&nbsp;&quot;&nbsp;(u&#x2F;kind-type&nbsp;s)))))
+                </span><br/>
+<span class="covered" title="2 out of 2 forms covered">
+                176&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc
+                </span><br/>
+<span class="covered" title="10 out of 10 forms covered">
+                177&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(u&#x2F;deep-merge&nbsp;s&nbsp;(in-store-find-objects&nbsp;o)&nbsp;(index-vertices&nbsp;s&nbsp;o))
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                178&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(:walkmap.id&#x2F;id&nbsp;o)
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                179&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(in-store-replace-with-keys&nbsp;o))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                180&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                181&nbsp;&nbsp;(defn&nbsp;search-vertices
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                182&nbsp;&nbsp;&nbsp;&nbsp;&quot;Search&nbsp;superstructure&nbsp;`s`&nbsp;for&nbsp;vertices&nbsp;within&nbsp;the&nbsp;box&nbsp;defined&nbsp;by&nbsp;vertices
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                183&nbsp;&nbsp;&nbsp;&nbsp;`minv`&nbsp;and&nbsp;`maxv`.&nbsp;Every&nbsp;coordinate&nbsp;in&nbsp;`minv`&nbsp;must&nbsp;have&nbsp;a&nbsp;lower&nbsp;value&nbsp;than
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                184&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;equivalent&nbsp;coordinate&nbsp;in&nbsp;`maxv`.&nbsp;If&nbsp;`d2?`&nbsp;is&nbsp;supplied&nbsp;and&nbsp;not&nbsp;false,
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                185&nbsp;&nbsp;&nbsp;&nbsp;search&nbsp;only&nbsp;in&nbsp;the&nbsp;x,y&nbsp;projection.
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                186&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                187&nbsp;&nbsp;&nbsp;&nbsp;**NOTE&nbsp;THAT**&nbsp;this&nbsp;depends&nbsp;on&nbsp;the&nbsp;fact&nbsp;that&nbsp;vertices&nbsp;do&nbsp;not&nbsp;currently
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                188&nbsp;&nbsp;&nbsp;&nbsp;have&nbsp;properties&nbsp;which&nbsp;will&nbsp;be&nbsp;denormalised&nbsp;by&nbsp;`store`,&nbsp;and&nbsp;therefore&nbsp;do&nbsp;not
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                189&nbsp;&nbsp;&nbsp;&nbsp;have&nbsp;to&nbsp;restored&nbsp;with&nbsp;`retrieve`.&nbsp;If&nbsp;properties&nbsp;are&nbsp;added&nbsp;to&nbsp;vertices
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                190&nbsp;&nbsp;&nbsp;&nbsp;whose&nbsp;values&nbsp;are&nbsp;objects,&nbsp;then&nbsp;this&nbsp;will&nbsp;have&nbsp;to&nbsp;be&nbsp;rewritten.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                191&nbsp;&nbsp;&nbsp;&nbsp;([s&nbsp;minv&nbsp;maxv]
+                </span><br/>
+<span class="not-covered" title="0 out of 6 forms covered">
+                192&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(search-vertices&nbsp;s&nbsp;minv&nbsp;maxv&nbsp;false))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                193&nbsp;&nbsp;&nbsp;&nbsp;([s&nbsp;minv&nbsp;maxv&nbsp;d2?]
+                </span><br/>
+<span class="not-covered" title="0 out of 9 forms covered">
+                194&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[minv&#x27;&nbsp;(if&nbsp;d2?&nbsp;(assoc&nbsp;minv&nbsp;:z&nbsp;Double&#x2F;NEGATIVE_INFINITY)&nbsp;minv)
+                </span><br/>
+<span class="not-covered" title="0 out of 8 forms covered">
+                195&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maxv&#x27;&nbsp;(if&nbsp;d2?&nbsp;(assoc&nbsp;maxv&nbsp;:z&nbsp;Double&#x2F;POSITIVE_INFINITY)&nbsp;maxv)]
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                196&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(filter
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                197&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(v&#x2F;within-box?&nbsp;%&nbsp;minv&nbsp;maxv)
+                </span><br/>
+<span class="not-covered" title="0 out of 12 forms covered">
+                198&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(filter&nbsp;#(=&nbsp;(:kind&nbsp;%)&nbsp;:vertex)&nbsp;(vals&nbsp;s))))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                199&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                200&nbsp;&nbsp;(defn&nbsp;nearest
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                201&nbsp;&nbsp;&nbsp;&nbsp;&quot;Search&nbsp;superstructure&nbsp;`s`&nbsp;for&nbsp;the&nbsp;nearest&nbsp;object&nbsp;matching&nbsp;`filter-fn`&nbsp;to
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                202&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;`target`&nbsp;vertex.&nbsp;Searches&nbsp;only&nbsp;with&nbsp;`radius`&nbsp;(slight&nbsp;misnomer,&nbsp;area
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                203&nbsp;&nbsp;&nbsp;&nbsp;actually&nbsp;searched&nbsp;is&nbsp;a&nbsp;cube).&nbsp;Returns&nbsp;one&nbsp;object,&nbsp;or&nbsp;`nil`&nbsp;if&nbsp;no&nbsp;matching
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                204&nbsp;&nbsp;&nbsp;&nbsp;object&nbsp;found.
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                205&nbsp;&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                206&nbsp;&nbsp;&nbsp;&nbsp;WARNING:&nbsp;currently&nbsp;only&nbsp;returns&nbsp;objects&nbsp;which&nbsp;have&nbsp;a&nbsp;defined&nbsp;`:centre`
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                207&nbsp;&nbsp;&nbsp;&nbsp;(but&nbsp;most&nbsp;of&nbsp;the&nbsp;significant&nbsp;objects&nbsp;we&nbsp;have&nbsp;do).&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                208&nbsp;&nbsp;&nbsp;&nbsp;[s&nbsp;target&nbsp;filter-fn&nbsp;radius]
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                209&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[minv&nbsp;(v&#x2F;vertex
+                </span><br/>
+<span class="not-covered" title="0 out of 21 forms covered">
+                210&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(-&nbsp;(:x&nbsp;(v&#x2F;check-vertex&nbsp;target))&nbsp;radius)
+                </span><br/>
+<span class="not-covered" title="0 out of 17 forms covered">
+                211&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(-&nbsp;(:y&nbsp;target)&nbsp;radius)&nbsp;(-&nbsp;(or&nbsp;(:z&nbsp;target)&nbsp;0)&nbsp;radius))
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                212&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maxv&nbsp;(v&#x2F;vertex
+                </span><br/>
+<span class="not-covered" title="0 out of 12 forms covered">
+                213&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+&nbsp;(:x&nbsp;target)&nbsp;0.5)&nbsp;(+&nbsp;(:y&nbsp;target)&nbsp;0.5)
+                </span><br/>
+<span class="not-covered" title="0 out of 11 forms covered">
+                214&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+&nbsp;(or&nbsp;(:z&nbsp;target)&nbsp;0)&nbsp;0.5))]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                215&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;filter&nbsp;those&nbsp;objects&nbsp;with&nbsp;the&nbsp;filter&nbsp;function,&nbsp;then&nbsp;sort&nbsp;that&nbsp;list
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                216&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;by&nbsp;the&nbsp;edge&nbsp;distance&nbsp;from&nbsp;the&nbsp;target&nbsp;to&nbsp;the&nbsp;`:centre`&nbsp;of&nbsp;the&nbsp;object
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                217&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;and&nbsp;take&nbsp;the&nbsp;first
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                218&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(first
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                219&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(sort-by
+                </span><br/>
+<span class="not-covered" title="0 out of 8 forms covered">
+                220&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(length&nbsp;(edge&nbsp;target&nbsp;(:centre&nbsp;%)))
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                221&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(filter
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                222&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:centre
+                </span><br/>
+<span class="not-covered" title="0 out of 7 forms covered">
+                223&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map&nbsp;#(retrieve&nbsp;%&nbsp;s)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                224&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;for&nbsp;each&nbsp;vertex&nbsp;id&nbsp;in&nbsp;vids,&nbsp;get&nbsp;the&nbsp;objects&nbsp;associated&nbsp;with&nbsp;that&nbsp;id
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                225&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;in&nbsp;the&nbsp;vertex&nbsp;index&nbsp;as&nbsp;a&nbsp;single&nbsp;flat&nbsp;list
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                226&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(reduce
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                227&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;concat
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                228&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(remove
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                229&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nil?
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                230&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
+                </span><br/>
+<span class="not-covered" title="0 out of 7 forms covered">
+                231&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(-&gt;&nbsp;s&nbsp;::vertex-index&nbsp;%&nbsp;keys)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                232&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;;&nbsp;get&nbsp;all&nbsp;the&nbsp;vertex&nbsp;ids&nbsp;within&nbsp;radius&nbsp;of&nbsp;the&nbsp;target
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                233&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(set
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                234&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                235&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:walkmap.id&#x2F;id
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                236&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(search-vertices&nbsp;s&nbsp;minv&nbsp;maxv))))))))))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                237&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                238&nbsp;&nbsp;(defn&nbsp;touching
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                239&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;sequence&nbsp;of&nbsp;all&nbsp;objects&nbsp;in&nbsp;superstructure&nbsp;`s`&nbsp;which&nbsp;are
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                240&nbsp;&nbsp;&nbsp;&nbsp;indexed&nbsp;as&nbsp;touching&nbsp;the&nbsp;vertex&nbsp;`v`.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                241&nbsp;&nbsp;&nbsp;&nbsp;([vertex&nbsp;s]
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                242&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                243&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(retrieve&nbsp;%&nbsp;s)
+                </span><br/>
+<span class="not-covered" title="0 out of 25 forms covered">
+                244&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(set&nbsp;(-&gt;&nbsp;s&nbsp;:vertex-index&nbsp;(:walkmap.id&#x2F;id&nbsp;(v&#x2F;check-vertex&nbsp;vertex))&nbsp;keys))))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                245&nbsp;&nbsp;&nbsp;&nbsp;([vertex&nbsp;filter-fn&nbsp;s]
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                246&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(filter
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                247&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;filter-fn
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                248&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(touching&nbsp;vertex&nbsp;s))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                249&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                250&nbsp;&nbsp;(defn&nbsp;neighbours
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                251&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;sequence&nbsp;of&nbsp;all&nbsp;those&nbsp;objects&nbsp;in&nbsp;superstructure&nbsp;`s`&nbsp;which&nbsp;share
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                252&nbsp;&nbsp;&nbsp;&nbsp;at&nbsp;least&nbsp;one&nbsp;vertex&nbsp;with&nbsp;`target`,&nbsp;and&nbsp;which&nbsp;are&nbsp;matched&nbsp;by&nbsp;`filter-fn`
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                253&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;supplied.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                254&nbsp;&nbsp;&nbsp;&nbsp;([target&nbsp;s]
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                255&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(neighbours&nbsp;identity&nbsp;s))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                256&nbsp;&nbsp;&nbsp;&nbsp;([target&nbsp;filter-fn&nbsp;s]
+                </span><br/>
+<span class="not-covered" title="0 out of 3 forms covered">
+                257&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(remove
+                </span><br/>
+<span class="not-covered" title="0 out of 4 forms covered">
+                258&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#(=&nbsp;target&nbsp;%)
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                259&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(reduce
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                260&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;concat
+                </span><br/>
+<span class="not-covered" title="0 out of 2 forms covered">
+                261&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(remove
+                </span><br/>
+<span class="not-covered" title="0 out of 1 forms covered">
+                262&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nil?
+                </span><br/>
+<span class="not-covered" title="0 out of 11 forms covered">
+                263&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map&nbsp;#(touching&nbsp;%&nbsp;filter-fn&nbsp;s)&nbsp;(vertices&nbsp;target)))))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                264&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                265&nbsp;&nbsp;(defn&nbsp;neighbour-ids
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                266&nbsp;&nbsp;&nbsp;&nbsp;&quot;Return&nbsp;a&nbsp;sequence&nbsp;of&nbsp;the&nbsp;ids&nbsp;all&nbsp;those&nbsp;objects&nbsp;in&nbsp;superstructure&nbsp;`s`&nbsp;which
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                267&nbsp;&nbsp;&nbsp;&nbsp;share&nbsp;at&nbsp;least&nbsp;one&nbsp;vertex&nbsp;with&nbsp;`target`,&nbsp;and&nbsp;which&nbsp;are&nbsp;matched&nbsp;by
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                268&nbsp;&nbsp;&nbsp;&nbsp;`filter-fn`&nbsp;if&nbsp;supplied.&quot;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                269&nbsp;&nbsp;&nbsp;&nbsp;([target&nbsp;s]
+                </span><br/>
+<span class="not-covered" title="0 out of 5 forms covered">
+                270&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(neighbour-ids&nbsp;target&nbsp;identity&nbsp;s))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                271&nbsp;&nbsp;&nbsp;&nbsp;([target&nbsp;filter-fn&nbsp;s]
+                </span><br/>
+<span class="not-covered" title="0 out of 8 forms covered">
+                272&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map&nbsp;:walkmap.id&#x2F;id&nbsp;(neighbours&nbsp;target&nbsp;filter-fn&nbsp;s))))
                 </span><br/>
  </body>
 </html>

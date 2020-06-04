@@ -111,3 +111,9 @@
       (printf "Couldn't open '%s': %s\n" source (.getMessage e)))
     (catch RuntimeException e
       (printf "Error parsing edn file '%s': %s\n" source (.getMessage e)))))
+
+(defn not-yet-implemented
+  [message]
+  (throw
+    (UnsupportedOperationException.
+      (str "Not yet implemented: " message))))
