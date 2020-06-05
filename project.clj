@@ -13,6 +13,7 @@
                  [com.taoensso/timbre "4.10.0"]
                  [dali "0.7.4"] ;; not currently used because performance issues.
                  [hiccup "1.0.5"]
+                 [macroz/search "0.3.0"]
                  [me.raynes/fs "1.4.6"]
                  [smee/binary "0.5.5"]]
   :deploy-repositories [["releases" :clojars]

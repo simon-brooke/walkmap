@@ -2,6 +2,8 @@
   "Finding optimal routes to traverse a map."
   (:require [clojure.math.numeric-tower :as m :only [expt]]
             [clojure.set :refer [intersection]]
+            [clojure.string :as cs :only [join]]
+            [search.core :refer [a*]]
             [walkmap.edge :as e]
             [walkmap.path :as p]
             [walkmap.polygon :as q]
@@ -36,14 +38,12 @@
   -2)
 
 (defn traversable?
-  "True if this object can be considered as part of the walkmap."
+  "True if this `object` is a polygon which can be considered as part of
+  the walkmap."
   [object]
   (and
-    (or
-      (and
-        (q/polygon? object)
-        (:centre object))
-      (p/path? object))
+    (q/polygon? object)
+    (:centre object)
     (not (t/tagged? object :no-traversal))))
 
 (declare traversal-cost)
@@ -149,7 +149,8 @@
 
 (defn extend-frontier
   "Return a sequence like `frontier` with all of these `candidates` which are
-  not already members either of `frontier` or of `rejects` appended."
+  not already members either of `frontier` or of `rejects` appended. Assumes
+  candidates are traversable."
   ([frontier candidates]
    (extend-frontier frontier candidates nil))
   ([frontier candidates rejects]
@@ -165,37 +166,40 @@
 ;; (extend-frontier '(1 2 3 4 5) nil)
 ;; (extend-frontier nil '(1 2 3 4 5))
 
-(defn route
-  ;; NOT YET GOOD ENOUGH! Simple breadth first, and although it will
-  ;; reach the goal
-  ([from to s search-radius]
-   (loop [f from
-          t to
-          frontier (extend-frontier
-                     nil
-                     (s/neighbour-ids
-                       (s/nearest s from :centre search-radius)
-                       traversable?
-                       s))
-          visited nil
-          track nil]
-     (let [here (s/retrieve (first frontier) s)]
-       (cond
-         (< (e/length (e/edge (:centre here)) to) search-radius)
-         ;; close enough
-         (apply p/path (cons (:centre here) track))
-         (empty? (rest frontier))
-         ;; failed
-         nil
-         :else
-         (recur
-           f
-           t
-           (extend-frontier
-             (rest frontier)
-             (s/neighbour-ids here traversable? s)
-             visited)
-           (cons here visited)
-           ;; this is going to be wrong, and I need to think about how to fix.
-           (cons here track)))))))
+(def ^:dynamic *route-goal*
+  "The goal of the route currently sought."
+  nil)
 
+(defn find-traversable-facet
+  "Return the nearest traversable walkmap facet within `search-radius` of
+  `target`, or throw an exception if none is found."
+  [target search-radius s]
+  (let [r (s/nearest s target traversable? search-radius)]
+    (when-not r (throw
+                  (Exception.
+                    (cs/join " " ["Unable to find walkable facet within"
+                                  search-radius
+                                  "of"
+                                  target]))))
+    r))
+
+(defn route
+  ;; architectural problem: needs to return not the route, but a modified
+  ;; superstructure with the new route stored in it.
+  ([from to s]
+   (route from to s traversal-cost 5))
+  ([from to s cost-fn search-radius]
+   (let [from' (find-traversable-facet from search-radius s)
+         to' (find-traversable-facet to search-radius s)]
+     (a* from'
+         #(v/vertex= % (:centre to')) ;; goal?-fn - 'have we got there yet?'
+         #(cost-fn %1 %2 s)           ;; distance-fn - what is the distance/cost
+                                      ;; between these vertices?
+         #(e/length (e/edge (:centre %) to))
+                                      ;; heuristic: how far to the end goal
+         #(s/neighbours % traversable? s)
+                                      ;; neighbours-fn - return the traversable
+                                      ;; neighbours of the current facet
+         (int (* search-radius (e/length (e/edge from to))))
+                                      ;; how long a path we'll accept
+         ))))
