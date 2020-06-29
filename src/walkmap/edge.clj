@@ -115,14 +115,21 @@
 
 (defn overlaps2d?
   "True if the recangle in the x,y plane bisected by edge `e1` overlaps that
-  bisected by edge `e2`. It is an error if either `e1` or `e2` is not an edge."
-  [e1 e2]
+  bisected by edge `e2`. It is an error if either `e1` or `e2` is not an edge.
+
+  If `c1` is passed it should be the first coordinate of the plane of
+  projection on which the overlap is sought (default: `:x`); similarly `c2`
+  should be the second such coordinate (default: `:y`)."
+  ([e1 e2]
+   (overlaps2d? e1 e2 :x :y))
+  ([e1 e2 c1 c2]
   (when (and (edge? e1) (edge? e2))
     (and
-      (> (minimaxd e1 :x max) (minimaxd e2 :x min))
-      (< (minimaxd e1 :x min) (minimaxd e2 :x max))
-      (> (minimaxd e1 :y max) (minimaxd e2 :y min))
-      (< (minimaxd e1 :y min) (minimaxd e2 :y max)))))
+      (> (minimaxd e1 c1 max) (minimaxd e2 c1 min))
+      (< (minimaxd e1 c1 min) (minimaxd e2 c1 max))
+      (> (minimaxd e1 c2 max) (minimaxd e2 c2 min))
+      (< (minimaxd e1 c2 min) (minimaxd e2 c2 max))))))
+
 
 (defn intersection2d
   "The probability of two lines intersecting in 3d space is low, and actually
@@ -140,38 +147,40 @@
 
   It is an error, and an exception will be thrown, if either `e1` or `e2` is
   not an edge."
-  [e1 e2]
-  (if (and (edge? e1) (edge? e2))
-    (when
-      (overlaps2d? e1 e2) ;; relatively cheap check
-      (if
-        (collinear2d? e1 e2)
-        ;; any point within the overlap will do, but we'll pick the end of e1
-        ;; which is on e2
-        (if (on2d? e2 (:start e1)) (:start e1) (:end e1))
-        ;; blatantly stolen from
-        ;; https://gist.github.com/cassiel/3e725b49670356a9b936
-        (let [x1 (:x (:start e1))
-              x2 (:x (:end e1))
-              x3 (:x (:start e2))
-              x4 (:x (:end e2))
-              y1 (:y (:start e1))
-              y2 (:y (:end e1))
-              y3 (:y (:start e2))
-              y4 (:y (:end e2))
-              denom (- (* (- x1 x2) (- y3 y4))
-                       (* (- y1 y2) (- x3 x4)))
-              x1y2-y1x2 (- (* x1 y2) (* y1 x2))
-              x3y4-y3x4 (- (* x3 y4) (* y3 x4))
-              px-num (- (* x1y2-y1x2 (- x3 x4))
-                        (* (- x1 x2) x3y4-y3x4))
-              py-num (- (* x1y2-y1x2 (- y3 y4))
-                        (* (- y1 y2) x3y4-y3x4))
-              result (when-not (zero? denom)
-                       (vertex (/ px-num denom) (/ py-num denom)))]
-          (when (and result (on2d? e1 result) (on2d? e2 result)) result))))
-    (throw (IllegalArgumentException.
-             (str
-               "Both `e1` and `e2` must be edges."
-               (map #(or (:kind %) (type %)) [e1 e2]))))))
+  ([e1 e2]
+   (intersection2d e1 e2 :x :y :z))
+  ([e1 e2 c1 c2 c3]
+   (if (and (edge? e1) (edge? e2))
+     (when
+       (overlaps2d? e1 e2) ;; relatively cheap check
+       (if
+         (collinear2d? e1 e2)
+         ;; any point within the overlap will do, but we'll pick the end of e1
+         ;; which is on e2
+         (if (on2d? e2 (:start e1)) (:start e1) (:end e1))
+         ;; blatantly stolen from
+         ;; https://gist.github.com/cassiel/3e725b49670356a9b936
+         (let [x1 (c1 (:start e1))
+               x2 (c1 (:end e1))
+               x3 (c1 (:start e2))
+               x4 (c1 (:end e2))
+               y1 (c2 (:start e1))
+               y2 (c2 (:end e1))
+               y3 (c2 (:start e2))
+               y4 (c2 (:end e2))
+               denom (- (* (- x1 x2) (- y3 y4))
+                        (* (- y1 y2) (- x3 x4)))
+               x1y2-y1x2 (- (* x1 y2) (* y1 x2))
+               x3y4-y3x4 (- (* x3 y4) (* y3 x4))
+               px-num (- (* x1y2-y1x2 (- x3 x4))
+                         (* (- x1 x2) x3y4-y3x4))
+               py-num (- (* x1y2-y1x2 (- y3 y4))
+                         (* (- y1 y2) x3y4-y3x4))
+               result (when-not (zero? denom)
+                        (vertex (/ px-num denom) (/ py-num denom)))]
+           (when (and result (on2d? e1 result) (on2d? e2 result)) result))))
+     (throw (IllegalArgumentException.
+              (str
+                "Both `e1` and `e2` must be edges."
+                (map #(or (:kind %) (type %)) [e1 e2])))))))
 
