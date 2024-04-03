@@ -145,4 +145,4 @@ So we have
 
 ### Conclusion
 
-What we're seeing is that Hiccup renders more or less linearly by the number of objects (bear in mind that all of these objects are triangles, so essentially equally complex to render), whereas trhe performance of Dali degrades significantly as the number of objects increases.
+What we're seeing is that Hiccup renders more or less linearly by the number of objects (bear in mind that all of these objects are triangles, so essentially equally complex to render), whereas the performance of Dali degrades significantly as the number of objects increases.
