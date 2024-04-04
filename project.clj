@@ -4,14 +4,14 @@
                      :doc/format :markdown}
           :output-path "docs/codox"
           :source-uri "https://github.com/simon-brooke/walkmap/blob/master/{filepath}#L{line}"}
-  :dependencies [[org.clojure/algo.generic "0.1.3"]
-                 [org.clojure/core.memoize "1.0.236"]
-                 [org.clojure/clojure "1.8.0"]
-                 [org.clojure/data.zip "1.0.0"]
-                 [org.clojure/math.numeric-tower "0.0.4"]
-                 [org.clojure/math.combinatorics "0.1.6"]
-                 [com.taoensso/timbre "4.10.0"]
-                 [dali "0.7.4"] ;; not currently used because performance issues.
+  :dependencies [[org.clojure/algo.generic "1.0.0"]
+                 [org.clojure/core.memoize "1.1.266"]
+                 [org.clojure/clojure "1.11.2"]
+                 [org.clojure/data.zip "1.1.0"]
+                 [org.clojure/math.numeric-tower "0.1.0"]
+                 [org.clojure/math.combinatorics "0.3.0"]
+                 [com.taoensso/timbre "6.5.0"]
+                 ;; [dali "1.0.2"] ;; not currently used because performance issues.
                  [hiccup "1.0.5"]
                  [macroz/search "0.3.0"]
                  [me.raynes/fs "1.4.6"]
@@ -23,7 +23,8 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :plugins [[lein-cloverage "1.1.1"]
             [lein-codox "0.10.7"]
-            [lein-gorilla "0.4.0"]]
+            [org.clojars.benfb/lein-gorilla "0.7.0"]
+            ]
   :release-tasks [["vcs" "assert-committed"]
                   ["change" "version" "leiningen.release/bump-version" "release"]
                   ["vcs" "commit"]
