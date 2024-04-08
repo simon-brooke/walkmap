@@ -2,16 +2,12 @@
   "Utility functions for writing stereolithography (STL) files (and possibly,
   later, other geometry files of interest to us) as scalable vector graphics
   (SVG)."
-  (:require [clojure.java.io :as io]
-            [clojure.string :as s]
-            [clojure.xml :as x]
+  (:require [clojure.string :as s]
             [dali.io :as neatly-folded-clock]
             [hiccup.core :refer [html]]
-            [taoensso.timbre :as l :refer [info error spy]]
+            [taoensso.timbre :refer [info]]
             [cc.journeyman.walkmap.ocean :refer [cull-ocean-facets]]
-            [cc.journeyman.walkmap.polygon :refer [polygon?]]
-            [cc.journeyman.walkmap.stl :refer [decode-binary-stl]]
-            [cc.journeyman.walkmap.vertex :refer [vertex?]]))
+            [cc.journeyman.walkmap.stl :refer [decode-binary-stl]]))
 
 (def ^:dynamic *preferred-svg-render*
   "Mainly for debugging dali; switch SVG renderer to use. Expected values:
@@ -88,7 +84,7 @@
                (map
                  #(reduce max (map :y (:vertices %)))
                  (:facets stl)))]
-    (l/info "Generating SVG for " *preferred-svg-render* " renderer")
+    (info "Generating SVG for " *preferred-svg-render* " renderer")
     (case *preferred-svg-render*
       :hiccup (hiccup-stl->svg stl minx maxx miny maxy)
       :dali (dali-stl->svg stl minx maxx miny maxy)
@@ -102,7 +98,7 @@
    (stl->svg (cull-ocean-facets (decode-binary-stl in-filename))))
   ([in-filename out-filename]
    (let [s (binary-stl-file->svg in-filename)]
-     (l/info "Emitting SVG with " *preferred-svg-render* " renderer")
+     (info "Emitting SVG with " *preferred-svg-render* " renderer")
      (case *preferred-svg-render*
        :dali (neatly-folded-clock/render-svg s out-filename)
        :hiccup (spit out-filename (html s))

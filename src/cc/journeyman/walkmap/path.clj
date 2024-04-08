@@ -2,11 +2,9 @@
   "Essentially the specification for things we shall consider to be path.
   **Note that** for these purposes `path` means any continuous linear
   feature, where such features specifically include watercourses."
-  (:require [clojure.string :as s]
-            [cc.journeyman.walkmap.edge :as e]
-            [cc.journeyman.walkmap.polygon :refer [check-polygon polygon?]]
-            [cc.journeyman.walkmap.tag :refer [tag tags]]
-            [cc.journeyman.walkmap.utils :refer [check-kind-type check-kind-type-seq kind-type]]
+  (:require [cc.journeyman.walkmap.edge :as e]
+            [cc.journeyman.walkmap.polygon :refer [polygon?]]
+            [cc.journeyman.walkmap.utils :refer [check-kind-type check-kind-type-seq]]
             [cc.journeyman.walkmap.vertex :refer [check-vertices vertex?]]))
 
 (defn path?

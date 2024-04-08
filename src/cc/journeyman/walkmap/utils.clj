@@ -3,16 +3,16 @@
   (:require [clojure.edn :as edn :only [read]]
             [clojure.java.io :as io]
             [clojure.math.numeric-tower :as m]
+            [clojure.set :refer [union]]
             [clojure.string :as s]))
 
 (defn deep-merge
   "Recursively merges maps. If vals are not maps, the last value wins."
-  ;; TODO: not my implementation, not sure I entirely trust it.
-  ;; TODO TODO: if we are to successfully merge walkmap objects, we must
-  ;; return, on each object, the union of its tags if any.
+  ;; TODO: not my implementation, not sure I entirely trust it. 
   [& vals]
   (if (every? map? vals)
-    (apply merge-with deep-merge vals)
+    (let [tags (apply union (map :cc.journeyman.walkmap.tag/tags vals))]
+      (assoc (apply merge-with deep-merge vals) :cc.journeyman.walkmap.tag/tags tags))
     (last vals)))
 
 (defn truncate
@@ -27,20 +27,20 @@
   "Identify the type of an `object`, e.g. for logging. If it has a `:kind` key,
   it's one of ours, and that's what we want. Otherwise, we want its type; but
   the type of `nil` is `nil`, which doesn't get printed when assembling error
-  ,essages, so return \"nil\"."
+  messages, so return \"nil\"."
   [object]
   (or (:kind object) (type object) "nil"))
 
 (defn =ish
   "True if numbers `n1`, `n2` are roughly equal; that is to say, equal to
   within `tolerance` (defaults to one part in one hundred thousand)."
-  ([n1 n2]
+  ([^Number n1 ^Number n2]
    (if (and (number? n1) (number? n2))
      (let [m (m/abs (min n1 n2))
            t (if (zero? m) 0.00001 (* 0.00001 m))]
        (=ish n1 n2 t))
      (= n1 n2)))
-  ([n1 n2 tolerance]
+  ([^Number n1 ^Number n2 ^Number tolerance]
    (if (and (number? n1) (number? n2))
      (< (m/abs (- n1 n2)) tolerance)
      (= n1 n2))))
@@ -55,18 +55,18 @@
   ([object expected]
    `(if-not (= (kind-type ~object) ~expected)
       (throw
-        (IllegalArgumentException.
-          (s/join
-            " "
-            ["Expected" ~expected "but found" (kind-type ~object)])))
+       (IllegalArgumentException.
+        (s/join
+         " "
+         ["Expected" ~expected "but found" (kind-type ~object)])))
       ~object))
   ([object checkfn expected]
    `(if-not (~checkfn ~object)
       (throw
-        (IllegalArgumentException.
-          (s/join
-            " "
-            ["Expected" ~expected "but found" (kind-type ~object)])))
+       (IllegalArgumentException.
+        (s/join
+         " "
+         ["Expected" ~expected "but found" (kind-type ~object)])))
       ~object)))
 
 (defmacro check-kind-type-seq
@@ -77,29 +77,29 @@
 
   Macro, so that the exception is thrown from the calling function."
   ([s expected]
-  `(if-not (every? #(= (kind-type %) ~expected) ~s)
-     (throw
+   `(if-not (every? #(= (kind-type %) ~expected) ~s)
+      (throw
        (IllegalArgumentException.
-         (s/join
-           " "
-           ["Expected sequence of"
-            ~expected
-            "but found ("
-            (s/join ", " (remove #(= ~expected %) (map kind-type ~s)))
-            ")"])))
-     ~s))
+        (s/join
+         " "
+         ["Expected sequence of"
+          ~expected
+          "but found ("
+          (s/join ", " (remove #(= ~expected %) (map kind-type ~s)))
+          ")"])))
+      ~s))
   ([s checkfn expected]
-  `(if-not (every? #(~checkfn %) ~s)
-     (throw
+   `(if-not (every? #(~checkfn %) ~s)
+      (throw
        (IllegalArgumentException.
-         (s/join
-           " "
-           ["Expected sequence of"
-            ~expected
-            "but found ("
-            (s/join ", " (remove #(= ~expected %) (map kind-type ~s)))
-            ")"])))
-     ~s)))
+        (s/join
+         " "
+         ["Expected sequence of"
+          ~expected
+          "but found ("
+          (s/join ", " (remove #(= ~expected %) (map kind-type ~s)))
+          ")"])))
+      ~s)))
 
 (defn load-edn
   "Load edn from an io/reader source (filename or io/resource)."
@@ -115,5 +115,5 @@
 (defn not-yet-implemented
   [message]
   (throw
-    (UnsupportedOperationException.
-      (str "Not yet implemented: " message))))
+   (UnsupportedOperationException.
+    (str "Not yet implemented: " message))))

@@ -139,7 +139,7 @@
   projection of this rectangle on that plane?"
   [vertex rectangle]
   (let [xo (sort-by :x (:vertices rectangle))
-        yo (sort-by :x (:vertices rectangle))]
+        yo (sort-by :y (:vertices rectangle))]
     (and
       (< (:x (first xo)) (:x vertex) (:x (last xo)))
       (< (:y (first yo)) (:y vertex) (:y (last yo))))))

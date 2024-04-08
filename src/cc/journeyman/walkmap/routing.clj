@@ -1,16 +1,15 @@
 (ns cc.journeyman.walkmap.routing
   "Finding optimal routes to traverse a map."
-  (:require [clojure.math.numeric-tower :as m :only [expt]]
+  (:require [clojure.math.numeric-tower :refer [expt]]
             [clojure.set :refer [intersection]]
-            [clojure.string :as cs :only [join]]
-            [search.core :refer [a*]]
             [cc.journeyman.walkmap.edge :as e]
             [cc.journeyman.walkmap.path :as p]
             [cc.journeyman.walkmap.polygon :as q]
             [cc.journeyman.walkmap.superstructure :as s]
-            [cc.journeyman.walkmap.tag :as t]
-            [cc.journeyman.walkmap.utils :as u]
-            [cc.journeyman.walkmap.vertex :as v]))
+            [cc.journeyman.walkmap.tag :refer [tags]]
+            [cc.journeyman.walkmap.vertex :as v]
+            [search.core :refer [a*]]
+            [taoensso.timbre :refer [debug]]))
 
 ;; Breadth first search is a good algorithm for terrain in which all steps have
 ;; equal, but in our world (like the real world), they don't.
@@ -37,25 +36,30 @@
   of traversals. Dynamic, because we will want to tune this."
   -2)
 
+(def ^:dynamic *untraversable*
+  "The set of all tags which may indicate that a polygon should not be 
+   traversed."
+  #{:no-traversal})
+
 (defn traversable?
   "True if this `object` is a polygon which can be considered as part of
   the walkmap."
   [object]
   (and
-    (q/polygon? object)
-    (:centre object)
-    (not (t/tagged? object :no-traversal))))
+   (q/polygon? object)
+   (:centre object)
+   (empty? (intersection (tags object) *untraversable*))))
 
 (declare traversal-cost)
 
 (defn vertices-traversal-cost
   [vertices s]
   (reduce
-    +
-    (map
-      #(traversal-cost %1 %2 s)
-      (v/check-vertices vertices)
-      (rest vertices))))
+   +
+   (map
+    #(traversal-cost %1 %2 s)
+    (v/check-vertices vertices)
+    (rest vertices))))
 
 (defn path-traversal-cost
   [path s]
@@ -64,7 +68,8 @@
 (defn barriers-crossed
   "Search superstructure `s` and return a sequence of barriers, if any, which
   obstruct traversal from vertex `from` to vertex `to`."
-  [from to s]
+  [from to _s]
+  (debug (format "barriers-crossed called with vertices\n\tfrom: %s\n\tto:   %s" from to))
   ;; TODO: implement
   '())
 
@@ -74,7 +79,8 @@
   of superstructure `s`. If there's a bridge, ferry or other crossing mechanism
   in `s` at the intersection of the vertex and the barrier, then the penalty
   should be substantially less than it would otherwise be."
-  [barrier from to s]
+  [barrier from to _s]
+  (debug (format "crossing-penalty called with arguments\n\tbarrier: %s\n\tfrom: %s\n\tto:   %s" barrier from to))
   ;; TODO: implement
   0)
 
@@ -83,7 +89,7 @@
   [edge]
   (let [g (:z (e/unit-vector edge))]
     (if (pos? g)
-      (m/expt (inc g) *gradient-exponent*)
+      (expt (inc g) *gradient-exponent*)
       1)))
 
 ;; (gradient-cost (e/edge (v/vertex 0 0 0) (v/vertex 0 1 0)))
@@ -98,10 +104,10 @@
   [from to s]
   (let [f (fn [v] (set (s/touching v p/path? s)))]
     (first
-      (sort-by
+     (sort-by
         ;;; I... chose the path more travelled by.
-        #(or (:traversals %) 0)
-        (filter traversable? (intersection (f from) (f to)))))))
+      #(or (:traversals %) 0)
+      (filter traversable? (intersection (f from) (f to)))))))
 
 (defn road-bonus
   "Calculate the road bonus of the edge represented by the vertices `from`,
@@ -112,7 +118,7 @@
   [from to s]
   (let [best (best-road from to s)]
     (when (:traversals best)
-      (m/expt (:traversals best) *traversals-exponent*))))
+      (expt (:traversals best) *traversals-exponent*))))
 
 (defn traversal-cost
   "Return the traversal cost of the edge represented by the vertices `from`,
@@ -125,14 +131,14 @@
     (let [edge (e/edge from to)
           distance (e/length edge)]
       (/
-        (+
-          (* distance
-             (gradient-cost edge))
-          (reduce +
-                  (map
-                    #(crossing-penalty [% from to s])
-                    (barriers-crossed from to s))))
-        (or (road-bonus from to s) 1)))))
+       (+
+        (* distance
+           (gradient-cost edge))
+        (reduce +
+                (map
+                 #(crossing-penalty % from to s)
+                 (barriers-crossed from to s))))
+       (or (road-bonus from to s) 1)))))
 
 ;; (def p '({:x 1.40625, :y 0, :kind :vertex, :walkmap.id/id :vert_1-40625_0}
 ;;        {:x 1.40625, :y -10.703125, :kind :vertex, :walkmap.id/id :vert_1-40625_-10-703125}
@@ -154,11 +160,11 @@
   ([frontier candidates]
    (extend-frontier frontier candidates nil))
   ([frontier candidates rejects]
-  (if
+   (if
     (empty? frontier)
-    candidates
-    (let [fs (set (concat frontier rejects))]
-      (concat frontier (remove fs candidates))))))
+     candidates
+     (let [fs (set (concat frontier rejects))]
+       (concat frontier (remove fs candidates))))))
 
 ;; (extend-frontier '(1 2 3 4 5) '(7 3 6 2 9 8) '(6 8))
 ;; (extend-frontier '(1 2 3 4 5) '(7 3 6 2 9 8))
@@ -176,11 +182,10 @@
   [target search-radius s]
   (let [r (s/nearest s target traversable? search-radius)]
     (when-not r (throw
-                  (Exception.
-                    (cs/join " " ["Unable to find walkable facet within"
-                                  search-radius
-                                  "of"
-                                  target]))))
+                 (Exception.
+                  (format "Unable to find walkable facet within %s of %s"
+                          search-radius
+                          target))))
     r))
 
 (defn route

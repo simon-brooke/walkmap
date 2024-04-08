@@ -1,19 +1,18 @@
 (ns cc.journeyman.walkmap.stl
   "Utility functions dealing with stereolithography (STL) files. Not a stable API yet!"
-  (:require [clojure.java.io :as io :refer [file output-stream input-stream]]
-            [clojure.string :as s]
-            [me.raynes.fs :as fs]
-            [org.clojars.smee.binary.core :as b]
-            [taoensso.timbre :as l]
-            [cc.journeyman.walkmap.edge :as e]
-            [cc.journeyman.walkmap.ocean :as o]
-            [cc.journeyman.walkmap.polygon :refer [centre gradient polygon?]]
-            [cc.journeyman.walkmap.superstructure :refer [store]]
-            [cc.journeyman.walkmap.tag :refer [tag]]
-            [cc.journeyman.walkmap.utils :as u]
-            [cc.journeyman.walkmap.vertex :as v])
-  (:import org.clojars.smee.binary.core.BinaryIO
-           java.io.DataInput))
+  (:require
+   [cc.journeyman.walkmap.ocean :refer [ocean?]]
+   [cc.journeyman.walkmap.polygon :refer [centre gradient polygon?]]
+   [cc.journeyman.walkmap.superstructure :refer [store]]
+   [cc.journeyman.walkmap.tag :refer [tag]]
+   [cc.journeyman.walkmap.utils :refer [truncate]]
+   [cc.journeyman.walkmap.vertex :as v]
+   [clojure.lang.io :refer [input-stream]]
+   [clojure.string :as s]
+   [me.raynes.fs :refer [base-name split-ext]]
+   [org.clojars.smee.binary.core :as b]
+   [taoensso.timbre :refer [debug]])
+  (:import [clojure.lang Keyword]))
 
 (defn stl?
   "True if `o` is recogniseable as an STL structure. An STL structure must
@@ -64,13 +63,13 @@
   (defaults to `:height`). It is an error, and an exception will be thrown, if
   `map-kind` is not a keyword."
   ([o] (canonicalise o :height))
-  ([o map-kind]
+  ([o ^Keyword map-kind]
    (canonicalise o map-kind (v/vertex 1 1 1)))
-  ([o map-kind scale-vertex]
+  ([o ^Keyword map-kind scale-vertex]
    (when-not
      (keyword? map-kind)
      (throw (IllegalArgumentException.
-              (u/truncate (str "Must be a keyword: " (or map-kind "nil")) 80))))
+              (truncate (str "Must be a keyword: " (or map-kind "nil")) 80))))
    (cond
      (and (coll? o) (not (map? o))) (map #(canonicalise % map-kind) o)
      ;; if it has :facets it's an STL structure, but it doesn't yet conform to `stl?`
@@ -92,13 +91,13 @@
                                                (:vertices o)
                                                map-kind))
                                  :facet map-kind)))]
-                     (if (o/ocean? f)
+                     (if (ocean? f)
                        (tag f :ocean :no-traversal)
                        f))
      ;; if it has a value for :x it's a vertex, but it may not yet conform
      ;; to `vertex?`; it should also be scaled using the scale-vertex, if any.
      (:x o) (let [c (v/canonicalise o)]
-              (if scale-vertex
+              (if (v/vertex? scale-vertex)
                 (v/vertex* c scale-vertex)
                 c))
      ;; shouldn't happen
@@ -122,18 +121,14 @@
 
   **NOTE** that we've no way of verifying that the input file is binary STL
   data, if it is not this will run but will return garbage."
-  ([filename]
+  ([^String filename]
    (decode-binary-stl filename :height))
-  ([filename map-kind]
-   (when-not
-     (keyword? map-kind)
-     (throw (IllegalArgumentException.
-              (u/truncate (str "Must be a keyword: " (or map-kind "nil")) 80))))
+  ([^String filename ^Keyword map-kind]
    (decode-binary-stl filename map-kind nil))
-  ([filename mapkind superstucture]
+  ([^String filename ^Keyword mapkind superstucture]
    (decode-binary-stl filename mapkind superstucture (v/vertex 1 1 1)))
-  ([filename map-kind superstructure scale-vertex]
-   (let [in (io/input-stream filename)
+  ([^String filename ^Keyword map-kind superstructure scale-vertex]
+   (let [in (input-stream filename)
          stl (canonicalise (b/decode binary-stl in) map-kind scale-vertex)]
      (if
        (map? superstructure)
@@ -175,12 +170,12 @@
   "Write an `stl` structure as read by `decode-binary-stl` to this
   `filename` as ASCII encoded STL."
   ([filename stl]
-   (let [b (fs/base-name filename true)]
+   (let [b (base-name filename true)]
      (write-ascii-stl
        filename stl
        (subs b 0 (or (s/index-of b ".") (count b))))))
   ([filename stl solidname]
-   (l/debug "Solid name is " solidname)
+   (debug "Solid name is " solidname)
    (spit
      filename
      (stl->ascii stl solidname))))
@@ -190,7 +185,7 @@
   `out-filename`, if specified; otherwise, to a file with the same basename
   as `in-filename` but the extension `.ascii.stl`."
   ([in-filename]
-   (let [[_ ext] (fs/split-ext in-filename)]
+   (let [[_ ext] (split-ext in-filename)]
      (binary-stl-to-ascii
        in-filename
        (str

@@ -2,36 +2,36 @@
   "An interface between walkmap and microworld, to allow use of microworld
   functionality to model things like rainfall, soil fertility, settlement
   and so on."
-  (:require [clojure.edn :as edn :only [read]]
-            [clojure.java.io :as io]
-            [clojure.string :as s]
-            [taoensso.timbre :as l]
-            [cc.journeyman.walkmap.edge :as e]
-            [cc.journeyman.walkmap.polygon :as p :only [rectangle]]
+  (:require [cc.journeyman.walkmap.polygon :refer [rectangle]]
             [cc.journeyman.walkmap.superstructure :refer [store]]
-            [cc.journeyman.walkmap.tag :as t :only [tag]]
-            [cc.journeyman.walkmap.vertex :as v :only [check-vertex vertex vertex?]]
-            [cc.journeyman.walkmap.utils :as u :only [truncate]]))
+            [cc.journeyman.walkmap.tag :refer [tag]]
+            [cc.journeyman.walkmap.vertex :refer [check-vertex vertex]]
+            [cc.journeyman.walkmap.utils :refer [truncate]]
+            [clojure.edn :as edn :only [read]]
+            [clojure.java.io :refer [reader]]
+            [taoensso.timbre :refer [error]])
+  (:import [clojure.lang Keyword Map]
+           [java.io PushbackReader]))
 
 (defn cell->polygon
   "From this MicroWorld `cell`, construct a walkmap polygon (specifically,
-  a rectangle. If `scale-vector` passed and is a vertex, scale all the vertices
+  a rectangle). If `scale-vector` passed and is a vertex, scale all the vertices
   in the cell by that vector."
   ([cell]
-   (cell->polygon cell (v/vertex 1 1 1)))
+   (cell->polygon cell (vertex 1 1 1)))
   ([cell scale-vector]
-   (t/tag
+   (tag
      (assoc
        (merge
          cell
-         (let [w (* (:x cell) (:x (v/check-vertex scale-vector)))
+         (let [w (* (:x cell) (:x (check-vertex scale-vector)))
                s (* (:y cell) (:y scale-vector))
                e (+ w (:x scale-vector))
                n (+ s (:y scale-vector))
                z (* (:altitude cell) (:z scale-vector))]
-         (p/rectangle
-           (v/vertex s w z)
-           (v/vertex n e z))))
+         (rectangle
+           (vertex s w z)
+           (vertex n e z))))
        :walkmap.id/id
        (keyword (gensym "mw-cell")))
      (:state cell))))
@@ -42,23 +42,23 @@
   compute-heavy that it's much more sensible to do it in batch mode. So the
   better plan is to be able to pull the output from MicroWorld - as an EDN
   structure - into a walkmap superstructure."
-  ([filename]
+  ([^String filename]
    (load-microworld-edn filename :mw))
-  ([filename map-kind]
+  ([^String filename ^Keyword map-kind]
    (when-not
      (keyword? map-kind)
      (throw (IllegalArgumentException.
-              (u/truncate
-                (str "Must be a keyword: " (or map-kind "nil")) 80))))
+              (truncate
+                (format "Must be a keyword: %s." (or map-kind "nil")) 80))))
    (load-microworld-edn filename map-kind nil))
-  ([filename mapkind superstucture]
-   (load-microworld-edn filename mapkind superstucture (v/vertex 1 1 1)))
-  ([filename map-kind superstructure scale-vertex]
+  ([^String filename ^Keyword mapkind ^Map superstucture]
+   (load-microworld-edn filename mapkind superstucture (vertex 1 1 1)))
+  ([^String filename ^Keyword _map-kind ^Map superstructure ^Map _scale-vertex]
    (let [mw (try
-              (with-open [r (io/reader filename)]
-                (edn/read (java.io.PushbackReader. r)))
+              (with-open [r (reader filename)]
+                (edn/read (PushbackReader. r)))
               (catch RuntimeException e
-                (l/error "Error parsing edn file '%s': %s\n"
+                (error "Error parsing edn file '%s': %s\n"
                          filename (.getMessage e))))
          polys (reduce
                  concat

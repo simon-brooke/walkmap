@@ -3,7 +3,6 @@
   An edge is a line segment having just a start and an end, with no intervening
   nodes."
   (:require [clojure.math.numeric-tower :as m]
-            [cc.journeyman.walkmap.utils :as u]
             [cc.journeyman.walkmap.vertex :refer [canonicalise check-vertex ensure2d ensure3d vertex vertex= vertex?]]))
 
 (defn edge
@@ -149,7 +148,7 @@
   not an edge."
   ([e1 e2]
    (intersection2d e1 e2 :x :y :z))
-  ([e1 e2 c1 c2 c3]
+  ([e1 e2 c1 c2 _c3]
    (if (and (edge? e1) (edge? e2))
      (when
        (overlaps2d? e1 e2) ;; relatively cheap check

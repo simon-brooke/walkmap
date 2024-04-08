@@ -1,16 +1,11 @@
 (ns cc.journeyman.walkmap.read-svg
   "Utility functions for  scalable vector graphics (SVG) into walkmap
   structures."
-  (:require [clojure.data.zip :as dz]
-            [clojure.data.zip.xml :as zx]
-            [clojure.java.io :as io]
+  (:require [clojure.java.io :as io]
             [clojure.string :as s]
             [clojure.xml :as x]
-            [clojure.zip :as z]
-            [taoensso.timbre :as l]
             [cc.journeyman.walkmap.path :refer [path]]
             [cc.journeyman.walkmap.tag :refer [tag]]
-            [cc.journeyman.walkmap.utils :refer [kind-type truncate]]
             [cc.journeyman.walkmap.vertex :refer [vertex vertex?]]))
 
 (defn upper-case?
@@ -91,7 +86,7 @@
   ;; quite small XML files. So I've implemented my own solution.
   ([file-name]
    (read-svg file-name nil))
-  ([file-name map-kind]
+  ([file-name _map-kind]
     (let [xml (x/parse (io/file file-name))
           paths (progeny xml #(= (:tag %) :path))]
       (remove nil? (map path-elt->path paths)))))

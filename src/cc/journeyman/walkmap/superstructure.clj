@@ -3,15 +3,16 @@
   (:require [clojure.walk :refer [postwalk]]
             [taoensso.timbre :as l]
             [cc.journeyman.walkmap.edge :refer [edge length]]
-            [cc.journeyman.walkmap.path :as p]
-            [cc.journeyman.walkmap.polygon :as q]
+            ;; [cc.journeyman.walkmap.path :as p]
+            ;; [cc.journeyman.walkmap.polygon :as q]
             [cc.journeyman.walkmap.utils :as u]
-            [cc.journeyman.walkmap.vertex :as v]))
+            [cc.journeyman.walkmap.vertex :as v])
+  (:import [clojure.lang IFn Map]))
 
 ;; TODO: Think about reification/dereification. How can we cull a polygon, if
 ;; some vertices still index it? I *think* that what's needed is that when
 ;; we store something in the superstructure, we replace all its vertices (and
-;; other dependent structures, if any with their ids - as well as, obviously,
+;; other dependent structures, if any) with their ids - as well as, obviously,
 ;; adding/merging those vertices/dependent structures into the superstructure
 ;; as first class objects in themselves. That means, for each identified thing,
 ;; the superstructure only contains one copy of it.
@@ -31,14 +32,14 @@
   [o]
   (when (map? o)
     (reduce
-      concat
-      (remove
-        nil?
-        (map
-          #(cond
-             (v/vertex? %) (list %)
-             (and (coll? %) (every? v/vertex? %)) %)
-          (vals o))))))
+     concat
+     (remove
+      nil?
+      (map
+       #(cond
+          (v/vertex? %) (list %)
+          (and (coll? %) (every? v/vertex? %)) %)
+       (vals o))))))
 ;;   (cond
 ;;     (v/vertex? o) (list o)
 ;;     (q/polygon? o) (:vertices o)
@@ -53,7 +54,7 @@
   2. `o` is not a map;
   3. `o` does not have a value for the key `:walkmap.id/id`;
   4. `v` is not a vertex."
-  [s o v]
+  [^Map s ^Map o ^Map v]
   (if-not (v/vertex? o)
     (if (:walkmap.id/id o)
       (if (v/vertex? v)
@@ -77,14 +78,14 @@
   3. `o` does not have a value for the key `:walkmap.id/id`."
   [s o]
   (u/deep-merge
-    s
-    {::vertex-index
-     (reduce
-       u/deep-merge
-       {}
-       (map
-         #(index-vertex s o %)
-         (:vertices o)))}))
+   s
+   {::vertex-index
+    (reduce
+     u/deep-merge
+     {}
+     (map
+      #(index-vertex s o %)
+      (:vertices o)))}))
 
 (defn in-retrieve
   "Internal guts of `retrieve`, q.v. `x` can be anything; `s` must be a
@@ -99,17 +100,17 @@
                    x)
     ;; if it's a map, for every key which is not `:walkmap.id/id`, recurse.
     (map? x) (let [v (reduce
-                       (fn [m k]
-                         (assoc m k (in-retrieve (x k) s)))
-                       {}
-                       (keys (dissoc x :walkmap.id/id)))
+                      (fn [m k]
+                        (assoc m k (in-retrieve (x k) s)))
+                      {}
+                      (keys (dissoc x :walkmap.id/id)))
                    id (:walkmap.id/id x)]
                ;; if it has an id, bind it to that id in the returned value.
                (if id
                  (assoc
-                   v
-                   :walkmap.id/id
-                   (:walkmap.id/id x))
+                  v
+                  :walkmap.id/id
+                  (:walkmap.id/id x))
                  v))
     (set? x) x ;; TODO: should I search in sets for objects when storing?
     (coll? x) (map #(in-retrieve % s) x)
@@ -132,9 +133,9 @@
      (set? o) s ;; TODO: should I search in sets for objects when storing?
      (map? o) (if (:walkmap.id/id o)
                 (assoc
-                  (in-store-find-objects (vals o) s)
-                  (:walkmap.id/id o)
-                  o)
+                 (in-store-find-objects (vals o) s)
+                 (:walkmap.id/id o)
+                 o)
                 (in-store-find-objects (vals o) s))
      (coll? o) (reduce merge s (map #(in-store-find-objects % s) o))
      :else s)))
@@ -145,9 +146,9 @@
   `in-store`, q.v. Use at your own peril."
   [o]
   (assoc
-    (postwalk #(or (:walkmap.id/id %) %) (dissoc o :walkmap.id/id))
-    :walkmap.id/id
-    (:walkmap.id/id o)))
+   (postwalk #(or (:walkmap.id/id %) %) (dissoc o :walkmap.id/id))
+   :walkmap.id/id
+   (:walkmap.id/id o)))
 
 ;; (in-store-replace-with-keys (p/path (v/vertex 0 0 0) (v/vertex 0 1 2) (v/vertex 3 3 3)))
 ;; (in-store-find-objects (p/path (v/vertex 0 0 0) (v/vertex 0 1 2) (v/vertex 3 3 3)))
@@ -161,22 +162,22 @@
 
   1. `s` is not a map;
   2. `o` is not a recognisable walkmap object"
-  ([o]
+  ([^Map o]
    (store o {}))
-  ([o s]
+  ([^Map o ^Map s]
    (when-not (:walkmap.id/id o)
      (throw
-       (IllegalArgumentException.
-         (str "Not a walkmap object: no value for `:walkmap.id/id`: "
-              (u/kind-type o)))))
+      (IllegalArgumentException.
+       (str "Not a walkmap object: no value for `:walkmap.id/id`: "
+            (u/kind-type o)))))
    (when-not (map? s)
      (throw
-       (IllegalArgumentException.
-         (str "Superstructure must be a map: " (u/kind-type s)))))
+      (IllegalArgumentException.
+       (str "Superstructure must be a map: " (u/kind-type s)))))
    (assoc
-     (u/deep-merge s (in-store-find-objects o) (index-vertices s o))
-     (:walkmap.id/id o)
-     (in-store-replace-with-keys o))))
+    (u/deep-merge s (in-store-find-objects o) (index-vertices s o))
+    (:walkmap.id/id o)
+    (in-store-replace-with-keys o))))
 
 (defn search-vertices
   "Search superstructure `s` for vertices within the box defined by vertices
@@ -188,14 +189,14 @@
   have properties which will be denormalised by `store`, and therefore do not
   have to restored with `retrieve`. If properties are added to vertices
   whose values are objects, then this will have to be rewritten."
-  ([s minv maxv]
+  ([^Map s ^Map minv ^Map maxv]
    (search-vertices s minv maxv false))
   ([s minv maxv d2?]
    (let [minv' (if d2? (assoc minv :z Double/NEGATIVE_INFINITY) minv)
          maxv' (if d2? (assoc maxv :z Double/POSITIVE_INFINITY) maxv)]
      (filter
-       #(v/within-box? % minv maxv)
-       (filter #(= (:kind %) :vertex) (vals s))))))
+      #(v/within-box? % minv' maxv')
+      (filter #(= (:kind %) :vertex) (vals s))))))
 
 (defn nearest
   "Search superstructure `s` for the nearest object matching `filter-fn` to
@@ -205,68 +206,72 @@
 
   WARNING: currently only returns objects which have a defined `:centre`
   (but most of the significant objects we have do)."
-  [s target filter-fn radius]
-  (let [minv (v/vertex
+  ([^Map s ^Map target ^Number radius]
+   (nearest s target :centre radius))
+  ([^Map s ^Map target ^IFn filter-fn ^Number radius]
+   (let [minv (v/vertex
                (- (:x (v/check-vertex target)) radius)
                (- (:y target) radius) (- (or (:z target) 0) radius))
-        maxv (v/vertex
+         maxv (v/vertex
                (+ (:x target) 0.5) (+ (:y target) 0.5)
                (+ (or (:z target) 0) 0.5))]
     ;; filter those objects with the filter function, then sort that list
     ;; by the edge distance from the target to the `:centre` of the object
     ;; and take the first
-    (first
+     (first
       (sort-by
-        #(length (edge target (:centre %)))
+       #(length (edge target (:centre %)))
+       (filter
+        filter-fn
         (filter
-          :centre
-          (map #(retrieve % s)
+         :centre
+         (map #(retrieve % s)
                ;; for each vertex id in vids, get the objects associated with that id
                ;; in the vertex index as a single flat list
-               (reduce
-                 concat
-                 (remove
-                   nil?
-                   (map
-                     #(-> s ::vertex-index % keys)
+              (reduce
+               concat
+               (remove
+                nil?
+                (map
+                 #(-> s ::vertex-index % keys)
                      ;; get all the vertex ids within radius of the target
-                     (set
-                       (map
-                         :walkmap.id/id
-                         (search-vertices s minv maxv))))))))))))
+                 (set
+                  (map
+                   :walkmap.id/id
+                   (search-vertices s minv maxv))))))))))))))
 
 (defn touching
   "Return a sequence of all objects in superstructure `s` which are
   indexed as touching the vertex `v`."
-  ([vertex s]
+  ([^Map vertex ^Map s]
    (map
-     #(retrieve % s)
-     (set (-> s :vertex-index (:walkmap.id/id (v/check-vertex vertex)) keys))))
-  ([vertex filter-fn s]
+    #(retrieve % s)
+    (set (-> s :vertex-index (:walkmap.id/id (v/check-vertex vertex)) keys))))
+  ([^Map vertex ^IFn filter-fn ^Map s]
    (filter
-     filter-fn
-     (touching vertex s))))
+    filter-fn
+    (touching vertex s))))
 
 (defn neighbours
   "Return a sequence of all those objects in superstructure `s` which share
   at least one vertex with `target`, and which are matched by `filter-fn`
   if supplied."
-  ([target s]
-   (neighbours identity s))
-  ([target filter-fn s]
+  ([^Map target ^Map s]
+   (neighbours target identity s))
+  ([^Map target ^IFn filter-fn ^Map s]
    (remove
-     #(= target %)
-     (reduce
-       concat
-       (remove
-         nil?
-         (map #(touching % filter-fn s) (vertices target)))))))
+    #(= target %)
+    (reduce
+     concat
+     (remove
+      nil?
+      (map #(touching % filter-fn s) (vertices target)))))))
 
 (defn neighbour-ids
   "Return a sequence of the ids all those objects in superstructure `s` which
   share at least one vertex with `target`, and which are matched by
   `filter-fn` if supplied."
-  ([target s]
+  ([^Map target ^Map s]
    (neighbour-ids target identity s))
-  ([target filter-fn s]
+  ([^Map target ^IFn filter-fn ^Map s]
    (map :walkmap.id/id (neighbours target filter-fn s))))
