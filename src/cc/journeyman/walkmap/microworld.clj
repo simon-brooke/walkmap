@@ -10,7 +10,7 @@
             [clojure.edn :as edn :only [read]]
             [clojure.java.io :refer [reader]]
             [taoensso.timbre :refer [error]])
-  (:import [clojure.lang Keyword Map]
+  (:import [clojure.lang Keyword IPersistentMap]
            [java.io PushbackReader]))
 
 (defn cell->polygon
@@ -21,20 +21,20 @@
    (cell->polygon cell (vertex 1 1 1)))
   ([cell scale-vector]
    (tag
-     (assoc
-       (merge
-         cell
-         (let [w (* (:x cell) (:x (check-vertex scale-vector)))
-               s (* (:y cell) (:y scale-vector))
-               e (+ w (:x scale-vector))
-               n (+ s (:y scale-vector))
-               z (* (:altitude cell) (:z scale-vector))]
-         (rectangle
-           (vertex s w z)
-           (vertex n e z))))
-       :walkmap.id/id
-       (keyword (gensym "mw-cell")))
-     (:state cell))))
+    (assoc
+     (merge
+      cell
+      (let [w (* (:x cell) (:x (check-vertex scale-vector)))
+            s (* (:y cell) (:y scale-vector))
+            e (+ w (:x scale-vector))
+            n (+ s (:y scale-vector))
+            z (* (:altitude cell) (:z scale-vector))]
+        (rectangle
+         (vertex s w z)
+         (vertex n e z))))
+     :walkmap.id/id
+     (keyword (gensym "mw-cell")))
+    (:state cell))))
 
 (defn load-microworld-edn
   "While it would be possible to call MicroWorld functions directly from
@@ -45,29 +45,29 @@
   ([^String filename]
    (load-microworld-edn filename :mw))
   ([^String filename ^Keyword map-kind]
-   (when-not
-     (keyword? map-kind)
-     (throw (IllegalArgumentException.
-              (truncate
-                (format "Must be a keyword: %s." (or map-kind "nil")) 80))))
    (load-microworld-edn filename map-kind nil))
-  ([^String filename ^Keyword mapkind ^Map superstucture]
+  ([^String filename ^Keyword mapkind ^IPersistentMap superstucture]
    (load-microworld-edn filename mapkind superstucture (vertex 1 1 1)))
-  ([^String filename ^Keyword _map-kind ^Map superstructure ^Map _scale-vertex]
+  ([^String filename ^Keyword map-kind ^IPersistentMap superstructure ^IPersistentMap _scale-vertex]
+   (when-not
+    (keyword? map-kind)
+     (throw (IllegalArgumentException.
+             (truncate
+              (format "Must be a keyword: %s." (or map-kind "nil")) 80))))
    (let [mw (try
               (with-open [r (reader filename)]
                 (edn/read (PushbackReader. r)))
               (catch RuntimeException e
                 (error "Error parsing edn file '%s': %s\n"
-                         filename (.getMessage e))))
+                       filename (.getMessage e))))
          polys (reduce
-                 concat
-                 (map (fn [row] (map cell->polygon row)) mw))]
+                concat
+                (map (fn [row] (map cell->polygon row)) mw))]
      (if (map? superstructure)
        (reduce
-         #(store %2 %1)
-         superstructure
-         polys)
+        #(store %2 %1)
+        superstructure
+        polys)
        polys))))
 
 

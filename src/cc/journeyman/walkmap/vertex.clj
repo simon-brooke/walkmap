@@ -6,7 +6,8 @@
   (:require [clojure.math.numeric-tower :as m]
             [clojure.string :as s]
             [taoensso.timbre :as l]
-            [cc.journeyman.walkmap.utils :refer [=ish check-kind-type check-kind-type-seq kind-type truncate]]))
+            [cc.journeyman.walkmap.utils :refer 
+             [=ish check-kind-type check-kind-type-seq kind-type truncate]]))
 
 (defn vertex-key
   "Making sure we get the same key everytime we key a vertex with the same

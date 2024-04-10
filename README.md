@@ -8,6 +8,96 @@ This library is written in support of work on
 [The Great Game](https://simon-brooke.github.io/the-great-game/codox/Pathmaking.html), but is
 separate because it may be of some use in other settings.
 
+## Explanation
+
+*I'm writing this becaue, having returned to this project after four years of 
+being distracted by other things, I couldn't even remember what it was for, 
+let alone how to use it.*
+
+### 'STL files'
+
+'STL' is not an acronym but an abbreviation; an abreviation of 
+'[stereolithography](https://en.wikipedia.org/wiki/Stereolithography)'. Even 
+that name is completely misleading, since there is absolutely no sense in
+which this is printing with stone.
+
+What an STL file is is in fact a representation of a mesh, originally intended 
+for use in 3d printing, and therefore taken to be the bounding mesh of a solid.
+This makes it a better format for representing landforms for games than a
+simple heightmap, since heightmaps cannot represent things like overhangs and 
+caves.
+
+STL files come in two subformats: 'ASCII' (which this library can currently 
+read and write), and 'Binary' (which this library can read but not yet write).
+
+STL files are commonly used in game development and can be imported by all of
+
+* [Blender](https://docs.blender.org/manual/en/latest/files/import_export/stl.html)
+* [Godot Engine](https://godotengine.org/asset-library/asset/961)
+* [Unity](https://github.com/karl-/pb_Stl) (unofficial)
+* [Unreal Engine](https://github.com/rdeioris/UnrealSTL) (unofficial)
+
+Additionally, a number of programs exist to convert STL files into other 3D
+model file formats.
+
+### 'Superstructure'
+
+I can't remember if 'superstructure' is a name which I found in reading the
+literature on STL files, or whether it's one I came up with for my own 
+purposes, but essentially in my usage of it:
+
+1. [MicroWorld](https://github.com/simon-brooke/mw-engine) is a two dimensional 
+cellular automaton, which I wrote, and which can be used (and which I use) to 
+model ecological processes up to and including human settlement;
+2. As a two dimensional cellular automaton, it is necessarily essentially a
+flat mesh, but I essentially drape that over a 
+[heightmap](https://github.com/simon-brooke/mw-engine/blob/master/src/mw_engine/heightmap.clj)
+to give a sort of notional two-and-a-half dimensional representation;
+3. As such MicroWorld is a moderately useful tool to transform an imagined land
+form into a vegetated and populated landscape, with biomes and human habitation
+distributed naturalistically.
+
+A 'superstructure', then, in the terms I'm using it, is an intermediary 
+representation between a heightmap and a stereolithography model, which carries
+data not only about shape, but about biomes, settlement, traversibility and so
+on. Thus it is a surface across which routes can efficiently be planned.
+
+A superstructure can currently be constructed from a MicroWorld world, read in
+from an [Extensible Data Notation](https://github.com/edn-format/edn). There 
+isn't currently a function to construct a superstructure from an in-memory
+MicroWorld world, because MicroWorld, when working with models of the size I'm 
+using, is hugely memory hungry; but there clearly could be and that is an
+addition you should expect.
+
+A superstructure cannot currently be constructed directly from a heightmap, but
+that would also be a trivial enhancement and is planned.
+
+```clojure
+(use 'cc.journeyman.walkmap.microworld :reload)
+(require '[cc.journeyman.walkmap.vertex :refer [vertex]])
+(load-microworld-edn 
+    "../the-great-game/resources/test/galloway-populated-20240407.edn")
+```
+or
+```clojure
+(use 'cc.journeyman.walkmap.microworld :reload)
+(require '[cc.journeyman.walkmap.vertex :refer [vertex]])
+(load-microworld-edn 
+    "../the-great-game/resources/test/galloway-populated-20240407.edn" :mw {} 
+    (vertex 1000 1000 10))
+```
+
+Note that this is a lot of processing and even on a fast machine is going to 
+take significant walkclock time. You cannot reasonably do it, except for 
+utterly trivial times, during game initialisation; instead you need to do it
+in the 'baking' phase of game development, and consider the STL file as the
+resoource to be shipped with the game.
+
+However, although it is time-expensive, it is not, unlike MicroWorld, either
+memory or processor hungry. This will not blow up your machine.
+
+A superstructure can be written to an ASCII STL file.
+
 ## Usage
 
 What works:

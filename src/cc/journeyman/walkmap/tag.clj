@@ -5,7 +5,7 @@
   (:require [clojure.set :refer [difference union]]
             [taoensso.timbre :as l]
             [cc.journeyman.walkmap.utils :refer [kind-type]])
-  (:import [clojure.lang Map]))
+  (:import [clojure.lang IPersistentMap]))
 
 (defn tagged?
   "True if this `object` is tagged with each of these `tags`. It is an error
@@ -13,7 +13,7 @@
 
   1. `object` is not a map;
   2. any of `tags` is not a keyword."
-  [^Map object & tags]
+  [^IPersistentMap object & tags]
   (let [tags' (flatten tags)]
     (when-not (every? keyword? tags')
       (throw (IllegalArgumentException.
@@ -33,7 +33,7 @@
 
   It's legal to include sequences of keywords in `tags`, so that users can do
   useful things like `(tag obj (map keyword some-strings))`."
-  [^Map object & tags]
+  [^IPersistentMap object & tags]
   (l/debug "Tagging" (kind-type object) "with" tags)
   (let [tags' (flatten tags)]
     (when-not (every? keyword? tags')
@@ -52,7 +52,7 @@
 
   1. `object` is not a map;
   2. any of `tags` is not a keyword or sequence of keywords."
-  [^Map object & tags]
+  [^IPersistentMap object & tags]
   (let [tags' (flatten tags)]
     (when-not (every? keyword? tags')
       (throw (IllegalArgumentException.

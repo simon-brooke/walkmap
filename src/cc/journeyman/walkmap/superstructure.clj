@@ -7,7 +7,7 @@
             ;; [cc.journeyman.walkmap.polygon :as q]
             [cc.journeyman.walkmap.utils :as u]
             [cc.journeyman.walkmap.vertex :as v])
-  (:import [clojure.lang IFn Map]))
+  (:import [clojure.lang IFn IPersistentMap]))
 
 ;; TODO: Think about reification/dereification. How can we cull a polygon, if
 ;; some vertices still index it? I *think* that what's needed is that when
@@ -54,7 +54,7 @@
   2. `o` is not a map;
   3. `o` does not have a value for the key `:walkmap.id/id`;
   4. `v` is not a vertex."
-  [^Map s ^Map o ^Map v]
+  [^IPersistentMap s ^IPersistentMap o ^IPersistentMap v]
   (if-not (v/vertex? o)
     (if (:walkmap.id/id o)
       (if (v/vertex? v)
@@ -162,9 +162,9 @@
 
   1. `s` is not a map;
   2. `o` is not a recognisable walkmap object"
-  ([^Map o]
+  ([^IPersistentMap o]
    (store o {}))
-  ([^Map o ^Map s]
+  ([^IPersistentMap o ^IPersistentMap s]
    (when-not (:walkmap.id/id o)
      (throw
       (IllegalArgumentException.
@@ -189,7 +189,7 @@
   have properties which will be denormalised by `store`, and therefore do not
   have to restored with `retrieve`. If properties are added to vertices
   whose values are objects, then this will have to be rewritten."
-  ([^Map s ^Map minv ^Map maxv]
+  ([^IPersistentMap s ^IPersistentMap minv ^IPersistentMap maxv]
    (search-vertices s minv maxv false))
   ([s minv maxv d2?]
    (let [minv' (if d2? (assoc minv :z Double/NEGATIVE_INFINITY) minv)
@@ -206,9 +206,9 @@
 
   WARNING: currently only returns objects which have a defined `:centre`
   (but most of the significant objects we have do)."
-  ([^Map s ^Map target ^Number radius]
+  ([^IPersistentMap s ^IPersistentMap target ^Number radius]
    (nearest s target :centre radius))
-  ([^Map s ^Map target ^IFn filter-fn ^Number radius]
+  ([^IPersistentMap s ^IPersistentMap target ^IFn filter-fn ^Number radius]
    (let [minv (v/vertex
                (- (:x (v/check-vertex target)) radius)
                (- (:y target) radius) (- (or (:z target) 0) radius))
@@ -225,7 +225,7 @@
         filter-fn
         (filter
          :centre
-         (map #(retrieve % s)
+         (pmap #(retrieve % s)
                ;; for each vertex id in vids, get the objects associated with that id
                ;; in the vertex index as a single flat list
               (reduce
@@ -243,11 +243,11 @@
 (defn touching
   "Return a sequence of all objects in superstructure `s` which are
   indexed as touching the vertex `v`."
-  ([^Map vertex ^Map s]
+  ([^IPersistentMap vertex ^IPersistentMap s]
    (map
     #(retrieve % s)
     (set (-> s :vertex-index (:walkmap.id/id (v/check-vertex vertex)) keys))))
-  ([^Map vertex ^IFn filter-fn ^Map s]
+  ([^IPersistentMap vertex ^IFn filter-fn ^IPersistentMap s]
    (filter
     filter-fn
     (touching vertex s))))
@@ -256,9 +256,9 @@
   "Return a sequence of all those objects in superstructure `s` which share
   at least one vertex with `target`, and which are matched by `filter-fn`
   if supplied."
-  ([^Map target ^Map s]
+  ([^IPersistentMap target ^IPersistentMap s]
    (neighbours target identity s))
-  ([^Map target ^IFn filter-fn ^Map s]
+  ([^IPersistentMap target ^IFn filter-fn ^IPersistentMap s]
    (remove
     #(= target %)
     (reduce
@@ -271,7 +271,7 @@
   "Return a sequence of the ids all those objects in superstructure `s` which
   share at least one vertex with `target`, and which are matched by
   `filter-fn` if supplied."
-  ([^Map target ^Map s]
+  ([^IPersistentMap target ^IPersistentMap s]
    (neighbour-ids target identity s))
-  ([^Map target ^IFn filter-fn ^Map s]
+  ([^IPersistentMap target ^IFn filter-fn ^IPersistentMap s]
    (map :walkmap.id/id (neighbours target filter-fn s))))

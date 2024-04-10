@@ -33,3 +33,5 @@ small_hill.html
 .settings/org.eclipse.jdt.apt.core.prefs
 .settings/org.eclipse.jdt.core.prefs
 .settings/org.eclipse.m2e.core.prefs
+
+resources/superstructure-raw-20240410.edn
