@@ -128,7 +128,7 @@
   ([o]
    (in-store-find-objects o {}))
   ([o s]
-   (l/debug "Finding objects in:" o)
+   (when (map? o) (l/debug "Finding objects in:" o))
    (cond
      (set? o) s ;; TODO: should I search in sets for objects when storing?
      (map? o) (if (:walkmap.id/id o)
@@ -274,4 +274,4 @@
   ([^IPersistentMap target ^IPersistentMap s]
    (neighbour-ids target identity s))
   ([^IPersistentMap target ^IFn filter-fn ^IPersistentMap s]
-   (map :walkmap.id/id (neighbours target filter-fn s))))
+   (pmap :walkmap.id/id (neighbours target filter-fn s))))
