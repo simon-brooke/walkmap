@@ -28,8 +28,8 @@
         :else
         (throw (IllegalArgumentException.
                  (truncate (str "Not a vertex: " (or o "nil")) 80))))
-      "."
-      "-")))
+      #"\p{Punct}"
+      "_")))
 
 (defn vertex?
   "True if `o` satisfies the conditions for a vertex. That is, essentially,
