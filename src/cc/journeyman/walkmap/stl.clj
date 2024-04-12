@@ -1,18 +1,22 @@
 (ns cc.journeyman.walkmap.stl
   "Utility functions dealing with stereolithography (STL) files. Not a stable API yet!"
-  (:require
-   [cc.journeyman.walkmap.ocean :refer [ocean?]]
-   [cc.journeyman.walkmap.polygon :refer [centre gradient polygon?]]
-   [cc.journeyman.walkmap.superstructure :refer [store]]
-   [cc.journeyman.walkmap.tag :refer [tag]]
-   [cc.journeyman.walkmap.utils :refer [truncate]]
-   [cc.journeyman.walkmap.vertex :as v]
-   [clojure.lang.io :refer [input-stream]]
-   [clojure.string :as s]
-   [me.raynes.fs :refer [base-name split-ext]]
-   [org.clojars.smee.binary.core :as b]
-   [taoensso.timbre :refer [debug]])
+  (:require [cc.journeyman.walkmap.ocean :refer [ocean?]]
+            [cc.journeyman.walkmap.polygon :refer [centre gradient triangle?]]
+            [cc.journeyman.walkmap.superstructure :refer [store]]
+            [cc.journeyman.walkmap.tag :refer [tag]]
+            [cc.journeyman.walkmap.utils :refer [kind-type truncate]]
+            [cc.journeyman.walkmap.vertex :as v :refer [vertex]]
+            [clojure.core.matrix :refer [set-current-implementation sub]]
+            [clojure.java.io :refer [input-stream]]
+            [clojure.string :as s]
+            [me.raynes.fs :refer [base-name split-ext]]
+            [org.clojars.smee.binary.core :as b]
+            [taoensso.timbre :refer [debug]])
   (:import [clojure.lang Keyword]))
+
+;; We want to use the `[vectorz](https://github.com/mikera/vectorz-clj)` 
+;; implementation of core.matrix.
+(set-current-implementation :vectorz)
 
 (defn stl?
   "True if `o` is recogniseable as an STL structure. An STL structure must
@@ -26,27 +30,27 @@
    (stl? o false))
   ([o verify-count?]
    (and
-     (map? o)
-     (:facets o)
-     (every? polygon? (:facets o))
-     (if (:header o) (string? (:header o)) true)
-     (if (:count o) (integer? (:count o)) true)
-     (or (nil? (:kind o)) (= (:kind o) :stl))
-     (if verify-count? (= (:count o) (count (:facets o))) true))))
+    (map? o)
+    (:facets o)
+    (every? triangle? (:facets o)) 
+    (if (:header o) (string? (:header o)) true)
+    (if (:count o) (integer? (:count o)) true)
+    (or (nil? (:kind o)) (= (:kind o) :stl))
+    (if verify-count? (= (:count o) (count (:facets o))) true))))
 
 (def vect
   "A codec for vectors within a binary STL file."
   (b/ordered-map
-    :x :float-le
-    :y :float-le
-    :z :float-le))
+   :x :float-le
+   :y :float-le
+   :z :float-le))
 
 (def facet
   "A codec for a facet (triangle) within a binary STL file."
   (b/ordered-map
-    :normal vect
-    :vertices [vect vect vect]
-    :abc :ushort-le))
+   :normal vect
+   :vertices [vect vect vect]
+   :abc :ushort-le))
 
 (def binary-stl
   "A codec for binary STL files"
@@ -54,6 +58,50 @@
    :header (b/string "ISO-8859-1" :length 80) ;; for the time being we neither know nor care what's in this.
    :count :uint-le
    :facets (b/repeated facet)))
+
+(defn vertex->array
+  [v]
+  [(:x v) (:y v) (or (:z v) 0)])
+
+(defn surface-normal 
+  "From https://www.khronos.org/opengl/wiki/Calculating_a_Surface_Normal
+   ```
+   Begin Function CalculateSurfaceNormal (Input Triangle) Returns Vector
+  
+   Set Vector U to (Triangle.p2 minus Triangle.p1)
+   Set Vector V to (Triangle.p3 minus Triangle.p1)
+  
+   Set Normal.x to (multiply U.y by V.z) minus (multiply U.z by V.y)
+   Set Normal.y to (multiply U.z by V.x) minus (multiply U.x by V.z)
+   Set Normal.z to (multiply U.x by V.y) minus (multiply U.y by V.x)
+  
+   Returning Normal
+  
+   End Function
+   ```"
+  [triangle]
+  (if (triangle? triangle)
+    (let 
+     [vertices (:vertices triangle)
+      v1 (vertex->array (nth vertices 0))
+      u (sub (vertex->array (nth vertices 1)) v1)
+      v (sub (vertex->array (nth vertices 2)) v1)
+      x (- (* (nth u 1)(nth v 2)) (* (nth u 2) (nth v 1)))
+          y (- (* (nth u 2) (nth v 0)) (* (nth u 0) (nth v 2)))
+          z (- (* (nth u 0) (nth v 1)) (* (nth u 1 (nth v 0))))]
+      (debug (format "Calculating normal for triangle %s" triangle))
+      (vertex x y z))
+    (throw (IllegalArgumentException. 
+            (format "Expected :triangle, found %s" (kind-type triangle))))))
+
+(defn ensure-normal
+  "Ensure this `triangle` has a normal vector/"
+  [triangle]
+  (if (triangle? triangle)
+    (if (:normal triangle) triangle 
+        (assoc triangle :normal (surface-normal triangle)))
+    (throw (IllegalArgumentException. 
+            (format "Expected :triangle, found %s" (kind-type triangle))))))
 
 (defn canonicalise
   "Objects read in from STL won't have all the keys/values we need them to have.
@@ -67,30 +115,34 @@
    (canonicalise o map-kind (v/vertex 1 1 1)))
   ([o ^Keyword map-kind scale-vertex]
    (when-not
-     (keyword? map-kind)
+    (keyword? map-kind)
      (throw (IllegalArgumentException.
-              (truncate (str "Must be a keyword: " (or map-kind "nil")) 80))))
+             (truncate (str "Must be a keyword: " (or map-kind "nil")) 80))))
    (cond
      (and (coll? o) (not (map? o))) (map #(canonicalise % map-kind) o)
      ;; if it has :facets it's an STL structure, but it doesn't yet conform to `stl?`
      (:facets o) (assoc o
-                   :kind :stl
-                   :walkmap.id/id (or (:walkmap.id/id o) (keyword (gensym "stl")))
-                   :facets (canonicalise (:facets o) map-kind))
+                        :kind :stl
+                        :walkmap.id/id (or (:walkmap.id/id o) 
+                                           (keyword (gensym "stl")))
+                        :facets (canonicalise (:facets o) map-kind))
+     ;; if it's a triangle it's almost a facet. All it needs now is a normal 
+     ;; vector
+     (triangle? o) (ensure-normal o)
      ;; if it has :vertices it's a polygon, but it may not yet conform to
      ;; `polygon?`
      (:vertices o) (let [f (gradient
-                             (centre
-                               (tag
-                                 (assoc o
-                                   :walkmap.id/id (or
-                                                    (:walkmap.id/id o)
-                                                    (keyword (gensym "poly")))
-                                   :kind :polygon
-                                   :vertices (canonicalise
-                                               (:vertices o)
-                                               map-kind))
-                                 :facet map-kind)))]
+                            (centre
+                             (tag
+                              (assoc o
+                                     :walkmap.id/id (or
+                                                     (:walkmap.id/id o)
+                                                     (keyword (gensym "poly")))
+                                     :kind :polygon
+                                     :vertices (canonicalise
+                                                (:vertices o)
+                                                map-kind))
+                              :facet map-kind)))]
                      (if (ocean? f)
                        (tag f :ocean :no-traversal)
                        f))
@@ -131,7 +183,7 @@
    (let [in (input-stream filename)
          stl (canonicalise (b/decode binary-stl in) map-kind scale-vertex)]
      (if
-       (map? superstructure)
+      (map? superstructure)
        (store stl superstructure)
        stl))))
 
@@ -140,13 +192,13 @@
 
 (defn- facet2str [tri]
   (str
-    (vect->str "facet normal" (:normal tri))
-    "outer loop\n"
-    (s/join
-      (map
-        #(vect->str "vertex" %)
-        (:vertices tri)))
-    "endloop\nendfacet\n"))
+   (vect->str "facet normal" (:normal tri))
+   "outer loop\n"
+   (s/join
+    (map
+     #(vect->str "vertex" %)
+     (:vertices tri)))
+   "endloop\nendfacet\n"))
 
 (defn stl->ascii
   "Return as a string an ASCII rendering of the `stl` structure."
@@ -154,17 +206,17 @@
    (stl->ascii stl "unknown"))
   ([stl solidname]
    (str
-     "solid "
-     solidname
-     (s/trim (:header stl))
-     "\n"
-     (s/join
-       (map
-         facet2str
-         (:facets stl)))
-     "endsolid "
-     solidname
-     "\n")))
+    "solid "
+    solidname
+    (s/trim (:header stl))
+    "\n"
+    (s/join
+     (map
+      facet2str
+      (:facets stl)))
+    "endsolid "
+    solidname
+    "\n")))
 
 (defn write-ascii-stl
   "Write an `stl` structure as read by `decode-binary-stl` to this
@@ -172,13 +224,13 @@
   ([filename stl]
    (let [b (base-name filename true)]
      (write-ascii-stl
-       filename stl
-       (subs b 0 (or (s/index-of b ".") (count b))))))
+      filename stl
+      (subs b 0 (or (s/index-of b ".") (count b))))))
   ([filename stl solidname]
    (debug "Solid name is " solidname)
    (spit
-     filename
-     (stl->ascii stl solidname))))
+    filename
+    (stl->ascii stl solidname))))
 
 (defn binary-stl-to-ascii
   "Convert the binary STL file indicated by `in-filename`, and write it to
@@ -187,15 +239,15 @@
   ([in-filename]
    (let [[_ ext] (split-ext in-filename)]
      (binary-stl-to-ascii
-       in-filename
-       (str
-         (subs
-           in-filename
-           0
-           (or
-             (s/last-index-of in-filename ".")
-             (count in-filename)))
-         ".ascii"
-         ext))))
+      in-filename
+      (str
+       (subs
+        in-filename
+        0
+        (or
+         (s/last-index-of in-filename ".")
+         (count in-filename)))
+       ".ascii"
+       ext))))
   ([in-filename out-filename]
    (write-ascii-stl out-filename (decode-binary-stl in-filename))))

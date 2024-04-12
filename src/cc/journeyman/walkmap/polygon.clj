@@ -4,9 +4,9 @@
             [cc.journeyman.walkmap.edge :as e]
             [cc.journeyman.walkmap.tag :as t]
             [cc.journeyman.walkmap.utils :refer [check-kind-type
-                                   check-kind-type-seq
-                                   kind-type
-                                   not-yet-implemented]]
+                                                 check-kind-type-seq
+                                                 kind-type
+                                                 not-yet-implemented]]
             [cc.journeyman.walkmap.vertex :refer [check-vertex check-vertices vertex vertex?]]))
 
 (defn polygon?
@@ -15,13 +15,13 @@
   of vertices."
   [o]
   (let
-    [v (:vertices o)]
+   [v (:vertices o)]
     (and
-      (coll? v)
-      (> (count v) 2)
-      (every? vertex? v)
-      (:walkmap.id/id o)
-      (or (nil? (:kind o)) (= (:kind o) :polygon)))))
+     (coll? v)
+     (> (count v) 2)
+     (every? vertex? v)
+     (:walkmap.id/id o)
+     (or (nil? (:kind o)) (= (:kind o) :polygon)))))
 
 (defmacro check-polygon
   "If `o` is not a polygon, throw an `IllegalArgumentException` with an
@@ -42,8 +42,8 @@
   polygon with exactly three vertices."
   [o]
   (and
-    (coll? o)
-    (= (count (:vertices o)) 3)))
+   (coll? o)
+   (= (count (:vertices o)) 3)))
 
 (defmacro check-triangle
   "If `o` is not a triangle, throw an `IllegalArgumentException` with an
@@ -52,16 +52,38 @@
   [o]
   `(check-kind-type ~o triangle? :triangle))
 
+(def recognised-polygon-types #{:triangle
+                                :quadrilateral
+                                :pentagon
+                                :hexagon
+                                :heptagon
+                                :octogon
+                                :polygon})
+
+(defn- poly-kind 
+  "Return a keyword representing the kind of polygon which has this many
+   `vertices`."
+  [vertices]
+  (case (count vertices)
+    3 :triangle
+    4 :quadrilateral
+    5 :pentagon
+    6 :hexagon
+    7 :heptagon
+    8 :octogon
+    ;;else
+    :polygon))
+
 (defn polygon
   "Return a polygon constructed from these `vertices`."
   [& vertices]
   (if
-    (> (count vertices) 2)
+   (> (count vertices) 2)
     {:vertices (check-vertices vertices)
      :walkmap.id/id (keyword (gensym "poly"))
-     :kind :polygon}
+     :kind (poly-kind vertices)}
     (throw (IllegalArgumentException.
-             "A polygon must have at least 3 vertices."))))
+            "A polygon must have at least 3 vertices."))))
 
 (defn rectangle
   "Return a rectangle, with edges aligned east-west and north-south, whose
@@ -78,15 +100,15 @@
                     (/ (reduce + (map #(or (:z %) 0) [vsw vne])) 2))
         height-order (sort-by :z [vsw vne])]
     (t/tag
-      (assoc
-        (polygon vsw vnw vne vse)
-        :gradient
-        (e/unit-vector (e/edge (first height-order) (last height-order)))
-        :centre
-        (vertex (+ (:x vsw) (/ (- (:x vne) (:x vsw)) 2))
-                (+ (:x vsw) (/ (- (:y vne) (:y vsw)) 2))
-                (:z vse)))
-      :rectangle)))
+     (assoc
+      (polygon vsw vnw vne vse)
+      :gradient
+      (e/unit-vector (e/edge (first height-order) (last height-order)))
+      :centre
+      (vertex (+ (:x vsw) (/ (- (:x vne) (:x vsw)) 2))
+              (+ (:y vsw) (/ (- (:y vne) (:y vsw)) 2))
+              (:z vse)))
+     :rectangle)))
 
 ;; (rectangle (vertex 1 2 3) (vertex 7 9 4))
 
@@ -98,7 +120,7 @@
                     (:vertices (check-triangle triangle)))
         highest (first order)
         lowest (last order)]
-     (assoc triangle :gradient (e/unit-vector (e/edge lowest highest)))))
+    (assoc triangle :gradient (e/unit-vector (e/edge lowest highest)))))
 
 (defn triangle-centre
   "Return a canonicalised `facet` (i.e. a triangular polygon) with an added
@@ -111,13 +133,13 @@
         v1 (first vs)
         opposite (e/edge (nth vs 1) (nth vs 2))
         oc (e/centre opposite)]
-      (assoc
-      facet
-      :centre
-      (vertex
-        (+ (:x v1) (* (- (:x oc) (:x v1)) 2/3))
-        (+ (:y v1) (* (- (:y oc) (:y v1)) 2/3))
-        (+ (:z v1) (* (- (:z oc) (:z v1)) 2/3))))))
+    (assoc
+     facet
+     :centre
+     (vertex
+      (+ (:x v1) (* (- (:x oc) (:x v1)) 2/3))
+      (+ (:y v1) (* (- (:y oc) (:y v1)) 2/3))
+      (+ (:z v1) (* (- (:z oc) (:z v1)) 2/3))))))
 
 (defn centre
   [poly]
@@ -125,8 +147,8 @@
     3 (triangle-centre poly)
     ;; else
     (throw
-      (UnsupportedOperationException.
-        "The general case of centre for polygons is not yet implemented."))))
+     (UnsupportedOperationException.
+      "The general case of centre for polygons is not yet implemented."))))
 
 (defmacro on2dtriangle?
   "Is the projection of this `vertex` on the x, y plane within the
@@ -141,15 +163,15 @@
   (let [xo (sort-by :x (:vertices rectangle))
         yo (sort-by :y (:vertices rectangle))]
     (and
-      (< (:x (first xo)) (:x vertex) (:x (last xo)))
-      (< (:y (first yo)) (:y vertex) (:y (last yo))))))
+     (< (:x (first xo)) (:x vertex) (:x (last xo)))
+     (< (:y (first yo)) (:y vertex) (:y (last yo))))))
 
 (defmacro on2d?
   "Is the projection of this `vertex` on the x, y plane within the
   projection of this polygon `poly` on that plane?"
   [vertex poly]
   `(cond
-    (rectangle? ~poly) (on2drectangle? ~vertex ~poly)
-    (triangle? ~poly) (on2dtriangle? ~vertex ~poly)
-    :else
-    (not-yet-implemented "general case of on2d? for polygons.")))
+     (rectangle? ~poly) (on2drectangle? ~vertex ~poly)
+     (triangle? ~poly) (on2dtriangle? ~vertex ~poly)
+     :else
+     (not-yet-implemented "general case of on2d? for polygons.")))

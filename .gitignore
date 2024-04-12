@@ -10,6 +10,8 @@ pom.xml.asc
 *.svg
 /.lein-*
 /.nrepl-port
+.clj-kondo
+.lsp
 .hgignore
 .hg/
 
