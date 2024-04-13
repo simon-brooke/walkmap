@@ -43,6 +43,7 @@
   [o]
   (and
    (coll? o)
+   (#{:polygon :triangle} (kind-type o))
    (= (count (:vertices o)) 3)))
 
 (defmacro check-triangle

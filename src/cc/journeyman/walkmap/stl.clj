@@ -207,8 +207,8 @@
   ([stl solidname]
    (str
     "solid "
-    solidname
-    (s/trim (:header stl))
+    (or solidname
+    (when (:header stl)(s/trim (:header stl))))
     "\n"
     (s/join
      (map
@@ -227,7 +227,7 @@
       filename stl
       (subs b 0 (or (s/index-of b ".") (count b))))))
   ([filename stl solidname]
-   (debug "Solid name is " solidname)
+   (debug (format "Writing STL to '%s'; solid name is %s" filename solidname)) 
    (spit
     filename
     (stl->ascii stl solidname))))

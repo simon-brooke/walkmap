@@ -1,6 +1,8 @@
 (ns cc.journeyman.walkmap.ocean
   "Deal with (specifically, at this stage, cull) ocean areas"
-  (:require [cc.journeyman.walkmap.utils :refer [=ish]]))
+  (:require [cc.journeyman.walkmap.polygon :refer [triangle?]]
+            [cc.journeyman.walkmap.stl :refer [stl?]]
+            [cc.journeyman.walkmap.utils :refer [=ish]]))
 
 (def ^:dynamic *sea-level*
   "The sea level on heightmaps we're currently handling. If characters are to
@@ -21,5 +23,11 @@
 (defn cull-ocean-facets
   "Ye cannae walk on water. Remove all facets from this `stl` structure which
   are at sea level."
-  [stl]
-  (assoc stl :facets (remove ocean? (:facets stl))))
+  [stl-or-seq]
+  (cond
+    (and (seq? stl-or-seq) 
+         (every? triangle? stl-or-seq)) (remove ocean? stl-or-seq)
+    (stl? stl-or-seq)(assoc stl-or-seq :facets 
+                            (cull-ocean-facets (:facets stl-or-seq)))
+    :else (throw (IllegalArgumentException. 
+                  "Expected STL structure, or sequence of triangles."))))
